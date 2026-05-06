@@ -1,0 +1,206 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header del Perfil -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-8">
+        @if (loading && !employeeData) {
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            <span class="ml-3 text-white font-medium">Cargando información del perfil...</span>
+          </div>
+        } 
+        @else if (employeeData) {
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="flex flex-col items-center mb-4 md:mb-0 md:mr-8">
+              <p-avatar [label]="getInitial(employeeData.firstName)" 
+                        size="xlarge" 
+                        shape="circle" 
+                        styleClass="bg-white text-blue-600 font-bold text-3xl ring-4 ring-white shadow-lg">
+              </p-avatar>
+              <div class="text-center mt-4">
+                <h1 class="text-2xl font-bold text-white">
+                  {{ employeeData.firstName }} {{ employeeData.lastName }}
+                </h1>
+                <p class="text-blue-100 mt-1">{{ employeeData.position }}</p>
+                <p class="text-blue-200 text-sm mt-1">Código: {{ employeeData.employeeCode }}</p>
+              </div>
+            </div>
+            
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 md:mt-0">
+              <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                <div class="flex items-center">
+                  <i class="pi pi-money-bill text-white text-xl mr-3"></i>
+                  <div>
+                    <p class="text-blue-100 text-sm">Salario Mensual</p>
+                    <p class="text-white font-bold text-lg">{{ employeeData.fixedSalary | currency:'PEN':'symbol':'1.2-2' }}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                <div class="flex items-center">
+                  <i class="pi pi-clock text-white text-xl mr-3"></i>
+                  <div>
+                    <p class="text-blue-100 text-sm">Horas Extra</p>
+                    <p class="text-white font-bold text-lg">{{ employeeData.totalOvertimeDuration || '0' }} hrs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (employeeData) {
+      <!-- Formulario de Datos Personales -->
+      <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-bold text-gray-800 flex items-center">
+            <i class="pi pi-user text-blue-600 mr-2"></i>
+            Información Personal
+          </h2>
+          @if (!isEditing) {
+            <p-button type="button" label="Editar Perfil" icon="pi pi-pencil" (onClick)="toggleEdit()" 
+                    styleClass="p-button-sm p-button-outlined p-button-primary">
+            </p-button>
+          }
+        </div>
+        
+        <form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Información Básica -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold text-gray-700 border-b pb-2">Datos Básicos</h3>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombres</label>
+                <input pInputText type="text" formControlName="firstName" 
+                       [disabled]="!isEditing"
+                       class="w-full p-3 border rounded-lg transition-colors"
+                       [ngClass]="{'bg-gray-50 text-gray-500': !isEditing, 'bg-white border-blue-300 focus:border-blue-500': isEditing}">
+                <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" 
+                     class="text-xs text-red-500 mt-1 flex items-center">
+                  <i class="pi pi-exclamation-triangle mr-1"></i>
+                  El nombre es obligatorio
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Apellidos</label>
+                <input pInputText type="text" formControlName="lastName"
+                       [disabled]="!isEditing"
+                       class="w-full p-3 border rounded-lg transition-colors"
+                       [ngClass]="{'bg-gray-50 text-gray-500': !isEditing, 'bg-white border-blue-300 focus:border-blue-500': isEditing}">
+                <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" 
+                     class="text-xs text-red-500 mt-1 flex items-center">
+                  <i class="pi pi-exclamation-triangle mr-1"></i>
+                  Los apellidos son obligatorios
+                </div>
+              </div>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold text-gray-700 border-b pb-2">Contacto</h3>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input pInputText type="email" formControlName="email"
+                       [disabled]="!isEditing"
+                       class="w-full p-3 border rounded-lg transition-colors"
+                       [ngClass]="{'bg-gray-50 text-gray-500': !isEditing, 'bg-white border-blue-300 focus:border-blue-500': isEditing}">
+                <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" 
+                     class="text-xs text-red-500 mt-1 flex items-center">
+                  <i class="pi pi-exclamation-triangle mr-1"></i>
+                  Email inválido
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                <input pInputText type="text" formControlName="phone"
+                       [disabled]="!isEditing"
+                       class="w-full p-3 border rounded-lg transition-colors"
+                       [ngClass]="{'bg-gray-50 text-gray-500': !isEditing, 'bg-white border-blue-300 focus:border-blue-500': isEditing}">
+                <div *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" 
+                     class="text-xs text-red-500 mt-1 flex items-center">
+                  <i class="pi pi-exclamation-triangle mr-1"></i>
+                  Teléfono es obligatorio
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Información de Usuario -->
+          <div class="mt-6 pt-6 border-t">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Información de Usuario</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de Usuario</label>
+                <input pInputText type="text" formControlName="username"
+                       [disabled]="!isEditing"
+                       class="w-full p-3 border rounded-lg transition-colors"
+                       [ngClass]="{'bg-gray-50 text-gray-500': !isEditing, 'bg-white border-blue-300 focus:border-blue-500': isEditing}">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Unión</label>
+                <input pInputText type="text" 
+                       [value]="employeeData.hireDate | date:'dd/MM/yyyy'"
+                       disabled
+                       class="w-full p-3 bg-gray-50 text-gray-500 border rounded-lg">
+                <p class="text-xs text-gray-500 mt-1">Fecha de ingreso a la empresa</p>
+              </div>
+            </div>
+            
+            <!-- Puntos Acumulados -->
+            <div class="mt-6">
+              <div class="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <i class="pi pi-star-fill text-yellow-500 text-xl mr-3"></i>
+                    <div>
+                      <h4 class="font-semibold text-gray-800">Puntos de Lealtad</h4>
+                      <p class="text-sm text-gray-600">Acumulados por antigüedad y desempeño</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-2xl font-bold text-yellow-600">{{ employeeData.loyaltyPoints || 0 }}</p>
+                    <p class="text-xs text-gray-500">puntos</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          @if (isEditing) {
+            <div class="flex justify-end space-x-3 mt-8 pt-6 border-t">
+              <p-button type="button" label="Cancelar" icon="pi pi-times" (onClick)="toggleEdit()" 
+                      styleClass="p-button-sm p-button-outlined p-button-secondary">
+              </p-button>
+              <p-button type="submit" label="Guardar Cambios" icon="pi pi-save"
+                      [disabled]="profileForm.invalid || loading"
+                      [loading]="loading"
+                      styleClass="p-button-sm p-button-success">
+              </p-button>
+            </div>
+          }
+        </form>
+      </div>
+    } 
+    @else if (!loading) {
+      <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+        <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Error al cargar el perfil</h3>
+        <p class="text-gray-600">No se pudieron cargar los datos del perfil. Por favor, intenta nuevamente.</p>
+        <p-button label="Reintentar" icon="pi pi-refresh" (onClick)="loadProfile()" 
+                styleClass="p-button-sm p-button-primary mt-4">
+        </p-button>
+      </div>
+    }
+  </div>
+</div>

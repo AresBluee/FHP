@@ -1,0 +1,27 @@
+<div class="bg-white p-6 rounded-xl shadow-lg border">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Reporte de Asistencia Global</h2>
+    <p class="text-gray-600 mb-4">Descarga un archivo consolidado con los marcajes de todos los empleados.</p>
+
+    <form (ngSubmit)="generateGlobalReport()" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Fecha de Inicio:</label>
+                <input type="date" [(ngModel)]="startDate" name="startDate" required
+                       class="w-full p-2 border rounded-md">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Fecha de Fin:</label>
+                <input type="date" [(ngModel)]="endDate" name="endDate" required
+                       class="w-full p-2 border rounded-md">
+            </div>
+        </div>
+        
+        <p-button type="submit" [label]="isLoading ? 'Generando...' : 'Descargar Reporte Global (CSV)'" 
+                  icon="pi pi-file-excel" [loading]="isLoading"
+                  styleClass="p-button-sm p-button-warning w-full mt-4">
+        </p-button>
+        @if (message) {
+            <div class="text-sm text-center text-red-600">{{ message }}</div>
+        }
+    </form>
+</div>

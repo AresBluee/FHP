@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "primeicons/primeicons.css";
+
+@font-face {
+    font-family: "tipo1";
+    src: url("app/assets/fonts/Oxygen/Oxygen-Light.ttf");
+  }
+
+  @font-face {
+    font-family: "tipo2";
+    src: url("app/assets/fonts/Oxygen/Oxygen-Bold.ttf");
+  }
+
+  @font-face {
+    font-family: "tipo3";
+    src: url("app/assets/fonts/Oxygen/Oxygen-Regular.ttf");
+  }

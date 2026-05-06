@@ -1,0 +1,84 @@
+<p-toast></p-toast>
+
+<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
+  <div class="bg-white p-6 rounded-xl shadow-lg border">
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Gestión de Documentos</h1>
+
+    <p-table #dt [value]="documents" [paginator]="true" [rows]="10" [loading]="isLoading"
+      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+      [globalFilterFields]="['employeeName', 'documentType', 'uploadedBy', 'employeeCode']">
+
+      <ng-template pTemplate="caption">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-2">
+            <p-button label="Subir Documento" icon="pi pi-upload" styleClass="p-button-success"
+              (click)="showUploadModal = true"></p-button>
+            <p-button icon="pi pi-refresh" (onClick)="loadDocuments()" pTooltip="Actualizar"
+              styleClass="p-button-secondary"></p-button>
+          </div>
+
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-search" />
+            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
+              class="w-full md:w-auto" />
+          </p-iconField>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="employeeCode">Cód. Emp. <p-sortIcon field="employeeCode"></p-sortIcon></th>
+          <th pSortableColumn="employeeName">Trabajador <p-sortIcon field="employeeName"></p-sortIcon></th>
+          <th pSortableColumn="documentType">Tipo <p-sortIcon field="documentType"></p-sortIcon></th>
+          <th pSortableColumn="uploadedBy">Subido Por <p-sortIcon field="uploadedBy"></p-sortIcon></th>
+          <th pSortableColumn="uploadDate">Fecha Carga <p-sortIcon field="uploadDate"></p-sortIcon></th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-doc>
+        <tr>
+          <td>{{ doc.employeeCode }}</td>
+          <td>{{ doc.employeeName }}</td>
+          <td>
+            <p-tag [value]="doc.documentType" severity="info"></p-tag>
+          </td>
+          <td>{{ doc.uploadedBy }}</td>
+          <td>{{ doc.uploadDate | date:'dd/MM/yyyy' }}</td>
+          <td class="text-center">
+            <div class="flex justify-center space-x-2">
+              <p-button icon="pi pi-eye" styleClass="p-button-sm p-button-info p-button-outlined"
+                (onClick)="viewDocument(doc.id)" pTooltip="Ver en Línea"></p-button>
+              <p-button icon="pi pi-download" styleClass="p-button-sm p-button-success p-button-outlined"
+                (onClick)="downloadDocument(doc)" pTooltip="Descargar"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center py-10">
+            <i class="pi pi-file-excel text-4xl text-gray-400 mb-3"></i>
+            <p class="text-lg text-gray-600">No hay documentos cargados en el sistema.</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Diálogo para Visualización de Documento -->
+<p-dialog header="Visualización del Documento" [(visible)]="showViewer" [modal]="true"
+  [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
+  <iframe [src]="documentViewerUrl" class="w-full h-full border-none"></iframe>
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Diálogo para Subir Documento -->
+<p-dialog header="Subir Nuevo Documento" [(visible)]="showUploadModal" [modal]="true"
+  [style]="{width: '50vw'}" [draggable]="false">
+  <app-document-upload (uploadSuccess)="onUploadSuccess()"></app-document-upload>
+</p-dialog>

@@ -1,0 +1,20 @@
+:host ::ng-deep {
+    .p-dropdown.ng-invalid.ng-dirty {
+        border-color: #ef4444; /* Rojo para el borde */
+    }
+
+    .p-inputtext.ng-invalid.ng-dirty {
+        border-color: #ef4444; /* Rojo para el borde */
+    }
+
+    .p-fileupload .p-button.p-fileupload-choose.ng-invalid.ng-dirty {
+        border-color: #ef4444; /* Rojo para el borde del botón de seleccionar archivo */
+    }
+
+    .p-error {
+        color: #ef4444; /* Rojo para el texto de error */
+        font-size: 0.75rem; /* Tamaño de fuente pequeño */
+        margin-top: 0.25rem; /* Espacio superior */
+        display: block; /* Asegura que ocupe su propia línea */
+    }
+}

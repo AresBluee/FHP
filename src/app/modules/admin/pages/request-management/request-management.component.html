@@ -1,0 +1,67 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
+<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
+  <div class="bg-white p-6 rounded-xl shadow-lg border">
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Gestión de Solicitudes</h1>
+
+    <p-table #dt [value]="requests" [paginator]="true" [rows]="10" [loading]="isLoading"
+      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+      [globalFilterFields]="['employeeName', 'requestType', 'status']">
+
+      <ng-template pTemplate="caption">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <h2 class="text-xl font-semibold text-gray-700">Solicitudes Pendientes</h2>
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-search" />
+            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
+              class="w-full md:w-auto" />
+          </p-iconField>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="employeeName">Empleado <p-sortIcon field="employeeName"></p-sortIcon></th>
+          <th pSortableColumn="requestType">Tipo <p-sortIcon field="requestType"></p-sortIcon></th>
+          <th>Período Solicitado</th>
+          <th>Detalles</th>
+          <th pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-req>
+        <tr>
+          <td>{{ req.employeeName }}</td>
+          <td>{{ req.requestType }}</td>
+          <td>{{ req.startDate | date:'shortDate' }} - {{ req.endDate | date:'shortDate' }}</td>
+          <td class="max-w-xs whitespace-normal">{{ req.details }}</td>
+          <td>
+            <p-tag [value]="req.status"
+              [severity]="req.status === 'PENDING' ? 'warning' : (req.status === 'APPROVED' ? 'success' : 'danger')">
+            </p-tag>
+          </td>
+          <td class="text-center">
+            <div *ngIf="req.status === 'PENDING'" class="flex space-x-2 justify-center">
+              <p-button icon="pi pi-check" styleClass="p-button-sm p-button-success p-button-outlined"
+                (onClick)="updateStatus(req.id, 'APPROVED')" pTooltip="Aprobar"></p-button>
+              <p-button icon="pi pi-times" styleClass="p-button-sm p-button-danger p-button-outlined"
+                (onClick)="updateStatus(req.id, 'REJECTED')" pTooltip="Rechazar"></p-button>
+            </div>
+            <span *ngIf="req.status !== 'PENDING'" class="text-gray-500 text-xs font-medium">Gestionado</span>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center py-10">
+            <i class="pi pi-inbox text-4xl text-gray-400 mb-3"></i>
+            <p class="text-lg text-gray-600">No hay solicitudes para mostrar.</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

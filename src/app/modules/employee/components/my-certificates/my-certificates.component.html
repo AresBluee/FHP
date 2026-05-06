@@ -1,0 +1,39 @@
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4">Mis Certificados</h2>
+
+  <div *ngIf="loading">
+    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="2rem" width="10rem" styleClass="mb-2"></p-skeleton>
+  </div>
+
+  <div *ngIf="error" class="text-red-500 bg-red-100 border border-red-400 rounded p-4">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && certificates.length > 0">
+    <p-table [value]="certificates" styleClass="p-datatable-striped">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre del Archivo</th>
+          <th>Tipo de Documento</th>
+          <th>Fecha de Carga</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cert>
+        <tr>
+          <td>{{ cert.fileName }}</td>
+          <td><p-tag [value]="cert.documentType"></p-tag></td>
+          <td>{{ cert.uploadDate | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <button pButton type="button" icon="pi pi-download" (click)="downloadCertificate(cert)" class="p-button-rounded p-button-info"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="!loading && !error && certificates.length === 0" class="text-center text-gray-500 mt-4">
+    <p>No tienes certificados disponibles.</p>
+  </div>
+</div>

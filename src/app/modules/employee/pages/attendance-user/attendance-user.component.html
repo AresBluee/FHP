@@ -1,0 +1,48 @@
+<div class="card shadow-xl rounded-lg bg-white p-6 lg:p-8 mt-4 space-y-8">
+<div class="p-6 pt-0">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Portal de Asistencia Personal</h2>
+
+    <div class="bg-white p-6 rounded-lg shadow-xl mb-8 flex flex-col items-center">
+        <h3 class="text-xl font-semibold mb-4">Estado Actual: 
+            <span *ngIf="currentUserStatus === 'CHECKED_IN'" class="text-green-600">Dentro (Checked-In)</span>
+            <span *ngIf="currentUserStatus === 'CHECKED_OUT'" class="text-red-600">Fuera (Checked-Out)</span>
+            <span *ngIf="currentUserStatus === 'UNKNOWN'" class="text-gray-500">Cargando...</span>
+        </h3>
+
+        <p-button [label]="getButtonLabel()" 
+                  [icon]="currentUserStatus === 'CHECKED_IN' ? 'pi pi-sign-out' : 'pi pi-sign-in'"
+                  (onClick)="checkInOrOut()"
+                  [loading]="isLoading"
+                  [styleClass]="currentUserStatus === 'CHECKED_IN' ? 'p-button-danger p-button-lg' : 'p-button-success p-button-lg'"
+                  [disabled]="currentUserStatus === 'UNKNOWN' || isLoading">
+        </p-button>
+
+        <p class="mt-4 text-sm text-gray-500">Hora actual: {{ 'now' | date:'medium' }}</p>
+    </div>
+
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden border p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Mi Historial Reciente</h3>
+        <p-table [value]="userAttendanceHistory" [rows]="10" [paginator]="true" styleClass="p-datatable-gridlines p-datatable-striped">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Entrada (Check-In)</th>
+                    <th>Salida (Check-Out)</th>
+                    <th>Duración</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record>
+                <tr>
+                    <td>{{ record.checkInTime | date:'shortDate' }}</td>
+                    <td>{{ record.checkInTime | date:'shortTime' }}</td>
+                    <td>{{ record.checkOutTime ? (record.checkOutTime | date:'shortTime') : 'N/A' }}</td>
+                    <td>{{ record.status === 'CHECKED_IN' ? 'Pendiente' : 'Calculado' }}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr><td colspan="4" class="text-center py-4 text-gray-500">No hay registros de asistencia.</td></tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+</div>
