@@ -14,15 +14,13 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { FileUpload } from 'primeng/fileupload';
-import { FileSizePipe } from '../../../../shared/pipes/file-size.pipe';
 
 interface EmployeeListDTO { id: number; fullName: string; employeeCode: string; }
 
 @Component({
   selector: 'app-document-upload',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule, FileUploadModule, ButtonModule, CardModule, ToastModule, FileSizePipe],
+  imports: [CommonModule, FormsModule, DropdownModule, FileUploadModule, ButtonModule, CardModule, ToastModule],
   templateUrl: './document-upload.component.html',
   styleUrl: './document-upload.component.scss',
   providers: [MessageService]

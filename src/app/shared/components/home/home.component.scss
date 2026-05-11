@@ -1,3 +1,4 @@
+
 .contenedor-banner {
     width: 100%; 
     height: 600px;
@@ -9,3 +10,393 @@
     height: 100%;
     object-fit: cover; 
 }
+.home-div-1 {
+  @apply bg-secondary-fixed text-on-secondary-fixed w-full py-2 text-center text-label-md font-label-md;
+}
+
+.home-nav-2 {
+  @apply bg-primary dark:bg-primary text-on-primary dark:text-on-primary top-0 z-50;
+}
+
+.home-div-3 {
+  @apply flex justify-between items-center w-full px-margin-desktop py-4 max-w-7xl mx-auto;
+}
+
+.home-div-4 {
+  @apply flex items-center gap-2;
+}
+
+.home-span-5 {
+  @apply text-3xl;
+}
+
+.home-span-6 {
+  @apply text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary;
+}
+
+.home-span-7 {
+  @apply text-body-md font-body-md text-on-primary/80 ml-2 hidden md:inline-block;
+}
+
+.home-div-8 {
+  @apply hidden md:flex items-center gap-8;
+}
+
+.home-a-9 {
+  @apply text-on-primary font-bold border-b-2 border-on-primary pb-1 hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-10 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors text-label-md font-label-md;
+}
+
+.home-a-11 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors text-label-md font-label-md;
+}
+
+.home-a-12 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors text-label-md font-label-md;
+}
+
+.home-a-13 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors text-label-md font-label-md;
+}
+
+.home-button-14 {
+  @apply border-2 border-on-primary text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-on-primary hover:text-primary transition-colors;
+}
+
+.home-header-15 {
+  @apply relative w-full h-[614px] min-h-[500px] flex items-center justify-center overflow-hidden;
+}
+
+.home-div-16 {
+  @apply absolute inset-0 z-0;
+}
+
+.home-img-17 {
+  @apply w-full h-full object-cover;
+}
+
+.home-div-18 {
+  @apply absolute inset-0 bg-black/40 mix-blend-multiply;
+}
+
+.home-div-19 {
+  @apply relative z-10 w-full max-w-7xl mx-auto px-margin-desktop text-center md:text-left;
+}
+
+.home-h1-20 {
+  @apply text-headline-xl font-headline-xl text-white drop-shadow-lg max-w-3xl;
+}
+
+.home-section-21 {
+  @apply py-section-gap px-margin-desktop max-w-7xl mx-auto text-center;
+}
+
+.home-h2-22 {
+  @apply text-headline-lg font-headline-lg text-on-background mb-4;
+}
+
+.home-section-23 {
+  @apply pb-section-gap px-margin-desktop max-w-7xl mx-auto;
+}
+
+.home-div-24 {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter;
+}
+
+.home-div-25 {
+  @apply bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300;
+}
+
+.home-div-26 {
+  @apply h-48 overflow-hidden bg-surface-container-low flex items-center justify-center p-4;
+}
+
+.home-img-27 {
+  @apply object-contain h-full w-full mix-blend-multiply;
+}
+
+.home-h3-28 {
+  @apply text-headline-md font-headline-md text-on-surface mb-2;
+}
+
+.home-p-29 {
+  @apply text-body-md font-body-md text-on-surface-variant;
+}
+
+.home-div-30 {
+  @apply bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300;
+}
+
+.home-div-31 {
+  @apply h-48 overflow-hidden bg-surface-container-low flex items-center justify-center p-4;
+}
+
+.home-img-32 {
+  @apply object-contain h-full w-full mix-blend-multiply;
+}
+
+.home-h3-33 {
+  @apply text-headline-md font-headline-md text-on-surface mb-2;
+}
+
+.home-p-34 {
+  @apply text-body-md font-body-md text-on-surface-variant;
+}
+
+.home-div-35 {
+  @apply bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300;
+}
+
+.home-div-36 {
+  @apply h-48 overflow-hidden bg-surface-container-low flex items-center justify-center p-4;
+}
+
+.home-img-37 {
+  @apply object-contain h-full w-full mix-blend-multiply;
+}
+
+.home-h3-38 {
+  @apply text-headline-md font-headline-md text-on-surface mb-2;
+}
+
+.home-p-39 {
+  @apply text-body-md font-body-md text-on-surface-variant;
+}
+
+.home-div-40 {
+  @apply bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300;
+}
+
+.home-div-41 {
+  @apply h-48 overflow-hidden bg-surface-container-low flex items-center justify-center p-4;
+}
+
+.home-img-42 {
+  @apply object-contain h-full w-full mix-blend-multiply;
+}
+
+.home-h3-43 {
+  @apply text-headline-md font-headline-md text-on-surface mb-2;
+}
+
+.home-p-44 {
+  @apply text-body-md font-body-md text-on-surface-variant;
+}
+
+.home-section-45 {
+  @apply py-section-gap px-margin-desktop max-w-7xl mx-auto;
+}
+
+.home-div-46 {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-12 items-end;
+}
+
+.home-h2-47 {
+  @apply text-headline-lg font-headline-lg text-primary mb-4;
+}
+
+.home-p-48 {
+  @apply text-body-lg font-body-lg text-on-surface-variant max-w-md;
+}
+
+.home-p-49 {
+  @apply text-body-md font-body-md text-on-surface-variant max-w-md lg:ml-auto;
+}
+
+.home-div-50 {
+  @apply bg-surface-container-lowest border border-surface-variant p-8 rounded-xl shadow-sm;
+}
+
+.home-div-51 {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center;
+}
+
+.home-div-52 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-53 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-54 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-55 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-56 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-57 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-58 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-59 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-60 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-61 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-62 {
+  @apply flex items-center justify-center p-4 h-32 w-full grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-63 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-div-64 {
+  @apply flex items-center justify-center p-4 h-32 w-full md:col-span-2 grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+.home-img-65 {
+  @apply max-h-full max-w-full object-contain;
+}
+
+.home-footer-66 {
+  @apply bg-primary dark:bg-primary text-on-primary dark:text-on-primary border-t border-outline-variant/20 mt-12;
+}
+
+.home-div-67 {
+  @apply grid grid-cols-2 md:grid-cols-5 gap-gutter px-margin-desktop py-section-gap max-w-7xl mx-auto;
+}
+
+.home-h3-68 {
+  @apply text-headline-sm font-headline-sm font-bold mb-4;
+}
+
+.home-ul-69 {
+  @apply text-body-md font-body-md text-on-primary/70 space-y-2;
+}
+
+.home-h4-70 {
+  @apply text-headline-sm font-headline-sm font-bold mb-4;
+}
+
+.home-ul-71 {
+  @apply text-body-md font-body-md text-on-primary/70 space-y-2 flex flex-col;
+}
+
+.home-a-72 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-73 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-74 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-h4-75 {
+  @apply text-headline-sm font-headline-sm font-bold mb-4;
+}
+
+.home-ul-76 {
+  @apply text-body-md font-body-md text-on-primary/70 space-y-2 flex flex-col;
+}
+
+.home-a-77 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-78 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-h4-79 {
+  @apply text-headline-sm font-headline-sm font-bold mb-4;
+}
+
+.home-ul-80 {
+  @apply text-body-md font-body-md text-on-primary/70 space-y-2 flex flex-col;
+}
+
+.home-a-81 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-82 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-83 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-h4-84 {
+  @apply text-headline-sm font-headline-sm font-bold mb-4;
+}
+
+.home-ul-85 {
+  @apply text-body-md font-body-md text-on-primary/70 space-y-2 flex flex-col;
+}
+
+.home-a-86 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-87 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-a-88 {
+  @apply hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed w-fit;
+}
+
+.home-div-89 {
+  @apply border-t border-on-primary/10 py-8 text-center flex flex-col items-center justify-center;
+}
+
+.home-div-90 {
+  @apply flex items-center gap-2 mb-4;
+}
+
+.home-span-91 {
+  @apply text-4xl;
+}
+
+.home-span-92 {
+  @apply text-headline-lg font-headline-lg font-bold text-on-primary;
+}
+
+.home-p-93 {
+  @apply text-body-md font-body-md text-on-primary/50 text-sm;
+}
+
+.home-section-94 {
+  @apply max-w-[87rem] mx-auto  mt-16 text-center;
+}
+
+.home-h2-95 {
+  @apply text-3xl font-semibold text-green-800 mb-6 text-left;
+}
+
+.home-div-96 {
+  @apply flex flex-col md:flex-row justify-center gap-48  text-gray-700 md:text-base mb-12 text-3xl;
+}
+
+.home-div-97 {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 place-items-center;
+}
+
+
+

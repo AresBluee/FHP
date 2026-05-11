@@ -1,0 +1,315 @@
+
+
+.login-div-1 {
+  @apply bg-secondary text-on-secondary py-2 text-center text-label-md font-label-md flex justify-center items-center gap-2 px-margin-mobile md:px-margin-desktop;
+}
+
+.login-a-2 {
+  @apply bg-primary text-on-primary px-3 py-1 rounded font-bold hover:bg-primary/90 transition-colors;
+}
+
+.login-nav-3 {
+  @apply bg-primary dark:bg-primary text-on-primary dark:text-on-primary top-0 z-50;
+}
+
+.login-div-4 {
+  @apply flex justify-between items-center w-full px-margin-desktop py-4 max-w-7xl mx-auto hidden md:flex;
+}
+
+.login-div-5 {
+  @apply flex items-center gap-2;
+}
+
+.login-span-6 {
+  @apply text-[32px];
+}
+
+.login-span-7 {
+  @apply text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary leading-tight;
+}
+
+.login-span-8 {
+  @apply text-[10px] text-on-primary/80 leading-tight;
+}
+
+.login-ul-9 {
+  @apply flex items-center gap-8;
+}
+
+.login-a-10 {
+  @apply text-on-primary/80 font-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed transition-colors;
+}
+
+.login-a-11 {
+  @apply text-on-primary/80 font-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed transition-colors;
+}
+
+.login-a-12 {
+  @apply text-on-primary/80 font-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed transition-colors;
+}
+
+.login-a-13 {
+  @apply text-on-primary/80 font-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed transition-colors;
+}
+
+.login-a-14 {
+  @apply text-on-primary/80 font-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed transition-all duration-200;
+}
+
+.login-a-15 {
+  @apply border-2 border-on-primary text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-on-primary hover:text-primary transition-colors flex items-center gap-2;
+}
+
+.login-span-16 {
+  @apply text-[18px];
+}
+
+.login-div-17 {
+  @apply md:hidden flex justify-between items-center px-margin-mobile py-4;
+}
+
+.login-div-18 {
+  @apply flex items-center gap-2;
+}
+
+.login-span-19 {
+  @apply text-[24px];
+}
+
+.login-span-20 {
+  @apply text-headline-lg-mobile font-headline-lg-mobile font-bold;
+}
+
+.login-main-21 {
+  @apply flex-grow flex flex-col md:flex-row w-full bg-surface;
+}
+
+.login-section-22 {
+  @apply md:w-[55%] lg:w-[60%] relative min-h-[400px] md:min-h-[calc(100vh-140px)];
+}
+
+.login-img-23 {
+  @apply absolute inset-0 w-full h-full object-cover;
+}
+
+.login-div-24 {
+  @apply absolute inset-0 bg-gradient-to-r from-black/40 to-transparent flex flex-col justify-end p-margin-desktop text-white;
+}
+
+.login-h1-25 {
+  @apply text-headline-xl font-headline-xl text-on-primary mb-4 max-w-lg shadow-sm;
+}
+
+.login-p-26 {
+  @apply text-body-lg font-body-lg text-on-primary/90 max-w-md;
+}
+
+.login-section-27 {
+  @apply md:w-[45%] lg:w-[40%] flex items-center justify-center p-margin-mobile md:p-margin-desktop bg-surface-bright;
+}
+
+.login-div-28 {
+  @apply w-full max-w-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 p-8;
+}
+
+.login-div-29 {
+  @apply flex justify-between items-start mb-8;
+}
+
+.login-h2-30 {
+  @apply text-primary font-headline-md text-headline-md mb-1;
+}
+
+.login-p-31 {
+  @apply text-on-surface-variant text-body-md font-body-md;
+}
+
+.login-div-32 {
+  @apply flex items-center gap-2 text-primary;
+}
+
+.login-span-33 {
+  @apply text-[28px];
+}
+
+.login-span-34 {
+  @apply font-bold text-headline-md font-headline-md;
+}
+
+.login-label-35 {
+  @apply block text-primary font-body-md text-body-md mb-2;
+}
+
+.login-span-36 {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-outline;
+}
+
+.login-input-37 {
+  @apply w-full pl-10 pr-4 py-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest text-on-surface placeholder:text-outline/70 transition-colors outline-none font-body-md text-body-md;
+}
+
+.login-label-38 {
+  @apply block text-primary font-body-md text-body-md mb-2;
+}
+
+.login-span-39 {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-outline;
+}
+
+.login-input-40 {
+  @apply w-full pl-10 pr-10 py-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest text-on-surface placeholder:text-outline/70 transition-colors outline-none font-body-md text-body-md;
+}
+
+.login-button-41 {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary;
+}
+
+.login-div-42 {
+  @apply flex justify-center pt-4;
+}
+
+.login-button-43 {
+  @apply bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md py-3 px-12 rounded transition-all shadow-[0_4px_14px_0_rgba(0,94,38,0.2)] hover:shadow-[0_6px_20px_rgba(0,94,38,0.23)] hover:-translate-y-0.5;
+}
+
+.login-div-44 {
+  @apply mt-8 text-center md:text-left;
+}
+
+.login-p-45 {
+  @apply text-on-surface-variant font-body-md text-body-md;
+}
+
+.login-a-46 {
+  @apply text-primary hover:text-primary-container font-label-md text-label-md underline mt-1 inline-block;
+}
+
+.login-footer-47 {
+  @apply bg-primary dark:bg-primary text-on-primary dark:text-on-primary border-t border-outline-variant/20;
+}
+
+.login-div-48 {
+  @apply grid grid-cols-2 md:grid-cols-5 gap-gutter px-margin-desktop py-section-gap max-w-7xl mx-auto;
+}
+
+.login-div-49 {
+  @apply col-span-2 md:col-span-1 flex flex-col gap-4;
+}
+
+.login-span-50 {
+  @apply text-headline-lg font-headline-lg font-bold text-on-primary mb-2;
+}
+
+.login-p-51 {
+  @apply text-on-primary/70 font-body-md text-body-md;
+}
+
+.login-p-52 {
+  @apply text-on-primary/70 font-body-md text-body-md;
+}
+
+.login-p-53 {
+  @apply text-on-primary/70 font-body-md text-body-md;
+}
+
+.login-p-54 {
+  @apply text-on-primary/70 font-body-md text-body-md;
+}
+
+.login-div-55 {
+  @apply flex flex-col gap-4;
+}
+
+.login-h3-56 {
+  @apply text-headline-sm font-headline-md font-bold text-on-primary mb-2;
+}
+
+.login-a-57 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-58 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-59 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-div-60 {
+  @apply flex flex-col gap-4;
+}
+
+.login-h3-61 {
+  @apply text-headline-sm font-headline-md font-bold text-on-primary mb-2;
+}
+
+.login-a-62 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-63 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-div-64 {
+  @apply flex flex-col gap-4;
+}
+
+.login-h3-65 {
+  @apply text-headline-sm font-headline-md font-bold text-on-primary mb-2;
+}
+
+.login-a-66 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-67 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-68 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-div-69 {
+  @apply flex flex-col gap-4;
+}
+
+.login-h3-70 {
+  @apply text-headline-sm font-headline-md font-bold text-on-primary mb-2;
+}
+
+.login-a-71 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-72 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-a-73 {
+  @apply text-on-primary font-bold hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed;
+}
+
+.login-div-74 {
+  @apply border-t border-outline-variant/20 py-8 text-center flex flex-col items-center justify-center gap-4;
+}
+
+.login-div-75 {
+  @apply flex items-center gap-4 text-on-primary/50 opacity-50;
+}
+
+.login-span-76 {
+  @apply text-[48px];
+}
+
+.login-span-77 {
+  @apply text-headline-xl font-headline-xl font-bold;
+}
+
+.login-p-78 {
+  @apply text-on-primary/50 text-label-md font-label-md;
+}
+
+

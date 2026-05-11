@@ -14,6 +14,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
   standalone: true,
   imports: [CommonModule, RouterModule, TieredMenuModule, AvatarModule, AvatarGroupModule],
   templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
 
 })
 export class HeaderComponent implements OnInit, OnDestroy {

@@ -1,7 +1,7 @@
-<app-header class=""/> 
+<app-header *ngIf="!hidePublicShell" class=""/> 
 
 <main class="content-wrapper">
   <router-outlet></router-outlet>
 </main>
 
-<app-footer *ngIf="showPublicFooter" />
+<app-footer *ngIf="showPublicFooter && !hidePublicShell" />

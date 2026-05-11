@@ -1,0 +1,62 @@
+.home-div-1 {
+  @apply bg-secondary-fixed text-on-secondary-fixed w-full py-2 text-center text-label-md font-label-md;
+}
+
+.home-nav-2 {
+  @apply sticky bg-primary dark:bg-primary text-on-primary dark:text-on-primary top-0 z-50 shadow-md;
+}
+
+.home-div-3 {
+  @apply flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-7xl mx-auto gap-4;
+}
+
+.home-div-4 {
+  @apply flex items-center gap-2;
+}
+
+.home-span-5 {
+  @apply text-3xl;
+}
+
+.home-span-6 {
+  @apply text-headline-sm md:text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary;
+}
+
+.home-span-7 {
+  @apply text-body-md font-body-md text-on-primary/80 ml-2 hidden md:inline-block;
+}
+
+.home-div-8 {
+  @apply hidden md:flex items-center gap-8;
+}
+
+.home-a-9 {
+  @apply text-on-primary/80 font-label-md text-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-10 {
+  @apply text-on-primary/80 font-label-md text-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-11 {
+  @apply text-on-primary/80 font-label-md text-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-12 {
+  @apply text-on-primary/80 font-label-md text-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-13 {
+  @apply text-on-primary/80 font-label-md text-label-md border-b-2 border-transparent pb-1 hover:text-secondary-fixed hover:border-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.home-a-9.is-active,
+.home-a-10.is-active,
+.home-a-11.is-active,
+.home-a-13.is-active {
+  @apply text-on-primary border-b-2 border-on-primary pb-1;
+}
+
+.home-button-14 {
+  @apply border-2 border-on-primary text-on-primary px-3 md:px-4 py-2 rounded font-label-md text-label-md hover:bg-on-primary hover:text-primary transition-colors whitespace-nowrap;
+}

@@ -1,51 +1,146 @@
-
-<p-toast></p-toast>
-<div class="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-[tipo1]">
-  
-    <!-- Imagen lado izquierdo -->
-   <div class="hidden lg:block relative">
-  <img src="bannerlogin.jpg" 
-       alt="Imagen Agroindustrial"
-       class="w-full h-full object-cover object-[85%_center]">
+<!-- Top Announcement Bar -->
+<div class="login-div-1">
+    <span>Postula ahora aquí y únete a</span>
+    <a class="login-a-2" href="#">Nuestro equipo</a>
+    <span>¡sé parte de una experiencia única!</span>
 </div>
-
-    <!-- Formulario lado derecho -->
-    <div class="flex items-center justify-center bg-white p-8">
-      <p-card  class="w-full p-3 m-5">
-        
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-lg font-medium text-gray-700">Bienvenido trabajador</h2>
-          <img src="LogoNombreWhite.svg" alt="Agrokasa" class="h-12">
+<!-- Navigation -->
+<nav class="login-nav-3">
+    <div class="login-div-4">
+        <!-- Brand -->
+        <div class="login-div-5">
+            <span class="login-span-6">agriculture</span>
+            <div class="flex flex-col">
+                <span class="login-span-7">AGROCyt</span>
+                <span class="login-span-8">por Agrokasa</span>
+            </div>
         </div>
-  
-        <h3 class="text-2xl font-semibold text-green-700 mb-6 text-center">INICIAR SESIÓN</h3>
-  
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-7">
-          
-          <p-float-label>
-            <input pInputText id="dni" type="text" formControlName="username" 
-                   class="w-full p-inputtext-sm border-gray-300">
-            <label for="dni">Ingrese su DNI: </label>
-          </p-float-label>
-  
-          <p-float-label>
-            <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
-                        styleClass="w-full" inputStyleClass="w-full" >
-            </p-password>
-            <label for="password">Ingrese su contraseña:</label>
-          </p-float-label>
-  
-          <div class="pt-2 ">
-            <p-button type="submit" label="Ingresar" styleClass="p-button-success w-full"></p-button>
-          </div>
-  
-          <div class="text-sm text-center mt-2">
-            ¿Olvido la Contraseña?
-            <a  (click)="contrasena()" class="text-green-700 hover:underline cursor-pointer">Restablecer Contraseña</a>
-
-          </div>
-        </form>
-      </p-card>
+        <!-- Links -->
+        <ul class="login-ul-9">
+            <li><a class="login-a-10" href="#">Inicio</a></li>
+            <li><a class="login-a-11" href="#">Nosotros</a></li>
+            <li><a class="login-a-12" href="#">Cultivos</a></li>
+            <li><a class="login-a-13" href="#">Noticia</a></li>
+            <li><a class="login-a-14" href="#">Postular</a></li>
+        </ul>
+        <!-- Actions -->
+        <a class="login-a-15" href="#">
+            <span class="login-span-16">person</span>
+            Portal del empleado
+        </a>
     </div>
-  </div>
-  
+    <!-- Mobile Nav Header (Placeholder for functional bottom nav) -->
+    <div class="login-div-17">
+        <div class="login-div-18">
+            <span class="login-span-19">agriculture</span>
+            <span class="login-span-20">AGROCyt</span>
+        </div>
+        <button class="text-on-primary"><span class="material-symbols-outlined">menu</span></button>
+    </div>
+</nav>
+<!-- Main Content Area - Split Layout -->
+<main class="login-main-21">
+    <!-- Image Section (Hero) -->
+    <section class="login-section-22">
+        <img alt="Trabajador agrícola cosechando arándanos" class="login-img-23"
+            data-alt="A portrait-style shot of a smiling agricultural worker wearing protective netting over their hat, carefully harvesting fresh blueberries from a lush green bush. The scene is bright and natural, reflecting a modern, sustainable farming environment. The lighting is sunny and optimistic, highlighting the rich blues of the berries and the deep greens of the foliage. The overall aesthetic is professional, corporate, and trustworthy, embodying a connection to nature and dedicated labor."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8aZ7m3lWlj1mgzIZE7icByuXyA8ogN5H2fqAk5DBSYbpEGVtmUo14043xGWUHPCzjPhJ0A6NqzIXfRWYD6h6jAl-n6jm74IxzEaWt-4LrT09JPpEHpV61oAqw9XR6F14fNqJvnaCSpxh6oRV5kFl7jNbzp2LQh81nEmybVkTv1eeWAOVW6M98pZFHBKXV0qYGfLqWKTjX7qDjmnuBYmLQ-pQbh0zSJEUi01581y3gMHuO9Afo6YkakChlzicnLITGs1lGnAUMqg" />
+        <div class="login-div-24">
+            <h1 class="login-h1-25">Cultivando el futuro, cosechando confianza.</h1>
+            <p class="login-p-26">Únete a nuestra familia y sé parte del crecimiento agrícola sostenible en la región.
+            </p>
+        </div>
+    </section>
+    <!-- Login Form Section -->
+    <section class="login-section-27">
+        <div class="login-div-28">
+            <div class="login-div-29">
+                <div>
+                    <h2 class="login-h2-30">Bienvenido trabajador</h2>
+                    <p class="login-p-31">INICIAR SESIÓN</p>
+                </div>
+                <div class="login-div-32">
+                    <span class="login-span-33">eco</span>
+                    <span class="login-span-34">Agrokasa</span>
+                </div>
+            </div>
+            <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div>
+                    <label class="login-label-35" for="dni">Ingrese su DNI:</label>
+                    <div class="relative">
+                        <span class="login-span-36"></span>
+                        <input class="login-input-37" id="dni" name="dni" formControlName="username"
+                            placeholder="Ejm. 87124356" type="text" />
+                    </div>
+                </div>
+                <div>
+                    <label class="login-label-38" for="password">Ingrese su contraseña:</label>
+                    <div class="relative">
+                        <span class="login-span-39"></span>
+                        <input class="login-input-40" id="password" name="password" formControlName="password"
+                            placeholder="Ejm. 1234567812312.*" type="password" />
+                        <button class="login-button-41" type="button">
+                            <span class="material-symbols-outlined">visibility_off</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="login-div-42">
+                    <button class="login-button-43" type="submit">
+                        ENTRAR
+                    </button>
+                </div>
+            </form>
+            <div class="login-div-44">
+                <p class="login-p-45">¿No estás registrado?</p>
+                <a class="login-a-46" href="#">Regístrate aquí</a>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Footer -->
+<footer class="login-footer-47">
+    <div class="login-div-48">
+        <!-- Column 1: Brand Info -->
+        <div class="login-div-49">
+            <span class="login-span-50">AgroCYT.</span>
+            <p class="login-p-51">Ocucaje 1195, KM 7301</p>
+            <p class="login-p-52">Ica, Perú</p>
+            <p class="login-p-53">+51 932532171</p>
+            <p class="login-p-54">OcucajeSoporte&#64;gmail.com</p>
+        </div>
+        <!-- Column 2 -->
+        <div class="login-div-55">
+            <h3 class="login-h3-56">Portales.</h3>
+            <a class="login-a-57" href="#">Información Empresarial</a>
+            <a class="login-a-58" href="#">Ruta</a>
+            <a class="login-a-59" href="#">Formularios</a>
+        </div>
+        <!-- Column 3 -->
+        <div class="login-div-60">
+            <h3 class="login-h3-61">Noticias</h3>
+            <a class="login-a-62" href="#">Noticias</a>
+            <a class="login-a-63" href="#">Eventos</a>
+        </div>
+        <!-- Column 4 -->
+        <div class="login-div-64">
+            <h3 class="login-h3-65">Enlaces</h3>
+            <a class="login-a-66" href="#">Contacto</a>
+            <a class="login-a-67" href="#">Servicio al empleado</a>
+            <a class="login-a-68" href="#">TeamView</a>
+        </div>
+        <!-- Column 5 -->
+        <div class="login-div-69">
+            <h3 class="login-h3-70">Quienes somos</h3>
+            <a class="login-a-71" href="#">Acerca de nosotros</a>
+            <a class="login-a-72" href="#">Nuestros clientes</a>
+            <a class="login-a-73" href="#">Empleo</a>
+        </div>
+    </div>
+    <div class="login-div-74">
+        <div class="login-div-75">
+            <span class="login-span-76">agriculture</span>
+            <span class="login-span-77">Agrokasa</span>
+        </div>
+        <p class="login-p-78">© 2024 Agrokasa. Todos los derechos reservados.</p>
+    </div>
+</footer>

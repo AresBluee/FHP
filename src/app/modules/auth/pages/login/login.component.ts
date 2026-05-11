@@ -2,10 +2,8 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { environment } from '../../../../Environment/environment';
 
 // Módulos de PrimeNG
 import { CardModule } from 'primeng/card';
@@ -15,13 +13,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { PasswordModule } from 'primeng/password';
-import { Toast } from "primeng/toast";
 
-interface AuthResponse {
-  token: string;
-  role: 'ADMIN' | 'RRHH' | 'EMPLOYEE' | 'USER';
-}
-interface LoginRequest { username: string; password: string; }
 
 @Component({
   selector: 'app-login',
@@ -33,8 +25,7 @@ interface LoginRequest { username: string; password: string; }
     ReactiveFormsModule,
     CardModule,
     ButtonModule,
-    InputTextModule,
-    Toast],
+    InputTextModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

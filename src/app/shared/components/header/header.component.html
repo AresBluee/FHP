@@ -1,115 +1,28 @@
-<div class="top-0 w-full z-50 shadow-lg">
-
-    <div  *ngIf="!isLoggedIn"  class="bg-color-verde-postular text-white py-2 text-center text-sm ">
-        Postula ahora y únete a  
-        <a routerLink="/postular"
-            class="bg-color-verde-portal hover:bg-color-verde-hover text-white font-semibold py-1 px-4 text-center rounded-md transition duration-300 ">
-            Nuestro Equipo
-        </a>
-        ¡sé parte de una experiencia única!
-    </div>
-
-    <nav class="bg-color-verde-oscuro py-2 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-
-                <a routerLink="/home" class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
-                    <img src="Logo.svg" alt="Logo" style="width: 10%; ">
-
-                    <div class="font-[tipo1] font-extralight w-72">
-                        <span class="text-3xl text-left">AGRO</span>
-                        <span class="text-2xl text-left">cyt</span>
-                        <small class="text-xs text-righ ml-2">
-                            por Agrokasa
-                        </small>
-                    </div>
-                </a>
-
-                <button class="lg:hidden text-color-verde-postular hover:text-color-verde-hover focus:outline-none" (click)="toggleNavbar()"
-                    aria-expanded="!isNavbarCollapsed" aria-controls="navbarNav">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-
-                <div id="navbarNav" class="hidden lg:flex lg:items-center lg:w-auto">
-                    <ul class="flex space-x-6 items-center">
-
-                        <ng-container *ngIf="!isEmployeePanel">
-                            <li class="nav-item">
-                                <a routerLink="/home" class="nav-link text-white hover:text-yellow-400 transition duration-300">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a routerLink="/nosotros" class="nav-link text-white hover:text-yellow-400 transition duration-300">Nosotros</a>
-                            </li>
-                            <li class="nav-item">
-                                <a routerLink="/cultivos" class="nav-link text-white hover:text-yellow-400 transition duration-300">Cultivos</a>
-                            </li>
-                           <!--  <li class="nav-item">
-                                <a routerLink="/noticias" class="nav-link text-white hover:text-yellow-400 transition duration-300">Noticias</a>
-                            </li> -->
-                            <li class="nav-item">
-                                <a routerLink="/postular" class="nav-link text-white hover:text-yellow-400 transition duration-300">Postula aquí!</a>
-                            </li>
-                        </ng-container>
-
-                        <li class="nav-item">
-                                <a *ngIf="!isLoggedIn" (click)="irAPortalEmpleado()"
-                                    class="cursor-pointer font-semibold py-2 px-4 rounded bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
-                                    Portal del Empleado
-                                </a>
-
-                            <div *ngIf="isLoggedIn" class="flex items-center space-x-2">
-                                <span class="text-white text-sm font-medium hidden sm:inline">
-                                 {{ authService.getUsername() }}
-                                </span>
-                            
-                                <p-avatar 
-                                    [label]="userInitial" 
-                                    class="cursor-pointer"
-                                    styleClass="bg-yellow-500 text-gray-900 font-bold"
-                                    (click)="menu.toggle($event)"
-                                    aria-haspopup="true" 
-                                    aria-controls="overlay_menu">
-                                </p-avatar>
-                            
-                                <p-tieredMenu #menu [model]="menuItems" popup="true" appendTo="body"></p-tieredMenu>
-                            </div>
-                        </li>
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div id="navbarNav-mobile" [ngClass]="{'hidden': isNavbarCollapsed}" class="lg:hidden bg-color-verde-claro pb-3">
-        <ul class="flex flex-col space-y-2 px-4">
-            
-            <ng-container *ngIf="!isEmployeePanel">
-                <li class="nav-item">
-                    <a routerLink="/home" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/nosotros" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Nosotros</a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/info" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Cultivos</a>
-                </li>
-            </ng-container>
-
-            <li class="nav-item border-t border-white/20 pt-2 mt-2">
-                <a *ngIf="!isLoggedIn" (click)="irAPortalEmpleado(); toggleNavbar()"
-                    class="block py-2 text-white rounded-md transition duration-300 cursor-pointer">
-                    Portal del Empleado
-                </a>
-                <button *ngIf="isLoggedIn" (click)="cerrarSesion(); toggleNavbar()"
-                    class="w-full text-left py-2 px-0 text-white bg-transparent rounded-md transition duration-300">
-                    Cerrar sesión
-                </button>
-            </li>
-        </ul>
-    </div>
+<!-- Top Alert Banner -->
+<div class="home-div-1">
+  Postula ahora aqui y unete a <span class="font-bold">Nuestro equipo</span> se parte de una experiencia unica.
 </div>
+
+<!-- TopNavBar -->
+<nav class="home-nav-2 docked full-width">
+  <div class="home-div-3">
+    <div class="home-div-4">
+      <span class="home-span-5 material-symbols-outlined">agriculture</span>
+      <span class="home-span-6">AGROCyt</span>
+      <span class="home-span-7">por Agrokasa</span>
+    </div>
+
+    <div class="home-div-8">
+      <a class="home-a-9" routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+      <a class="home-a-10" routerLink="/nosotros" routerLinkActive="is-active">Nosotros</a>
+      <a class="home-a-11" routerLink="/cultivos" routerLinkActive="is-active">Cultivos</a>
+      <a class="home-a-13" routerLink="/postular" routerLinkActive="is-active">Postular</a>
+    </div>
+
+    <div class="flex items-center">
+      <button class="home-button-14" type="button" (click)="irAPortalEmpleado()">
+        Portal del empleado
+      </button>
+    </div>
+  </div>
+</nav>

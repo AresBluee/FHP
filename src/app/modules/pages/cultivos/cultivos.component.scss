@@ -1,0 +1,343 @@
+
+
+.cultivos-div-1 {
+  @apply bg-secondary text-on-secondary text-center py-2 px-4 text-sm font-medium flex justify-center items-center gap-2;
+}
+
+.cultivos-span-2 {
+  @apply bg-primary text-on-primary px-2 py-1 rounded;
+}
+
+.cultivos-header-3 {
+  @apply bg-primary dark:bg-primary sticky w-full z-50 top-0;
+}
+
+.cultivos-div-4 {
+  @apply flex justify-between items-center w-full px-margin-desktop py-4 max-w-7xl mx-auto;
+}
+
+.cultivos-div-5 {
+  @apply flex items-center gap-3;
+}
+
+.cultivos-span-6 {
+  @apply text-on-primary text-[32px];
+}
+
+.cultivos-span-7 {
+  @apply text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary;
+}
+
+.cultivos-span-8 {
+  @apply text-sm font-normal opacity-80;
+}
+
+.cultivos-nav-9 {
+  @apply hidden md:flex gap-8 items-center;
+}
+
+.cultivos-a-10 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.cultivos-a-11 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.cultivos-a-12 {
+  @apply text-on-primary font-bold border-b-2 border-on-primary pb-1 opacity-80 transition-all duration-200;
+}
+
+.cultivos-a-13 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.cultivos-a-14 {
+  @apply text-on-primary/80 font-label-md hover:text-secondary-fixed dark:hover:text-secondary-fixed transition-colors;
+}
+
+.cultivos-div-15 {
+  @apply hidden md:flex items-center;
+}
+
+.cultivos-a-16 {
+  @apply text-on-primary font-label-md border border-on-primary/30 px-4 py-2 rounded-lg hover:bg-on-primary/10 transition-colors;
+}
+
+.cultivos-section-17 {
+  @apply relative w-full h-[400px] overflow-hidden;
+}
+
+.cultivos-img-18 {
+  @apply absolute inset-0 w-full h-full object-cover;
+}
+
+.cultivos-div-19 {
+  @apply absolute inset-0 bg-gradient-to-t from-background/90 to-transparent;
+}
+
+.cultivos-div-20 {
+  @apply absolute bottom-0 left-0 w-full px-margin-mobile md:px-margin-desktop py-12 max-w-7xl mx-auto;
+}
+
+.cultivos-h1-21 {
+  @apply text-headline-xl font-headline-xl text-on-surface mb-4;
+}
+
+.cultivos-p-22 {
+  @apply text-body-lg font-body-lg text-on-surface-variant max-w-2xl;
+}
+
+.cultivos-main-23 {
+  @apply flex-grow w-full px-margin-mobile md:px-margin-desktop py-section-gap max-w-7xl mx-auto;
+}
+
+.cultivos-div-24 {
+  @apply grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[300px];
+}
+
+.cultivos-div-25 {
+  @apply md:col-span-8 md:row-span-2 relative overflow-hidden rounded-xl bg-surface border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow duration-300;
+}
+
+.cultivos-img-26 {
+  @apply absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105;
+}
+
+.cultivos-div-27 {
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent;
+}
+
+.cultivos-div-28 {
+  @apply absolute bottom-0 left-0 p-8 w-full;
+}
+
+.cultivos-div-29 {
+  @apply flex items-center gap-2 mb-3;
+}
+
+.cultivos-span-30 {
+  @apply bg-secondary-fixed text-on-secondary-fixed text-xs font-bold px-2 py-1 rounded uppercase tracking-wider;
+}
+
+.cultivos-span-31 {
+  @apply bg-surface/20 backdrop-blur-md text-white text-xs font-medium px-2 py-1 rounded border border-white/20;
+}
+
+.cultivos-h2-32 {
+  @apply text-headline-lg font-headline-lg text-white mb-2 drop-shadow-md;
+}
+
+.cultivos-p-33 {
+  @apply text-body-md font-body-md text-white/90 max-w-xl line-clamp-2;
+}
+
+.cultivos-div-34 {
+  @apply md:col-span-4 md:row-span-1 relative overflow-hidden rounded-xl bg-surface border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow duration-300;
+}
+
+.cultivos-img-35 {
+  @apply absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105;
+}
+
+.cultivos-div-36 {
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 to-transparent;
+}
+
+.cultivos-div-37 {
+  @apply absolute bottom-0 left-0 p-6 w-full;
+}
+
+.cultivos-span-38 {
+  @apply bg-surface/20 backdrop-blur-md text-white text-xs font-medium px-2 py-1 rounded border border-white/20;
+}
+
+.cultivos-h3-39 {
+  @apply text-headline-md font-headline-md text-white mb-1;
+}
+
+.cultivos-p-40 {
+  @apply text-sm text-white/80 line-clamp-1;
+}
+
+.cultivos-div-41 {
+  @apply md:col-span-4 md:row-span-1 relative overflow-hidden rounded-xl bg-surface border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow duration-300;
+}
+
+.cultivos-img-42 {
+  @apply absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105;
+}
+
+.cultivos-div-43 {
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 to-transparent;
+}
+
+.cultivos-div-44 {
+  @apply absolute bottom-0 left-0 p-6 w-full;
+}
+
+.cultivos-span-45 {
+  @apply bg-surface/20 backdrop-blur-md text-white text-xs font-medium px-2 py-1 rounded border border-white/20;
+}
+
+.cultivos-h3-46 {
+  @apply text-headline-md font-headline-md text-white mb-1;
+}
+
+.cultivos-p-47 {
+  @apply text-sm text-white/80 line-clamp-1;
+}
+
+.cultivos-div-48 {
+  @apply md:col-span-12 md:row-span-1 relative overflow-hidden rounded-xl bg-surface border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col md:flex-row;
+}
+
+.cultivos-div-49 {
+  @apply w-full md:w-1/2 h-[200px] md:h-full relative overflow-hidden;
+}
+
+.cultivos-img-50 {
+  @apply absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105;
+}
+
+.cultivos-div-51 {
+  @apply w-full md:w-1/2 p-8 flex flex-col justify-center bg-surface-container-lowest;
+}
+
+.cultivos-div-52 {
+  @apply flex items-center gap-2 mb-3;
+}
+
+.cultivos-span-53 {
+  @apply bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wider;
+}
+
+.cultivos-span-54 {
+  @apply border border-outline/30 text-on-surface-variant text-xs font-medium px-2 py-1 rounded;
+}
+
+.cultivos-h3-55 {
+  @apply text-headline-lg font-headline-lg text-on-surface mb-3;
+}
+
+.cultivos-p-56 {
+  @apply text-body-md font-body-md text-on-surface-variant mb-6;
+}
+
+.cultivos-a-57 {
+  @apply inline-flex items-center gap-2 text-primary font-label-md hover:text-primary-container transition-colors;
+}
+
+.cultivos-span-58 {
+  @apply text-[18px] group-hover/link:translate-x-1 transition-transform;
+}
+
+.cultivos-footer-59 {
+  @apply bg-primary dark:bg-primary border-t border-outline-variant/20 mt-auto;
+}
+
+.cultivos-div-60 {
+  @apply grid grid-cols-2 md:grid-cols-5 gap-gutter px-margin-desktop py-section-gap max-w-7xl mx-auto;
+}
+
+.cultivos-div-61 {
+  @apply col-span-2 md:col-span-1 flex flex-col gap-4;
+}
+
+.cultivos-div-62 {
+  @apply flex items-center gap-2 mb-2;
+}
+
+.cultivos-span-63 {
+  @apply text-on-primary text-[32px];
+}
+
+.cultivos-span-64 {
+  @apply text-headline-lg font-headline-lg font-bold text-on-primary;
+}
+
+.cultivos-p-65 {
+  @apply text-on-primary/70 font-body-md text-sm;
+}
+
+.cultivos-div-66 {
+  @apply flex flex-col gap-3;
+}
+
+.cultivos-h4-67 {
+  @apply text-on-primary font-bold mb-2;
+}
+
+.cultivos-a-68 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-69 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-70 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-div-71 {
+  @apply flex flex-col gap-3;
+}
+
+.cultivos-h4-72 {
+  @apply text-on-primary font-bold mb-2;
+}
+
+.cultivos-a-73 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-74 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-div-75 {
+  @apply flex flex-col gap-3;
+}
+
+.cultivos-h4-76 {
+  @apply text-on-primary font-bold mb-2;
+}
+
+.cultivos-a-77 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-78 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-79 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-div-80 {
+  @apply flex flex-col gap-3;
+}
+
+.cultivos-h4-81 {
+  @apply text-on-primary font-bold mb-2;
+}
+
+.cultivos-a-82 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-83 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-a-84 {
+  @apply text-on-primary/70 font-body-md hover:text-secondary-fixed transition-colors focus:ring-2 focus:ring-secondary-fixed outline-none rounded;
+}
+
+.cultivos-div-85 {
+  @apply col-span-2 md:col-span-5 border-t border-on-primary/10 mt-8 pt-8 text-center text-on-primary/70 font-body-md text-sm;
+}
+
+
