@@ -12,8 +12,9 @@ import { ResetPasswordComponent } from './modules/auth/pages/reset-password/rese
 import { CultivosComponent } from './modules/pages/cultivos/cultivos.component';
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'cultivos', component: CultivosComponent }, 
   { path: 'nosotros', component: NosotrosComponent },
-   { path: 'cultivos', component: CultivosComponent }, 
+   
   { path: 'postular', component: PostularComponent },
   { path: 'login', component: LoginComponent },
   
