@@ -139,6 +139,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   irAPortalEmpleado() {
-    this.router.navigate(['/login']);
+    if (this.isLoggedIn) {
+      this.checkRedirection(this.userRole);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }

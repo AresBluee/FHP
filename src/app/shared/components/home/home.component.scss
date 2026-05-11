@@ -67,7 +67,7 @@
 }
 
 .home-header-15 {
-  @apply relative w-full h-[614px] min-h-[500px] flex items-center justify-center overflow-hidden;
+  @apply relative w-full min-h-[640px] flex items-center overflow-hidden bg-primary;
 }
 
 .home-div-16 {
@@ -75,19 +75,47 @@
 }
 
 .home-img-17 {
-  @apply w-full h-full object-cover;
+  @apply absolute inset-0 w-full h-full object-cover object-center;
 }
 
 .home-div-18 {
-  @apply absolute inset-0 bg-black/40 mix-blend-multiply;
+  @apply absolute inset-0 bg-[linear-gradient(90deg,rgba(0,46,19,0.92)_0%,rgba(0,72,31,0.72)_43%,rgba(0,0,0,0.18)_100%)];
 }
 
 .home-div-19 {
-  @apply relative z-10 w-full max-w-7xl mx-auto px-margin-desktop text-center md:text-left;
+  @apply relative z-10 w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-20 text-left;
+}
+
+.home-p-hero-eyebrow {
+  @apply inline-flex items-center w-fit rounded-full bg-secondary-fixed text-on-secondary-fixed px-4 py-2 text-label-md font-label-md mb-6 shadow-sm;
 }
 
 .home-h1-20 {
-  @apply text-headline-xl font-headline-xl text-white drop-shadow-lg max-w-3xl;
+  @apply text-[2.75rem] md:text-headline-xl font-headline-xl text-white max-w-3xl leading-tight;
+}
+
+.home-p-hero-copy {
+  @apply text-body-lg font-body-lg text-white/90 max-w-2xl mt-6;
+}
+
+.home-div-hero-actions {
+  @apply flex flex-col sm:flex-row gap-4 mt-8;
+}
+
+.home-a-hero-cta {
+  @apply inline-flex items-center justify-center rounded bg-secondary-fixed text-on-secondary-fixed px-6 py-3 font-label-md text-label-md font-bold shadow-lg hover:bg-secondary-fixed-dim transition-colors;
+}
+
+.home-a-hero-secondary {
+  @apply inline-flex items-center justify-center rounded border-2 border-white/80 text-white px-6 py-3 font-label-md text-label-md hover:bg-white hover:text-primary transition-colors;
+}
+
+.home-div-hero-proof {
+  @apply mt-10 flex flex-wrap gap-3 text-white/90 text-label-md font-label-md;
+}
+
+.home-div-hero-proof span {
+  @apply rounded-full border border-white/30 bg-white/10 px-4 py-2 backdrop-blur-sm;
 }
 
 .home-section-21 {

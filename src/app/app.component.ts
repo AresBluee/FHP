@@ -20,10 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
   hidePublicShell = false;
 
   ngOnInit(): void {
-    this.subscriptions.add(this.authService.isLoggedIn$.subscribe(isLoggedIn => {
-      this.showPublicFooter = !isLoggedIn;
-    }));
-
     this.updatePublicShellVisibility(this.router.url);
     this.subscriptions.add(
       this.router.events
@@ -37,9 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updatePublicShellVisibility(url: string): void {
-    this.hidePublicShell =
-      url.startsWith('/login') ||
-      url.startsWith('/employee') ||
-      url.startsWith('/admin');
+    // Ya no ocultamos el header en ninguna ruta para mantener consistencia
+    this.hidePublicShell = false;
   }
 }

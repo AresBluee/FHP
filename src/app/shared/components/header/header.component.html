@@ -19,10 +19,45 @@
       <a class="home-a-13" routerLink="/postular" routerLinkActive="is-active">Postular</a>
     </div>
 
-    <div class="flex items-center">
-      <button class="home-button-14" type="button" (click)="irAPortalEmpleado()">
+    <div class="flex items-center gap-4">
+      <!-- Portal del empleado (Solo si NO está logueado) -->
+      <button *ngIf="!isLoggedIn" class="home-button-14" type="button" (click)="irAPortalEmpleado()">
         Portal del empleado
       </button>
+
+      <!-- Opciones de Usuario (Solo si ESTÁ logueado) -->
+      <div *ngIf="isLoggedIn" class="flex items-center gap-3">
+        <!-- Ícono de acceso rápido al Portal -->
+        <button class="p-2 rounded-full hover:bg-on-primary/10 text-on-primary transition-all relative group" 
+                (click)="irAPortalEmpleado()" 
+                title="Ir al Portal">
+          <span class="material-symbols-outlined text-headline-sm">dashboard</span>
+          <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-[10px] px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+            Mi Portal
+          </span>
+        </button>
+
+        <!-- Avatar con Menú desplegable -->
+        <div class="relative">
+          <p-avatar [label]="userInitial" 
+                   styleClass="cursor-pointer hover:scale-105 transition-transform bg-secondary-fixed text-on-secondary-fixed font-bold" 
+                   shape="circle" 
+                   size="normal"
+                   (click)="menu.toggle($event)">
+          </p-avatar>
+          <p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+        </div>
+
+        <!-- Botón de Cerrar Sesión rápido -->
+        <button class="p-2 rounded-full hover:bg-error/10 text-on-primary hover:text-error transition-all group relative" 
+                (click)="cerrarSesion()" 
+                title="Cerrar Sesión">
+          <span class="material-symbols-outlined text-headline-sm">power_off</span>
+          <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-[10px] px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+            Salir
+          </span>
+        </button>
+      </div>
     </div>
   </div>
 </nav>

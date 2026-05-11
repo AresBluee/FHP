@@ -88,12 +88,16 @@ module.exports = {
       },
       fontFamily: {
         "body-lg": ["Inter", "sans-serif"],
-        "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"],
         "body-md": ["Inter", "sans-serif"],
+        "body-sm": ["Inter", "sans-serif"],
+        "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"],
         "headline-md": ["Hanken Grotesk", "sans-serif"],
         "label-md": ["Hanken Grotesk", "sans-serif"],
+        "label-lg": ["Hanken Grotesk", "sans-serif"],
+        "label-sm": ["Hanken Grotesk", "sans-serif"],
         "headline-lg": ["Hanken Grotesk", "sans-serif"],
-        "headline-xl": ["Hanken Grotesk", "sans-serif"], "headline-sm": ["Hanken Grotesk", "sans-serif"]
+        "headline-xl": ["Hanken Grotesk", "sans-serif"], 
+        "headline-sm": ["Hanken Grotesk", "sans-serif"]
       }
     },
   },
