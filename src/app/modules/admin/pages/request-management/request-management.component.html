@@ -2,66 +2,224 @@
 <p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"></p-confirmDialog>
 
 <div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-  <div class="bg-white p-6 rounded-xl shadow-lg border">
-    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Gestión de Solicitudes</h1>
-
-    <p-table #dt [value]="requests" [paginator]="true" [rows]="10" [loading]="isLoading"
-      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
-      [globalFilterFields]="['employeeName', 'requestType', 'status']">
-
-      <ng-template pTemplate="caption">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <h2 class="text-xl font-semibold text-gray-700">Solicitudes Pendientes</h2>
-          <p-iconField iconPosition="left">
-            <p-inputIcon styleClass="pi pi-search" />
-            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
-              class="w-full md:w-auto" />
-          </p-iconField>
-        </div>
-      </ng-template>
-
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="employeeName">Empleado <p-sortIcon field="employeeName"></p-sortIcon></th>
-          <th pSortableColumn="requestType">Tipo <p-sortIcon field="requestType"></p-sortIcon></th>
-          <th>Período Solicitado</th>
-          <th>Detalles</th>
-          <th pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
-          <th class="text-center">Acciones</th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-req>
-        <tr>
-          <td>{{ req.employeeName }}</td>
-          <td>{{ req.requestType }}</td>
-          <td>{{ req.startDate | date:'shortDate' }} - {{ req.endDate | date:'shortDate' }}</td>
-          <td class="max-w-xs whitespace-normal">{{ req.details }}</td>
-          <td>
-            <p-tag [value]="req.status"
-              [severity]="req.status === 'PENDING' ? 'warning' : (req.status === 'APPROVED' ? 'success' : 'danger')">
-            </p-tag>
-          </td>
-          <td class="text-center">
-            <div *ngIf="req.status === 'PENDING'" class="flex space-x-2 justify-center">
-              <p-button icon="pi pi-check" styleClass="p-button-sm p-button-success p-button-outlined"
-                (onClick)="updateStatus(req.id, 'APPROVED')" pTooltip="Aprobar"></p-button>
-              <p-button icon="pi pi-times" styleClass="p-button-sm p-button-danger p-button-outlined"
-                (onClick)="updateStatus(req.id, 'REJECTED')" pTooltip="Rechazar"></p-button>
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    
+    <!-- Columna 1: Filtros y Resumen -->
+    <div class="lg:col-span-1 space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow border">
+        <!-- Resumen de Gestión Column -->
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Resumen de Prioridades</h2>
+        
+        <div class="flex flex-col space-y-3">
+          @for (stat of priorityStats; track stat.level) {
+            <div class="cursor-pointer border rounded-xl p-3 transition-all relative overflow-hidden"
+                 [ngClass]="activePriorityFilter === stat.level ? 'ring-2 ring-offset-2 ring-blue-500 shadow-md ' + stat.colorClass : stat.colorClass"
+                 (click)="togglePriorityFilter(stat.level)">
+              <div class="flex justify-between items-center mb-1">
+                <div class="flex items-center space-x-2 font-bold">
+                  <i [class]="stat.iconClass"></i>
+                  <span>{{ stat.label }}</span>
+                </div>
+                <span class="text-sm font-semibold">{{ stat.pending }} Ptes.</span>
+              </div>
+              
+              <!-- Progress bar below, very tight -->
+              <div class="mt-2">
+                <div class="flex justify-between text-xs mb-1 opacity-80 font-medium">
+                  <span>{{ stat.managed }} / {{ stat.total }} gestionadas</span>
+                  <span>{{ stat.progress }}%</span>
+                </div>
+                <div class="w-full bg-black/10 rounded-full h-1.5 mb-1 overflow-hidden">
+                  <div class="bg-current h-1.5 rounded-full transition-all duration-500" [style.width]="stat.progress + '%'"></div>
+                </div>
+              </div>
             </div>
-            <span *ngIf="req.status !== 'PENDING'" class="text-gray-500 text-xs font-medium">Gestionado</span>
-          </td>
-        </tr>
-      </ng-template>
+          }
+        </div>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="6" class="text-center py-10">
-            <i class="pi pi-inbox text-4xl text-gray-400 mb-3"></i>
-            <p class="text-lg text-gray-600">No hay solicitudes para mostrar.</p>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+        <h3 class="text-md font-semibold text-gray-700 mt-6 mb-3">Filtro de Estado</h3>
+        <div class="flex flex-col space-y-2">
+          <button class="text-left px-4 py-2 rounded-lg transition-colors border"
+                  [ngClass]="activeStatusFilter === 'PENDING' ? 'bg-yellow-100 text-yellow-800 border-yellow-300 font-medium' : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'"
+                  (click)="setStatusFilter('PENDING')">
+            <i class="pi pi-clock mr-2" [ngClass]="activeStatusFilter === 'PENDING' ? 'text-yellow-600' : 'text-gray-400'"></i> Por Revisar (RRHH)
+          </button>
+          <button class="text-left px-4 py-2 rounded-lg transition-colors border"
+                  [ngClass]="activeStatusFilter === 'AWAITING_SIGNATURE' ? 'bg-purple-100 text-purple-800 border-purple-300 font-medium' : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'"
+                  (click)="setStatusFilter('AWAITING_SIGNATURE')">
+            <i class="pi pi-pencil mr-2" [ngClass]="activeStatusFilter === 'AWAITING_SIGNATURE' ? 'text-purple-600' : 'text-gray-400'"></i> Para Firma (Supervisor)
+          </button>
+          <button class="text-left px-4 py-2 rounded-lg transition-colors border"
+                  [ngClass]="activeStatusFilter === 'MANAGED' ? 'bg-green-100 text-green-800 border-green-300 font-medium' : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'"
+                  (click)="setStatusFilter('MANAGED')">
+            <i class="pi pi-check-circle mr-2" [ngClass]="activeStatusFilter === 'MANAGED' ? 'text-green-600' : 'text-gray-400'"></i> Ya Gestionadas
+          </button>
+          <button class="text-left px-4 py-2 rounded-lg transition-colors border"
+                  [ngClass]="activeStatusFilter === 'ALL' ? 'bg-blue-100 text-blue-800 border-blue-300 font-medium' : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'"
+                  (click)="setStatusFilter('ALL')">
+            <i class="pi pi-list mr-2" [ngClass]="activeStatusFilter === 'ALL' ? 'text-blue-600' : 'text-gray-400'"></i> Todas
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna 2: Cards de Solicitudes -->
+    <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow border">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-extrabold text-gray-800">Solicitudes Laborales</h1>
+      </div>
+
+      @if (isLoading) {
+        <div class="text-center py-10">
+          <i class="pi pi-spin pi-spinner text-4xl text-blue-500"></i>
+          <p class="mt-4 text-gray-600">Cargando solicitudes...</p>
+        </div>
+      } @else if (filteredRequests.length === 0) {
+        <div class="bg-white p-10 rounded-xl shadow border text-center">
+          <i class="pi pi-inbox text-5xl text-gray-300 mb-4"></i>
+          <p class="text-xl text-gray-600">No hay solicitudes que coincidan con el filtro.</p>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          @for (req of filteredRequests; track req.id) {
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col text-sm">
+              
+              <!-- Card Header -->
+              <div class="p-3 border-b flex justify-between items-start" 
+                   [ngClass]="req.calculatedPriority >= 4 && (req.status === 'PENDING' || req.status === 'AWAITING_SIGNATURE') ? 'bg-red-50' : 'bg-white'">
+                <div>
+                  <h3 class="font-bold text-gray-800 leading-tight">{{ req.employeeName }}</h3>
+                  <p class="text-xs text-gray-500 mt-0.5">{{ req.requestType }}</p>
+                </div>
+                <div class="text-right">
+                  <p-tag [value]="req.status"
+                         [severity]="req.status === 'PENDING' ? 'warning' : (req.status === 'AWAITING_SIGNATURE' ? 'info' : (req.status === 'APPROVED' ? 'success' : 'danger'))">
+                  </p-tag>
+                  @if (req.calculatedPriority >= 4 && (req.status === 'PENDING' || req.status === 'AWAITING_SIGNATURE')) {
+                    <p class="text-[10px] text-red-600 font-bold mt-1 leading-none"><i class="pi pi-bolt text-[10px]"></i> Urgente (SLA: {{ req.remainingSlaHours }}h)</p>
+                  }
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-3 flex-grow">
+                <div class="mb-2 text-xs">
+                  <span class="text-gray-500 font-medium">Período:</span>
+                  <span class="text-gray-800 ml-1">{{ req.startDate | date:'shortDate' }} - {{ req.endDate | date:'shortDate' }}</span>
+                </div>
+                <div class="mb-2">
+                  <p class="text-gray-600 text-xs italic line-clamp-2" [title]="req.details">{{ req.details }}</p>
+                </div>
+                
+                @if (req.documentPath) {
+                  <div class="mt-2 p-2 bg-gray-50 rounded border flex justify-between items-center text-xs">
+                    <div class="flex items-center text-blue-600">
+                      <i class="pi pi-file mr-1"></i>
+                      <span class="font-medium">Doc. Adjunto</span>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- Card Footer / Acciones -->
+              <div class="p-2 bg-gray-50 border-t flex justify-end space-x-2">
+                @if (req.status === 'PENDING' || req.status === 'AWAITING_SIGNATURE') {
+                  <p-button icon="pi pi-eye" styleClass="p-button-secondary p-button-text p-button-sm mr-auto" (onClick)="openRequestDialog(req)" pTooltip="Ver"></p-button>
+                  
+                  @if (req.status === 'PENDING') {
+                    @if (req.requiresSignature) {
+                      <p-button label="Enviar" icon="pi pi-send" styleClass="p-button-info p-button-sm px-2 py-1 text-xs" (onClick)="openRequestDialog(req)"></p-button>
+                    } @else {
+                      <p-button label="Aprobar" icon="pi pi-check" styleClass="p-button-success p-button-sm px-2 py-1 text-xs" (onClick)="openRequestDialog(req)"></p-button>
+                    }
+                  } @else {
+                    <p-button label="Firmar y Aprobar" icon="pi pi-pencil" styleClass="p-button-help p-button-sm px-2 py-1 text-xs" (onClick)="openRequestDialog(req)"></p-button>
+                  }
+                  <p-button label="Rechazar" icon="pi pi-times" styleClass="p-button-danger p-button-outlined p-button-sm px-2 py-1 text-xs" (onClick)="openRequestDialog(req)"></p-button>
+                } @else {
+                  <p-button label="Ver Detalles" icon="pi pi-eye" styleClass="p-button-secondary p-button-text p-button-sm w-full py-1 text-xs" (onClick)="openRequestDialog(req)"></p-button>
+                }
+              </div>
+
+            </div>
+          }
+        </div>
+      }
+    </div>
+
   </div>
 </div>
+
+<!-- Modal para Observaciones y Documentos -->
+<p-dialog header="Detalles y Observaciones" [(visible)]="displayDialog" [modal]="true" [style]="{width: '80vw'}" [maximizable]="false">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" *ngIf="selectedRequest">
+    
+    <!-- Lado Izquierdo: Documento (si existe) o Detalles Completos -->
+    <div class="flex flex-col h-full">
+      <h3 class="font-bold text-gray-800 mb-3 text-lg">Información</h3>
+      <div class="bg-gray-50 p-4 rounded-lg mb-4 border">
+        <p><strong>Empleado:</strong> {{ selectedRequest.employeeName }}</p>
+        <p><strong>Tipo:</strong> {{ selectedRequest.requestType }}</p>
+        <p><strong>Detalle:</strong> {{ selectedRequest.details }}</p>
+      </div>
+
+      <h3 class="font-bold text-gray-800 mb-3 text-lg">Documento Adjunto</h3>
+      @if (safeDocumentUrl) {
+        <div class="flex-grow border rounded bg-gray-100 flex flex-col min-h-[500px]">
+          <iframe [src]="safeDocumentUrl" class="w-full flex-grow border-0 rounded"></iframe>
+        </div>
+      } @else {
+        <div class="flex-grow border rounded bg-gray-50 flex flex-col items-center justify-center text-gray-400 min-h-[300px]">
+          <i class="pi pi-file-excel text-5xl mb-2"></i>
+          <p>No hay documento adjunto</p>
+        </div>
+      }
+    </div>
+
+    <!-- Lado Derecho: Observaciones y Acciones -->
+    <div class="flex flex-col h-full">
+      <h3 class="font-bold text-gray-800 mb-3 text-lg">Observaciones de RRHH / Manager</h3>
+      <div class="flex-grow flex flex-col">
+        <textarea rows="10" [(ngModel)]="observationComment" 
+                  placeholder="Escribe tus observaciones o comentarios aquí. Si rechazas, es obligatorio explicar por qué..."
+                  class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 p-3 flex-grow resize-none"></textarea>
+      </div>
+      
+      <div class="mt-6 flex flex-col gap-3">
+        @if (selectedRequest.status === 'PENDING' || selectedRequest.status === 'AWAITING_SIGNATURE') {
+          @if (selectedRequest.status === 'PENDING' && selectedRequest.requiresSignature) {
+            <div class="mb-4 bg-blue-50 p-3 rounded-lg border border-blue-200">
+              <label class="block text-sm font-bold text-blue-800 mb-2"><i class="pi pi-user mr-1"></i> Seleccionar Supervisor para Firma</label>
+              <p-dropdown [options]="supervisors" [(ngModel)]="selectedSupervisorId" placeholder="Elija un supervisor de la lista" styleClass="w-full" optionLabel="label" optionValue="value" [filter]="true" filterBy="label"></p-dropdown>
+            </div>
+          }
+
+          <div class="grid grid-cols-2 gap-3">
+            @if (selectedRequest.status === 'PENDING') {
+              @if (selectedRequest.requiresSignature) {
+                <button (click)="updateStatusFromDialog('AWAITING_SIGNATURE')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow flex items-center justify-center">
+                  <i class="pi pi-send mr-2"></i> Enviar a Supervisor
+                </button>
+              } @else {
+                <button (click)="updateStatusFromDialog('APPROVED')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg shadow flex items-center justify-center">
+                  <i class="pi pi-check mr-2"></i> Aprobar Directamente
+                </button>
+              }
+            } @else {
+              <button (click)="updateStatusFromDialog('APPROVED')" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg shadow flex items-center justify-center">
+                <i class="pi pi-pencil mr-2"></i> Firmar y Aprobar
+              </button>
+            }
+            <button (click)="updateStatusFromDialog('REJECTED')" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold py-3 px-4 rounded-lg flex items-center justify-center">
+              <i class="pi pi-times mr-2"></i> Rechazar
+            </button>
+          </div>
+        } @else {
+          <div class="bg-gray-100 text-gray-600 p-4 rounded text-center border">
+            Esta solicitud ya fue gestionada (Estado: {{ selectedRequest.status }}).
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</p-dialog>

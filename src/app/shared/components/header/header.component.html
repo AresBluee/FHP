@@ -12,18 +12,22 @@
     <nav class="bg-color-verde-oscuro py-2 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <button *ngIf="isEmployeePanel" (click)="toggleSidebar()" class="text-white hover:text-yellow-400 focus:outline-none transition duration-300">
+                        <i class="pi pi-bars text-2xl"></i>
+                    </button>
+                    <a [routerLink]="profileLink" class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
+                        <img src="Logo.svg" alt="Logo" style="width: 10%; ">
 
-                <a routerLink="/home" class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
-                    <img src="Logo.svg" alt="Logo" style="width: 10%; ">
-
-                    <div class="font-[tipo1] font-extralight w-72">
-                        <span class="text-3xl text-left">AGRO</span>
-                        <span class="text-2xl text-left">cyt</span>
-                        <small class="text-xs text-righ ml-2">
-                            por Agrokasa
-                        </small>
-                    </div>
-                </a>
+                        <div class="font-[tipo1] font-extralight w-72">
+                            <span class="text-3xl text-left">AGRO</span>
+                            <span class="text-2xl text-left">cyt</span>
+                            <small class="text-xs text-righ ml-2">
+                                por Agrokasa
+                            </small>
+                        </div>
+                    </a>
+                </div>
 
                 <button class="lg:hidden text-color-verde-postular hover:text-color-verde-hover focus:outline-none" (click)="toggleNavbar()"
                     aria-expanded="!isNavbarCollapsed" aria-controls="navbarNav">

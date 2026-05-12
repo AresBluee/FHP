@@ -19,7 +19,7 @@ import { Toast } from "primeng/toast";
 
 interface AuthResponse {
   token: string;
-  role: 'ADMIN' | 'RRHH' | 'EMPLOYEE' | 'USER';
+  role: 'ADMIN' | 'RRHH' | 'EMPLOYEE' | 'USER' | 'SUPERVISOR';
 }
 interface LoginRequest { username: string; password: string; }
 
@@ -132,7 +132,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const role = this.authService.getUserRole();
 
     // Redirección basada en roles
-    if (role === 'ADMIN' || role === 'RRHH') {
+    if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
       this.router.navigate(['/admin']);
     } else if (role === 'EMPLOYEE') {
       this.router.navigate(['/employee']);

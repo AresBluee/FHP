@@ -33,10 +33,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-record>
                 <tr>
-                    <td>{{ record.checkInTime | date:'shortDate' }}</td>
-                    <td>{{ record.checkInTime | date:'shortTime' }}</td>
-                    <td>{{ record.checkOutTime ? (record.checkOutTime | date:'shortTime') : 'N/A' }}</td>
-                    <td>{{ record.status === 'CHECKED_IN' ? 'Pendiente' : 'Calculado' }}</td>
+                    <td>{{ record.date | date:'shortDate' }}</td>
+                    <td>{{ record.checkIn ? (record.checkIn | date:'shortTime') : 'N/A' }}</td>
+                    <td>{{ record.checkOut ? (record.checkOut | date:'shortTime') : 'N/A' }}</td>
+                    <td>{{ record.totalMinutes !== null ? record.totalMinutes + ' min' : 'Pendiente' }}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">

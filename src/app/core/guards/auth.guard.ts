@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     } 
     
     // Si no tiene el rol, redirigir al panel correspondiente según su rol real
-    if (userRole === 'ADMIN' || userRole === 'RRHH') {
+    if (userRole === 'ADMIN' || userRole === 'RRHH' || userRole === 'SUPERVISOR') {
         router.navigate(['/admin']);
     } else {
         router.navigate(['/employee']);

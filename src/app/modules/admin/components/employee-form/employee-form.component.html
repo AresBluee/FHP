@@ -1,144 +1,195 @@
 <p-toast></p-toast>
 
-<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-  <p-panel [header]="headerTitle">
-    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="p-4">
+<div class="min-h-screen bg-gray-50/50 p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Encabezado Principal -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ headerTitle }}</h1>
+      <p class="text-gray-500 mt-2 text-sm">Completa la información a continuación para registrar o actualizar los datos del empleado en el sistema.</p>
+    </div>
 
-      <!-- Sección de Datos Personales -->
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Datos Personales</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <p-floatLabel>
-            <p-inputMask id="dni" formControlName="dni" mask="99999999" styleClass="w-full" />
-            <label for="dni">DNI (8 dígitos)</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('dni')?.invalid && employeeForm.get('dni')?.touched" class="p-error">
-            El DNI es requerido y debe tener 8 dígitos.
-          </small>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- 1. Datos Personales -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100 px-6 py-4 flex items-center">
+          <div class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">1</div>
+          <h3 class="text-lg font-bold text-green-800 m-0">Datos Personales</h3>
         </div>
-        <div>
-          <p-floatLabel>
-            <input pInputText id="employeeCode" formControlName="employeeCode" class="w-full" />
-            <label for="employeeCode">Código Único (Ej: AGR005)</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('employeeCode')?.invalid && employeeForm.get('employeeCode')?.touched" class="p-error">
-            El código de empleado es requerido.
-          </small>
-        </div>
-        <div>
-          <p-floatLabel>
-            <input pInputText id="firstName" formControlName="firstName" class="w-full" />
-            <label for="firstName">Nombres</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched" class="p-error">
-            El nombre es requerido.
-          </small>
-        </div>
-        <div>
-          <p-floatLabel>
-            <input pInputText id="lastName" formControlName="lastName" class="w-full" />
-            <label for="lastName">Apellidos</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched" class="p-error">
-            El apellido es requerido.
-          </small>
-        </div>
-        <div class="md:col-span-2">
-          <div class="p-inputgroup">
-            <p-dropdown id="positionId" [options]="(workPositions$ | async) ?? []" formControlName="positionId"
-              optionLabel="name" optionValue="id" placeholder="Seleccione un cargo" [filter]="true" filterBy="name"
-              styleClass="w-full"></p-dropdown>
-            <button pButton icon="pi pi-plus" type="button" (click)="showNewPositionDialog = true"
-              styleClass="p-button-secondary" pTooltip="Crear Nuevo Cargo"></button>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1">
+              <p-floatLabel>
+                <p-inputMask id="dni" formControlName="dni" mask="99999999" styleClass="w-full p-inputtext-lg" />
+                <label for="dni">DNI (8 dígitos)</label>
+              </p-floatLabel>
+              <small *ngIf="employeeForm.get('dni')?.invalid && employeeForm.get('dni')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>El DNI es requerido y debe tener 8 dígitos.
+              </small>
+            </div>
+
+            <div class="col-span-1">
+              <div class="flex gap-2">
+                <div class="flex-1">
+                  <p-floatLabel>
+                    <p-dropdown id="positionId" [options]="(workPositions$ | async) ?? []" formControlName="positionId"
+                      optionLabel="name" optionValue="id" [filter]="true" filterBy="name"
+                      styleClass="w-full p-dropdown-lg" inputId="positionId"></p-dropdown>
+                    <label for="positionId">Cargo o Puesto</label>
+                  </p-floatLabel>
+                </div>
+                <button pButton icon="pi pi-plus" type="button" (click)="showNewPositionDialog = true"
+                  class="p-button-success rounded-md w-14" pTooltip="Crear Nuevo Cargo"></button>
+              </div>
+              <small *ngIf="employeeForm.get('positionId')?.invalid && employeeForm.get('positionId')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>Debe seleccionar un cargo.
+              </small>
+            </div>
+
+            <div class="col-span-1">
+              <p-floatLabel>
+                <input pInputText id="firstName" formControlName="firstName" class="w-full p-inputtext-lg" />
+                <label for="firstName">Nombres Completos</label>
+              </p-floatLabel>
+              <small *ngIf="employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>El nombre es requerido.
+              </small>
+            </div>
+
+            <div class="col-span-1">
+              <p-floatLabel>
+                <input pInputText id="lastName" formControlName="lastName" class="w-full p-inputtext-lg" />
+                <label for="lastName">Apellidos Completos</label>
+              </p-floatLabel>
+              <small *ngIf="employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>El apellido es requerido.
+              </small>
+            </div>
           </div>
-          <small *ngIf="employeeForm.get('positionId')?.invalid && employeeForm.get('positionId')?.touched" class="p-error">
-            Debe seleccionar un cargo.
-          </small>
         </div>
       </div>
 
-      <p-divider></p-divider>
-
-      <!-- Sección de Contacto y Biometría -->
-      <h3 class="text-lg font-semibold text-gray-700 my-4">Información de Contacto y Biometría</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <p-floatLabel>
-            <input pInputText id="email" formControlName="email" type="email" class="w-full" />
-            <label for="email">Email (Para notificaciones)</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched" class="p-error">
-            <span *ngIf="employeeForm.get('email')?.errors?.['required']">El email es requerido.</span>
-            <span *ngIf="employeeForm.get('email')?.errors?.['email']">El formato del email no es válido.</span>
-          </small>
+      <!-- 2. Información de Contacto -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100 px-6 py-4 flex items-center">
+          <div class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">2</div>
+          <h3 class="text-lg font-bold text-blue-800 m-0">Información de Contacto</h3>
         </div>
-        <p-floatLabel>
-          <input pInputText id="phoneNumber" formControlName="phoneNumber" type="tel" class="w-full" />
-          <label for="phoneNumber">Número Telefónico</label>
-        </p-floatLabel>
-        <div class="md:col-span-2">
-          <p-floatLabel>
-            <input pInputText id="biometricHash" formControlName="biometricHash" class="w-full" />
-            <label for="biometricHash">Hash Biométrico (ID de Dispositivo)</label>
-          </p-floatLabel>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon bg-gray-50"><i class="pi pi-envelope text-gray-500"></i></span>
+                <p-floatLabel>
+                  <input pInputText id="email" formControlName="email" type="email" class="w-full p-inputtext-lg" />
+                  <label for="email">Correo Electrónico</label>
+                </p-floatLabel>
+              </div>
+              <small *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>Ingrese un correo válido.
+              </small>
+            </div>
+
+            <div class="col-span-1">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon bg-gray-50"><i class="pi pi-phone text-gray-500"></i></span>
+                <p-floatLabel>
+                  <input pInputText id="phoneNumber" formControlName="phoneNumber" type="tel" class="w-full p-inputtext-lg" />
+                  <label for="phoneNumber">Número Telefónico</label>
+                </p-floatLabel>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <p-divider></p-divider>
+      <!-- 3. Configuración de Cuenta -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 border-b border-purple-100 px-6 py-4 flex items-center">
+          <div class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">3</div>
+          <h3 class="text-lg font-bold text-purple-800 m-0">Cuenta y Accesos</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1 md:col-span-2">
+              <p-floatLabel>
+                <p-dropdown id="roleName" [options]="availableRoles" formControlName="roleName"
+                  styleClass="w-full p-dropdown-lg" inputId="roleName">
+                  <ng-template let-role pTemplate="item">
+                    <div class="flex items-center">
+                      <i class="pi mr-2" [ngClass]="{'pi-shield': role.value === 'ROLE_ADMIN', 'pi-users': role.value === 'ROLE_RRHH', 'pi-user': role.value === 'ROLE_USER'}"></i>
+                      <span>{{role.label}}</span>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+                <label for="roleName">Rol del Sistema</label>
+              </p-floatLabel>
+            </div>
 
-      <!-- Sección de Cuenta Web -->
-      <h3 class="text-lg font-semibold text-gray-700 my-4">Configuración de Cuenta Web</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <p-floatLabel>
-            <input pInputText id="username" formControlName="username" class="w-full" />
-            <label for="username">Usuario Web (Login)</label>
-          </p-floatLabel>
-          <small *ngIf="employeeForm.get('username')?.invalid && employeeForm.get('username')?.touched" class="p-error">
-            El nombre de usuario es requerido.
-          </small>
-        </div>
-        <div>
-          <p-floatLabel>
-            <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="true"
-              styleClass="w-full" inputStyleClass="w-full"></p-password>
-            <label for="password">Contraseña</label>
-          </p-floatLabel>
-          <small *ngIf="isEditMode" class="text-xs text-gray-500 mt-1">Dejar en blanco para no cambiar la contraseña.</small>
-          <small *ngIf="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched" class="p-error">
-            <span *ngIf="employeeForm.get('password')?.errors?.['required']">La contraseña es requerida.</span>
-            <span *ngIf="employeeForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</span>
-          </small>
-        </div>
-        <div class="md:col-span-2">
-          <p-dropdown id="roleName" [options]="availableRoles" formControlName="roleName"
-            placeholder="Seleccione un rol" styleClass="w-full">
-          </p-dropdown>
+            <div class="col-span-1">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon bg-gray-50"><i class="pi pi-user-edit text-gray-500"></i></span>
+                <p-floatLabel>
+                  <input pInputText id="username" formControlName="username" class="w-full p-inputtext-lg" />
+                  <label for="username">Usuario Web (Login)</label>
+                </p-floatLabel>
+              </div>
+              <small *ngIf="employeeForm.get('username')?.invalid && employeeForm.get('username')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>El nombre de usuario es requerido.
+              </small>
+            </div>
+
+            <div class="col-span-1">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon bg-gray-50"><i class="pi pi-lock text-gray-500"></i></span>
+                <p-floatLabel>
+                  <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="true"
+                    styleClass="w-full p-inputtext-lg" inputStyleClass="w-full p-inputtext-lg" inputId="password"></p-password>
+                  <label for="password">Contraseña</label>
+                </p-floatLabel>
+              </div>
+              <small *ngIf="isEditMode" class="text-gray-500 text-xs mt-1 block">
+                <i class="pi pi-info-circle mr-1"></i>Dejar en blanco para no cambiarla.
+              </small>
+              <small *ngIf="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched" class="text-red-500 text-xs mt-1 block">
+                <i class="pi pi-exclamation-circle mr-1"></i>La contraseña debe tener al menos 6 caracteres.
+              </small>
+            </div>
+          </div>
         </div>
       </div>
 
-      <p-button type="submit" [label]="isEditMode ? (isLoading ? 'Actualizando...' : 'Actualizar Empleado') : (isLoading ? 'Registrando...' : 'Registrar Empleado')"
-        [loading]="isLoading" loadingIcon="pi pi-spin pi-spinner" [disabled]="employeeForm.invalid || isLoading"
-        styleClass="w-full p-button-success mt-8"></p-button>
+      <!-- Botón de Envío -->
+      <div class="pt-4 pb-10 flex justify-end">
+        <p-button type="submit" 
+          [label]="isEditMode ? (isLoading ? 'Actualizando...' : 'Guardar Cambios') : (isLoading ? 'Registrando...' : 'Finalizar Registro')"
+          [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+          [disabled]="employeeForm.invalid || isLoading"
+          styleClass="p-button-success p-button-lg px-8 shadow-lg shadow-green-500/30 rounded-xl font-bold transition-all hover:-translate-y-1">
+        </p-button>
+      </div>
+
     </form>
-  </p-panel>
+  </div>
 </div>
 
 <!-- Diálogo para Crear Nuevo Cargo -->
 <p-dialog header="Crear Nuevo Cargo" [(visible)]="showNewPositionDialog" [modal]="true" [style]="{width: '30rem'}"
-  [draggable]="false" [resizable]="false">
-  <div class="p-fluid space-y-4 pt-4">
+  [draggable]="false" [resizable]="false" styleClass="rounded-xl overflow-hidden">
+  <div class="p-fluid space-y-4 pt-6 pb-2">
     <p-floatLabel>
       <input pInputText id="positionName" type="text" [(ngModel)]="newPositionName" name="newPositionName"
-        class="w-full" required />
+        class="w-full p-inputtext-lg" required />
       <label for="positionName">Nombre del Cargo</label>
     </p-floatLabel>
   </div>
   <ng-template pTemplate="footer">
-    <p-button label="Cancelar" icon="pi pi-times" (click)="showNewPositionDialog = false"
-      styleClass="p-button-text p-button-secondary"></p-button>
-    <p-button label="Crear Cargo" icon="pi pi-check" (onClick)="createWorkPosition()"
-      [disabled]="!newPositionName.trim() || isCreatingPosition" [loading]="isCreatingPosition"
-      styleClass="p-button-success"></p-button>
+    <div class="flex justify-end gap-3 mt-4">
+      <p-button label="Cancelar" icon="pi pi-times" (click)="showNewPositionDialog = false"
+        styleClass="p-button-text p-button-secondary rounded-lg"></p-button>
+      <p-button label="Guardar" icon="pi pi-check" (onClick)="createWorkPosition()"
+        [disabled]="!newPositionName.trim() || isCreatingPosition" [loading]="isCreatingPosition"
+        styleClass="p-button-success rounded-lg"></p-button>
+    </div>
   </ng-template>
 </p-dialog>

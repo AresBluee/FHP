@@ -86,7 +86,7 @@ export class AuthService {
   isLoggedIn(): boolean { return this._isLoggedIn.value; }
   isManager(): boolean {
     const role = this._userRole.value;
-    return role === 'ADMIN' || role === 'RRHH';
+    return role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR';
   }
 
   isEmployee(): boolean {

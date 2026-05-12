@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription, combineLatest } from 'rxjs'; // Necesario para reactividad
 import { AuthService } from '../../../core/services/auth.service';
+import { LayoutService } from '../../../core/services/layout.service';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
 import { Button } from "primeng/button";
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public authService = inject(AuthService);
   private router = inject(Router);
+  public layoutService = inject(LayoutService);
 
   isNavbarCollapsed = true;
 
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userRole: string | null = null;
   userInitial: string = '';
   menuItems: MenuItem[] = [];
+  profileLink: string = '/home';
 
   private authSubscription!: Subscription;
 
@@ -44,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
       this.isEmployeePanel = !!isLoggedIn &&
-        (role === 'EMPLOYEE' || role === 'ADMIN' || role === 'RRHH' || role === 'USER');
+        (role === 'EMPLOYEE' || role === 'ADMIN' || role === 'RRHH' || role === 'USER' || role === 'SUPERVISOR');
 
 
       this.userInitial = this.getInitial(username);
@@ -66,22 +69,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     const accessOptions: MenuItem[] = [];
 
-    let profileRouterLink: string;
-    if (role === 'ADMIN' || role === 'RRHH') {
-      profileRouterLink = '/admin/profile';
+    if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
+      this.profileLink = '/admin/profile';
     } else if (role === 'EMPLOYEE' || role === 'USER') {
-      profileRouterLink = '/employee/profile';
+      this.profileLink = '/employee/profile';
     } else {
-      profileRouterLink = '/home'; // Default or error case
+      this.profileLink = '/home'; // Default or error case
     }
 
     accessOptions.push({
       label: 'Mi Perfil',
       icon: 'pi pi-user',
-      routerLink: profileRouterLink 
+      routerLink: this.profileLink 
     });
 
-    if (role === 'ADMIN' || role === 'RRHH') {
+    if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
       accessOptions.push({
         label: 'Configuración',
         icon: 'pi pi-cog',
@@ -117,12 +119,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Lógica de redirección (usada después del login exitoso)
   checkRedirection(role: string | null): void {
-    const targetUrl = role === 'ADMIN' || role === 'RRHH' ? '/admin' : '/employee';
+    const targetUrl = role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR' ? '/admin' : '/employee';
     this.router.navigate([targetUrl]);
   }
 
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  toggleSidebar() {
+    this.layoutService.toggleSidebar();
   }
 
   cerrarSesion() {

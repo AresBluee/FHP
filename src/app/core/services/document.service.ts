@@ -18,7 +18,7 @@ export class DocumentService {
   }
 
   getMyDocuments(): Observable<DocumentDTO[]> {
-    return this.http.get<DocumentDTO[]>(`${this.apiUrl}/me`);
+    return this.http.get<DocumentDTO[]>(`${this.apiUrl}/user`);
   }
 
   getAllDocuments(): Observable<DocumentDTO[]> {

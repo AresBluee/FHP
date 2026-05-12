@@ -17,7 +17,7 @@ export const EMPLOYEE_ROUTES: Routes = [
         children: [
            
             { path: 'profile', component: ProfileComponent },
-            { path: '', component: EmployeeDashboardComponent },
+            { path: '', redirectTo: 'my-requests', pathMatch: 'full' },
             { path: 'my-schedule', component: MyScheduleComponent },
             { path: 'my-attendance-history', component: MyAttendanceHistoryComponent },
             { path: 'my-requests', component: MyRequestsComponent },

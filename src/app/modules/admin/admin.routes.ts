@@ -18,7 +18,7 @@ export const ADMIN_ROUTES: Routes = [
         path: '',       
         canActivate: [authGuard], 
         component: MenuAdminComponent, 
-        data: { roles: ['ADMIN', 'RRHH'] },
+        data: { roles: ['ADMIN', 'RRHH', 'SUPERVISOR'] },
         children: [
             { path: 'profile', component: ProfileComponent },
             { path: '', redirectTo: 'lista-empleados', pathMatch: 'full' },
@@ -31,6 +31,8 @@ export const ADMIN_ROUTES: Routes = [
             { path: 'control-diario', component: AttendanceControlComponent },
             { path: 'Generar-Boletas/Documentos', component: PayslipManagementComponent },
             /* { path: 'historial-documentos', component: DocumentDownloaderComponent }, */
+            { path: 'mis-solicitudes', loadComponent: () => import('../employee/pages/my-requests/my-requests.component').then(m => m.MyRequestsComponent) },
+            { path: 'configuracion-solicitudes', loadComponent: () => import('./pages/request-type-management/request-type-management.component').then(m => m.RequestTypeManagementComponent) },
             { path: 'solicitudes-pendientes', component: RequestManagementComponent },
             { path: 'archivos-documentos', component: DocumentListComponent },
         ]
