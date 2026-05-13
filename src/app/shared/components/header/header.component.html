@@ -1,4 +1,4 @@
-<div class="top-0 w-full z-50 shadow-lg">
+<div class="sticky top-0 w-full z-50 shadow-lg">
 
     <div  *ngIf="!isLoggedIn"  class="bg-color-verde-postular text-white py-2 text-center text-sm ">
         Postula ahora y únete a  
@@ -39,19 +39,19 @@
 
                         <ng-container *ngIf="!isEmployeePanel">
                             <li class="nav-item">
-                                <a routerLink="/home" class="nav-link text-white hover:text-yellow-400 transition duration-300">Inicio</a>
+                                <a routerLink="/home" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a routerLink="/nosotros" class="nav-link text-white hover:text-yellow-400 transition duration-300">Nosotros</a>
+                                <a routerLink="/nosotros" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Nosotros</a>
                             </li>
                             <li class="nav-item">
-                                <a routerLink="/cultivos" class="nav-link text-white hover:text-yellow-400 transition duration-300">Cultivos</a>
+                                <a routerLink="/cultivos" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Cultivos</a>
                             </li>
                            <!--  <li class="nav-item">
                                 <a routerLink="/noticias" class="nav-link text-white hover:text-yellow-400 transition duration-300">Noticias</a>
                             </li> -->
                             <li class="nav-item">
-                                <a routerLink="/postular" class="nav-link text-white hover:text-yellow-400 transition duration-300">Postula aquí!</a>
+                                <a routerLink="/postular" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Postula aquí!</a>
                             </li>
                         </ng-container>
 

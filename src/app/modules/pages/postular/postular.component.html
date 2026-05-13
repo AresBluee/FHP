@@ -1,41 +1,165 @@
-<!-- banner -->
-<div class="relative w-full h-[450px] overflow-hidden font-[tipo1]">
-  <img src="banner_postular.jpg" alt="banner home" class="w-full h-full object-cover brightness-75">
-
-
-  <div class="absolute top-1/3 left-10 text-4xl text-white font-bold">
-    Se parte de nosotros
+<!-- Hero Banner Postular -->
+<div class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center font-[tipo1] overflow-hidden bg-gray-900">
+  
+  <div class="absolute inset-0 z-0">
+    <!-- Fallback image en caso banner_postular.jpg falle -->
+    <img src="banner_postular.jpg" onerror="this.src='img_nosotros.jpg'" alt="Únete a nuestro equipo" class="w-full h-full object-cover">
+    <!-- Gradiente premium para máxima legibilidad -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#00381e]/90 via-black/50 to-[#00381e]/90"></div>
   </div>
 
-  <div >
-    <a href="https://forms.gle/eyBTQ7YAUQzawHc96" 
-   target="_blank"
-   class="absolute top-[55%] left-10 text-2xl text-white 
-          transition-all duration-300 hover:text-green-300 hover:underline hover:scale-105">
-  Postula aquí →
-</a>
-
+  <div class="relative z-10 w-full max-w-5xl mx-auto px-6 text-center mt-10">
+    <!-- Badge -->
+    <span class="inline-block py-1.5 px-5 rounded-full bg-color-verde-postular/20 border border-color-verde-postular/50 text-color-verde-claro font-bold tracking-[0.2em] uppercase text-xs mb-6 backdrop-blur-md shadow-lg">
+      Únete a la familia Agrokasa
+    </span>
+    
+    <!-- Título Impactante -->
+    <h1 class="text-4xl md:text-6xl lg:text-7xl text-white font-black leading-[1.1] drop-shadow-2xl mb-6">
+      Cultiva tu <span class="text-color-verde-postular">talento</span> <br class="hidden md:block"> con nosotros
+    </h1>
+    
+    <!-- Frase Motivadora -->
+    <p class="text-gray-200 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+      Sé el motor del desarrollo agrícola que el mundo necesita. Aquí tu trabajo tiene un propósito real, impulsando la innovación, la sostenibilidad y el progreso de nuestro país.
+    </p>
+    
+    <!-- Botón CTA (Call to Action) -->
+    <a href="https://forms.gle/eyBTQ7YAUQzawHc96" target="_blank" rel="noopener noreferrer" 
+       class="inline-flex items-center gap-3 bg-color-verde-postular text-white font-bold text-lg px-8 py-4 rounded-full shadow-[0_10px_30px_rgba(132,190,24,0.4)] hover:bg-color-verde-oscuro hover:scale-105 hover:shadow-[0_15px_40px_rgba(132,190,24,0.6)] transition-all duration-300 group ring-4 ring-white/10 hover:ring-white/20">
+      Postular Ahora
+      <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+    </a>
   </div>
 </div>
-<section class="flex flex-col lg:flex-row items-center justify-between px-8 lg:px-16 py-12">
-  <!-- Imagen a la izquierda -->
-  <div class="w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0">
-    <img src="postular_img.jpeg" 
-         alt="Imagen Agroindustrial"
-         class="w-[300px] h-[300px] object-cover object-[85%_center] rounded-xl shadow-lg">
-  </div>
 
-  <!-- Texto a la derecha -->
-  <div class="w-full lg:w-1/2 text-center lg:text-left">
-   <h2 class="text-3xl font-bold mb-4 text-green-600">¿Por qué elegirnos?</h2>
+<!-- Propuesta de Valor: Línea de Tiempo (Por qué elegirnos) -->
+<section class="py-24 bg-white font-[tipo1] relative">
+  <div class="max-w-5xl mx-auto px-6 lg:px-16">
+    
+    <!-- Encabezado -->
+    <div class="text-center mb-20">
+      <span class="text-color-verde-postular font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Nuestra Promesa</span>
+      <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-4 tracking-tight">Tu camino con <span class="font-bold text-color-verde-postular">Nosotros</span></h2>
+      <p class="text-gray-500 font-light max-w-2xl mx-auto text-lg">
+        Descubre cómo transformamos un simple empleo en un viaje de crecimiento continuo.
+      </p>
+    </div>
 
-    <p class="text-gray-700 leading-relaxed">
-      Gozar de un oportuno analisis de la coyuntura, al cual podrà acceder
-a traves de nuestros diversos productos.
-    </p>
-    <p>Obtener un servicio personalizado: Nos adaptamos a las necesidades de cada
-trabajador.</p>
-<p>Mantenerse informado a traves de un analisis tecnico del mas alto nivel.</p>
-<p>Solucionar cualquier duda o consulta. Nuestro equipo esta a su disposiciòn.</p>
+    <!-- Contenedor de la Línea de Tiempo Intercalada -->
+    <div #timelineContainer class="relative w-full mx-auto md:py-10">
+      
+      <!-- Línea central (Desktop) -->
+      <div class="hidden md:block absolute w-1 bg-gray-200 h-full left-1/2 transform -translate-x-1/2 top-0 rounded-full overflow-hidden">
+        <!-- Barra de progreso dinámica -->
+        <div class="absolute top-0 w-full bg-color-verde-postular transition-all duration-75 ease-out" [style.height.%]="lineHeight"></div>
+      </div>
+      <!-- Línea izquierda (Mobile) -->
+      <div class="md:hidden absolute w-1 bg-gray-200 h-full left-8 top-0 rounded-full overflow-hidden">
+        <!-- Barra de progreso dinámica -->
+        <div class="absolute top-0 w-full bg-color-verde-postular transition-all duration-75 ease-out" [style.height.%]="lineHeight"></div>
+      </div>
+
+      <!-- Item 1: Derecha -->
+      <div #timelineItem class="relative flex flex-col md:flex-row items-center w-full mb-16 opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+        <!-- Imagen (Izquierda en desktop) -->
+        <div class="hidden md:flex w-1/2 pr-12 justify-end">
+          <div class="w-full max-w-sm h-48 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+            <img src="postular_1.jpg" onerror="this.src='postular_img.jpeg'" alt="Desarrollo Profesional" class="w-full h-full object-cover transition-all duration-700 hover:scale-105">
+          </div>
+        </div>
+        
+        <!-- Nodo Central -->
+        <div class="absolute left-8 md:static md:left-auto w-12 h-12 bg-color-verde-postular rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10 transform -translate-x-1/2 md:translate-x-0">
+          <span class="text-white font-bold">01</span>
+        </div>
+        
+        <!-- Contenido (Derecha en desktop) -->
+        <div class="w-full pl-20 md:pl-12 md:w-1/2">
+          <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm transition-transform duration-300 hover:-translate-y-1">
+            <h3 class="font-bold text-gray-900 text-xl mb-2">Desarrollo Profesional</h3>
+            <p class="text-sm text-gray-500 leading-relaxed font-light">
+              Análisis oportuno y formación constante. Aquí no solo trabajas, sino que construyes una carrera sólida respaldada por nuestra trayectoria.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: Izquierda -->
+      <div #timelineItem class="relative flex flex-col md:flex-row items-center w-full mb-16 opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+        <!-- Contenido (Izquierda en desktop, requiere invertir el orden en flex) -->
+        <div class="w-full pl-20 md:pl-0 md:pr-12 md:w-1/2 order-2 md:order-1">
+          <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm text-left md:text-right transition-transform duration-300 hover:-translate-y-1">
+            <h3 class="font-bold text-gray-900 text-xl mb-2">Trato Humano</h3>
+            <p class="text-sm text-gray-500 leading-relaxed font-light">
+              Servicio personalizado enfocado en ti. Entendemos que cada trabajador es único y nos adaptamos a tus necesidades específicas para asegurar tu bienestar.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Nodo Central -->
+        <div class="absolute left-8 md:static md:left-auto w-12 h-12 bg-color-verde-oscuro rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10 transform -translate-x-1/2 md:translate-x-0 order-1 md:order-2">
+          <span class="text-white font-bold">02</span>
+        </div>
+        
+        <!-- Imagen (Derecha en desktop) -->
+        <div class="hidden md:flex w-1/2 pl-12 order-3 justify-start">
+          <div class="w-full max-w-sm h-48 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+            <img src="postular_2.jpg" onerror="this.src='Cultivos_agrokasa.jpeg'" alt="Trato Humano" class="w-full h-full object-cover transition-all duration-700 hover:scale-105">
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Derecha -->
+      <div #timelineItem class="relative flex flex-col md:flex-row items-center w-full mb-16 opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+        <!-- Imagen (Izquierda en desktop) -->
+        <div class="hidden md:flex w-1/2 pr-12 justify-end">
+          <div class="w-full max-w-sm h-48 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+            <img src="postular_3.jpg" onerror="this.src='img_nosotros.jpg'" alt="Soporte y Comunicación" class="w-full h-full object-cover transition-all duration-700 hover:scale-105">
+          </div>
+        </div>
+        
+        <!-- Nodo Central -->
+        <div class="absolute left-8 md:static md:left-auto w-12 h-12 bg-color-verde-postular rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10 transform -translate-x-1/2 md:translate-x-0">
+          <span class="text-white font-bold">03</span>
+        </div>
+        
+        <!-- Contenido (Derecha en desktop) -->
+        <div class="w-full pl-20 md:pl-12 md:w-1/2">
+          <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm transition-transform duration-300 hover:-translate-y-1">
+            <h3 class="font-bold text-gray-900 text-xl mb-2">Soporte Constante</h3>
+            <p class="text-sm text-gray-500 leading-relaxed font-light">
+              Información de alto nivel y comunicación directa. Nuestro equipo está siempre a tu entera disposición para resolver cualquier inquietud u orientarte.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4: Izquierda (CTA Final) -->
+      <div #timelineItem class="relative flex flex-col md:flex-row items-center w-full opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+        <!-- Contenido (Izquierda en desktop) -->
+        <div class="w-full pl-20 md:pl-0 md:pr-12 md:w-1/2 order-2 md:order-1">
+          <div class="bg-color-verde-oscuro rounded-2xl p-6 md:p-8 shadow-xl text-left md:text-right">
+            <h3 class="font-bold text-white text-xl mb-4">¿Listo para empezar?</h3>
+            <a href="https://forms.gle/eyBTQ7YAUQzawHc96" target="_blank" class="inline-block bg-white text-color-verde-oscuro font-bold px-8 py-3 rounded-full text-sm hover:bg-color-verde-postular hover:text-white transition-colors duration-300">
+              Postular Ahora
+            </a>
+          </div>
+        </div>
+        
+        <!-- Nodo Central -->
+        <div class="absolute left-8 md:static md:left-auto w-12 h-12 bg-white border-4 border-color-verde-oscuro rounded-full shadow-lg flex items-center justify-center z-10 transform -translate-x-1/2 md:translate-x-0 order-1 md:order-2">
+          <svg class="w-5 h-5 text-color-verde-oscuro" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        
+        <!-- Imagen (Derecha en desktop - Opcional, pero equilibra el diseño) -->
+        <div class="hidden md:flex w-1/2 pl-12 order-3 justify-start">
+          <div class="w-full max-w-sm h-32 rounded-2xl overflow-hidden shadow-sm border-4 border-white opacity-80">
+            <img src="banner_postular.jpg" onerror="this.src='postular_img.jpeg'" alt="Únete" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
