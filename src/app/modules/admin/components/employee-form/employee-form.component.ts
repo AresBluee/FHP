@@ -83,15 +83,12 @@ export class EmployeeFormComponent implements OnInit {
       dni: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      employeeCode: ['', Validators.required],
       
       // CRÍTICO: Position ahora es positionId (el ID del cargo)
       positionId: [null, Validators.required], 
       
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.maxLength(15)]], 
-      
-      biometricHash: ['hash-prueba-biometrico-unico-valido-999999999999999', [Validators.required, Validators.minLength(32), Validators.maxLength(64)]], 
       
       // CAMPOS DE USUARIO
       username: ['', Validators.required],
