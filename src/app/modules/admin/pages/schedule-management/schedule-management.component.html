@@ -44,12 +44,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <p-floatLabel>
             <p-calendar [(ngModel)]="newSchedule.startTime" name="startTime" [timeOnly]="true" hourFormat="24"
-              inputId="startTime" required styleClass="w-full"></p-calendar>
+              inputId="startTime" required styleClass="w-full" appendTo="body"></p-calendar>
             <label for="startTime">Hora Entrada</label>
           </p-floatLabel>
           <p-floatLabel>
             <p-calendar [(ngModel)]="newSchedule.endTime" name="endTime" [timeOnly]="true" hourFormat="24"
-              inputId="endTime" required styleClass="w-full"></p-calendar>
+              inputId="endTime" required styleClass="w-full" appendTo="body"></p-calendar>
             <label for="endTime">Hora Salida</label>
           </p-floatLabel>
         </div>
@@ -87,12 +87,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <p-floatLabel>
             <p-calendar [(ngModel)]="assignmentForm.validFrom" name="validFrom" dateFormat="yy-mm-dd"
-              inputId="validFrom" required></p-calendar>
+              inputId="validFrom" required appendTo="body"></p-calendar>
             <label for="validFrom">Válido Desde</label>
           </p-floatLabel>
           <p-floatLabel>
             <p-calendar [(ngModel)]="assignmentForm.validTo" name="validTo" dateFormat="yy-mm-dd"
-              inputId="validTo"></p-calendar>
+              inputId="validTo" appendTo="body"></p-calendar>
             <label for="validTo">Válido Hasta (Opcional)</label>
           </p-floatLabel>
         </div>

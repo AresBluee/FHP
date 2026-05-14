@@ -27,14 +27,14 @@
               <div>
                 
                   <label class="block text-sm font-medium text-gray-700 mb-1">Inicio Período:</label>
-                  <input type="date" [(ngModel)]="generationForm.startDate" name="startDate" required
-                         class="w-full p-2 border rounded-md">
+                  <p-calendar [(ngModel)]="generationForm.startDate" name="startDate" required
+                              dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="startDate" appendTo="body"></p-calendar>
               </div>
 
               <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Fin del Período:</label>
-                  <input type="date" [(ngModel)]="generationForm.endDate" name="endDate" required
-                         class="w-full p-2 border rounded-md">
+                  <p-calendar [(ngModel)]="generationForm.endDate" name="endDate" required
+                              dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="endDate" appendTo="body"></p-calendar>
               </div>
           </div>
 

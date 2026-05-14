@@ -1,106 +1,146 @@
-<div class="card shadow-xl rounded-lg bg-white p-6 lg:p-8 mt-4 space-y-8">
-    <h2 class="text-3xl font-bold text-center text-green-700 mb-6">Panel de Solicitudes Laborales</h2>
-
-    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Crear Nueva Solicitud</h3>
-        
-        <form (ngSubmit)="submitRequest()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <div>
-                <label for="requestType" class="block text-sm font-medium text-gray-700">Tipo de Solicitud</label>
-                <select id="requestType" name="requestType" [(ngModel)]="newRequest.requestTypeId" required
-                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option [ngValue]="0" disabled>-- Selecciona tipo --</option>
-                    @for (type of requestTypes; track type.value) {
-                        <option [ngValue]="type.value">{{ type.label }}</option>
-                    }
-                </select>
-            </div>
-
-            <div>
-                <label for="manager" class="block text-sm font-medium text-gray-700">Dirigido a:</label>
-                <select id="manager" name="managerId" [(ngModel)]="newRequest.managerId" required
-                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option [ngValue]="0" disabled>-- Selecciona destinatario --</option>
-                    @for (manager of managersList; track manager.id) {
-                        <option [ngValue]="manager.id">
-                            {{ manager.fullName }} ({{ manager.roleName | slice:5 }})
-                        </option>
-                    }
-                </select>
-                <p class="text-xs text-gray-500 mt-1">Solo Administradores/RRHH visibles.</p>
-            </div>
-
-            <div>
-                <label for="startDate" class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
-                <input type="date" id="startDate" name="startDate" [(ngModel)]="newRequest.startDate" required
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500">
-            </div>
-
-            <div>
-                <label for="endDate" class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
-                <input type="date" id="endDate" name="endDate" [(ngModel)]="newRequest.endDate" required
-                       class="mt-1 block w-full p-2 border rounded-md">
-            </div>
-            
-            <div class="md:col-span-2">
-                 <label for="justification" class="block text-sm font-medium text-gray-700">Detalles/Justificación</label>
-                <textarea id="justification" name="justification" rows="3" [(ngModel)]="newRequest.details" required
-                          class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Motivo de la solicitud, duración, etc."></textarea>
-            </div>
-            
-            <div class="md:col-span-2 flex justify-end">
-                <button type="submit" 
-                        [disabled]="isSendingRequest"
-                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 disabled:opacity-50 shadow-md">
-                    {{ isSendingRequest ? 'Enviando...' : 'Enviar Solicitud' }}
-                </button>
-            </div>
-        </form>
+<div class="min-h-screen bg-white p-6">
+  <p-toast></p-toast>
+  <div class="max-w-7xl mx-auto space-y-6">
+    
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Panel de Solicitudes Laborales</h1>
+        <p class="text-gray-500 text-sm font-medium">Gestiona tus permisos, vacaciones y constancias.</p>
+      </div>
     </div>
 
-    <div class="mt-8">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Historial de Solicitudes Enviadas</h3>
-        
-        @if (isLoadingHistory) {
-            <p class="text-center text-blue-500 p-4">Cargando historial...</p>
-        } @else {
+    <!-- Layout de 2 Columnas -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Columna Izquierda: Crear Solicitud (40% aprox or 5/12) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Crear Nueva Solicitud</h3>
+          
+          <form (ngSubmit)="submitRequest()" class="space-y-4">
+            
+            <!-- Tipo de Solicitud (PrimeNG Dropdown) -->
+            <div>
+              <label for="requestType" class="block text-sm font-bold text-gray-700 mb-1">Tipo de Solicitud</label>
+              <p-dropdown 
+                [options]="requestTypes" 
+                [(ngModel)]="newRequest.requestTypeId" 
+                name="requestType"
+                optionLabel="name" 
+                optionValue="id" 
+                placeholder="-- Selecciona tipo --" 
+                styleClass="w-full"
+                [filter]="true"
+                filterBy="name">
+              </p-dropdown>
+            </div>
+
+            <!-- Fechas -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="startDate" class="block text-sm font-bold text-gray-700 mb-1">Fecha de Inicio</label>
+                <p-calendar id="startDate" name="startDate" [(ngModel)]="newRequest.startDate" dateFormat="yy-mm-dd" dataType="string" [showIcon]="true" styleClass="w-full" inputStyleClass="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"></p-calendar>
+              </div>
+              <div>
+                <label for="endDate" class="block text-sm font-bold text-gray-700 mb-1">Fecha de Fin</label>
+                <p-calendar id="endDate" name="endDate" [(ngModel)]="newRequest.endDate" dateFormat="yy-mm-dd" dataType="string" [showIcon]="true" styleClass="w-full" inputStyleClass="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"></p-calendar>
+              </div>
+            </div>
+
+            <!-- Archivo Adjunto -->
+            @if (requiresAttachment) {
+              <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                <label for="attachment" class="block text-sm font-bold text-blue-800 mb-1">Archivo Adjunto (Obligatorio)</label>
+                <input type="file" id="attachment" name="attachment" (change)="onFileSelected($event)" accept=".pdf,.png,.jpg,.jpeg"
+                       class="mt-1 block w-full text-sm text-gray-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-md file:border-0
+                              file:text-xs file:font-bold
+                              file:bg-blue-600 file:text-white
+                              hover:file:bg-blue-700 file:cursor-pointer">
+                <p class="text-xs text-blue-600 mt-1">Sube un certificado médico o evidencia obligatoria (PDF, JPG, PNG).</p>
+              </div>
+            }
+            
+            <!-- Detalles -->
+            <div>
+              <label for="justification" class="block text-sm font-bold text-gray-700 mb-1">Detalles / Justificación</label>
+              <textarea id="justification" name="justification" rows="4" [(ngModel)]="newRequest.details" required
+                        class="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                        placeholder="Escribe el motivo de tu solicitud..."></textarea>
+            </div>
+            
+            <!-- Botón de Enviar -->
+            <div class="pt-2">
+              <button type="submit" 
+                      [disabled]="isSendingRequest"
+                      class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 disabled:opacity-50 shadow-md shadow-green-100 flex items-center justify-center gap-2">
+                <i class="pi pi-send" *ngIf="!isSendingRequest"></i>
+                <i class="pi pi-spin pi-spinner" *ngIf="isSendingRequest"></i>
+                {{ isSendingRequest ? 'Enviando...' : 'Enviar Solicitud' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Historial (60% aprox or 7/12) -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Historial de Solicitudes</h3>
+          
+          @if (isLoadingHistory) {
+            <div class="flex flex-col items-center justify-center p-8 text-gray-500">
+              <i class="pi pi-spin pi-spinner text-2xl mb-2 text-blue-500"></i>
+              <p class="text-sm">Cargando historial...</p>
+            </div>
+          } @else {
             <p-table [value]="requests" 
                     [paginator]="true" 
-                    [rows]="5" 
-                    styleClass="p-datatable-gridlines p-datatable-striped shadow-md">
+                    [rows]="6" 
+                    styleClass="p-datatable-sm p-datatable-striped"
+                    responsiveLayout="scroll">
                 
                 <ng-template pTemplate="header">
                     <tr>
-                        <th class="w-1/6">Tipo</th>
-                        <th>Detalle</th>
-                        <th class="w-1/6">Período</th>
-                        <th class="w-1/6">Creación</th>
-                        <th class="w-1/6">Estado</th>
+                        <th class="text-xs font-bold text-gray-600">Tipo</th>
+                        <th class="text-xs font-bold text-gray-600">Período</th>
+                        <th class="text-xs font-bold text-gray-600">Estado</th>
+                        <th class="text-xs font-bold text-gray-600 text-center">Acción</th>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-req>
-                    <tr>
-                        <td class="whitespace-nowrap text-sm font-medium">{{ req.requestType | titlecase }}</td>
-                        <td class="whitespace-normal max-w-sm text-sm text-gray-600">{{ req.details }}</td>
-                        <td class="whitespace-nowrap text-sm text-gray-600">
-                            {{ req.startDate | date:'shortDate' }} - {{ req.endDate | date:'shortDate' }}
+                    <tr class="text-sm">
+                        <td class="font-medium text-gray-800">{{ req.requestType | titlecase }}</td>
+                        <td class="text-gray-600 text-xs">
+                            {{ req.startDate | date:'dd/MM/yy' }} - {{ req.endDate | date:'dd/MM/yy' }}
                         </td>
-                        <td class="whitespace-nowrap text-sm text-gray-600">{{ req.createdAt | date:'mediumDate' }}</td>
-                        <td class="whitespace-nowrap">
+                        <td>
                             <p-tag [value]="req.status" 
-                                [severity]="req.status === 'PENDING' ? 'warn' : (req.status === 'APPROVED' ? 'success' : 'danger')">
+                                [severity]="req.status === 'PENDING' ? 'warning' : (req.status === 'APPROVED' ? 'success' : 'danger')"
+                                styleClass="text-xs font-bold">
                             </p-tag>
+                        </td>
+                        <td class="text-center">
+                          <button pButton icon="pi pi-eye" class="p-button-text p-button-sm p-button-rounded" pTooltip="Ver detalle"></button>
                         </td>
                     </tr>
                 </ng-template>
                 
                 <ng-template pTemplate="emptymessage">
-                    <tr><td colspan="5" class="text-center py-4 text-gray-500">Aún no has enviado ninguna solicitud.</td></tr>
+                    <tr>
+                      <td colspan="4" class="text-center py-6 text-gray-500 text-sm">
+                        <i class="pi pi-folder-open text-2xl mb-2 block text-gray-300"></i>
+                        Aún no has enviado ninguna solicitud.
+                      </td>
+                    </tr>
                 </ng-template>
             </p-table>
-        }
+          }
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>

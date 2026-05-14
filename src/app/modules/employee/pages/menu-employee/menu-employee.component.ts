@@ -4,6 +4,7 @@ import {  MenuModule } from "primeng/menu";
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { Subscription, filter } from 'rxjs';
+import { LayoutService } from '../../../../core/services/layout.service';
 
 @Component({
   selector: 'app-menu-employee',
@@ -20,9 +21,10 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
   seccionActiva: string = 'employee';
   menuItems: MenuItem[] = [];
   private routerSubscription: Subscription;
+  private layoutSubscription!: Subscription;
+  isSidebarOpen: boolean = false;
 
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private layoutService: LayoutService) {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -34,14 +36,26 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+    if (this.layoutSubscription) {
+      this.layoutSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
     this.initializeMenuItems();
+    this.layoutSubscription = this.layoutService.sidebarOpen$.subscribe(
+      (isOpen: boolean) => {
+        this.isSidebarOpen = isOpen;
+      }
+    );
   }
+
+  closeSidebar(): void {
+    this.layoutService.setSidebarState(false);
+  }
+
   initializeMenuItems(): void {
     this.menuItems = [
-      { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: [''], id: 'employee' },
       { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: ['profile'], id: 'profile' },
       { label: 'Horarios', icon: 'pi pi-calendar', routerLink: ['my-schedule'], id: 'my-schedule' },
       { label: 'Certificados', icon: 'pi pi-file-word', routerLink: ['my-certificates'], id: 'my-certificates' },

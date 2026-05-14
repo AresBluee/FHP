@@ -14,17 +14,19 @@
     <p-table [value]="payslips" styleClass="p-datatable-striped">
       <ng-template pTemplate="header">
         <tr>
-          <th>Nombre del Archivo</th>
-          <th>Tipo de Documento</th>
-          <th>Fecha de Carga</th>
+          <th>Periodo Inicio</th>
+          <th>Periodo Fin</th>
+          <th>Salario Neto</th>
+          <th>Fecha Generación</th>
           <th>Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-payslip>
         <tr>
-          <td>{{ payslip.fileName }}</td>
-          <td><p-tag [value]="payslip.documentType"></p-tag></td>
-          <td>{{ payslip.uploadDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ payslip.periodStartDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ payslip.periodEndDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ payslip.netSalary | currency:'S/.' }}</td>
+          <td>{{ payslip.generationDate | date:'dd/MM/yyyy' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-download" (click)="downloadPayslip(payslip.id)" class="p-button-rounded p-button-info"></button>
           </td>

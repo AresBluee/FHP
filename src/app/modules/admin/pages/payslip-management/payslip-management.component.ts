@@ -55,7 +55,7 @@ export interface PayslipGenerationDTO {
     
         // URLs de la API
         private documentsApiUrl = `${environment.apiUrl}/api/documents`;
-        private payslipsApiUrl = `${environment.apiUrl}/api/documents/payslips`;
+        private payslipsApiUrl = `${environment.apiUrl}/api/payslips`;
         private employeesApiUrl = `${environment.apiUrl}/api/employee`;
     
         // Observables y estado del componente
@@ -76,7 +76,7 @@ export interface PayslipGenerationDTO {
     
         loadGeneratedPayslips(): void {
             this.isLoadingList = true;
-            this.http.get<PayslipDTO[]>(`${this.documentsApiUrl}/payslips/all`).subscribe({
+            this.http.get<PayslipDTO[]>(`${this.payslipsApiUrl}/all`).subscribe({
                 next: (data) => {
                     this.generatedPayslips = data;
                     this.isLoadingList = false;
@@ -95,7 +95,7 @@ export interface PayslipGenerationDTO {
             }
     
             this.isLoading = true;
-            this.http.post<PayslipDTO>(`${this.documentsApiUrl}/payslips/generate`, this.generationForm).subscribe({
+            this.http.post<PayslipDTO>(`${this.payslipsApiUrl}/generate`, this.generationForm).subscribe({
                 next: (newPayslip) => {
                     this.isLoading = false;
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: `Boleta para ${newPayslip.employeeName} generada correctamente.` });

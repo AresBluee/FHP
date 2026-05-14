@@ -6,11 +6,16 @@ import { TableModule } from 'primeng/table';
 import { environment } from '../../../../Environment/environment';
 import { MessageService } from 'primeng/api';
 
-interface AttendanceDTO {
-  checkInTime: string;
-  checkOutTime: string | null;
-  status: 'CHECKED_IN' | 'CHECKED_OUT';
+import { AuthService } from '../../../../core/services/auth.service';
+
+interface AttendanceHistoryDTO {
+  date: string;
+  checkIn: string;
+  checkOut: string | null;
+  status: string;
+  totalMinutes: number | null;
 }
+
 @Component({
   selector: 'app-attendance-user',
   standalone: true,
@@ -22,11 +27,12 @@ export class AttendanceUserComponent implements OnInit{
 
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/api/attendance';
-  private messageService = inject(MessageService); // Si usas PrimeNG Toast
+  private messageService = inject(MessageService);
+  private authService = inject(AuthService);
 
   currentUserStatus: 'CHECKED_IN' | 'CHECKED_OUT' | 'UNKNOWN' = 'UNKNOWN';
   isLoading = false;
-  userAttendanceHistory: AttendanceDTO[] = [];
+  userAttendanceHistory: AttendanceHistoryDTO[] = [];
 
   ngOnInit(): void {
     this.loadUserStatus();
@@ -34,12 +40,16 @@ export class AttendanceUserComponent implements OnInit{
   }
 
   loadUserStatus(): void {
-    // 💡 Puedes usar /api/attendance/user y ver el último registro
-    // Por simplicidad, asumiremos que si hay un registro sin checkOut, está dentro.
-    this.http.get<any[]>(`${this.apiUrl}/user`).subscribe(history => {
-        const lastRecord = history[0]; // Asume que la lista está ordenada desc
-        if (lastRecord && !lastRecord.checkOutTime) {
-            this.currentUserStatus = 'CHECKED_IN';
+    // Llamamos a /api/attendance/me para ver el estado del día de hoy
+    this.http.get<AttendanceHistoryDTO[]>(`${this.apiUrl}/me`).subscribe(history => {
+        if (history && history.length > 0) {
+            const lastRecord = history[0]; // Suponiendo que el primer registro es el de hoy
+            const isToday = lastRecord.date === new Date().toISOString().split('T')[0];
+            if (isToday && lastRecord.checkIn && !lastRecord.checkOut) {
+                this.currentUserStatus = 'CHECKED_IN';
+            } else {
+                this.currentUserStatus = 'CHECKED_OUT';
+            }
         } else {
             this.currentUserStatus = 'CHECKED_OUT';
         }
@@ -47,28 +57,48 @@ export class AttendanceUserComponent implements OnInit{
   }
 
   loadUserHistory(): void {
-    this.http.get<AttendanceDTO[]>(`${this.apiUrl}/user`).subscribe(history => {
+    this.http.get<AttendanceHistoryDTO[]>(`${this.apiUrl}/me`).subscribe(history => {
         this.userAttendanceHistory = history;
     });
   }
 
   checkInOrOut(): void {
     this.isLoading = true;
-    const action = this.currentUserStatus === 'CHECKED_OUT' || this.currentUserStatus === 'UNKNOWN' ? 'checkin' : 'checkout';
+    const actionStr = this.currentUserStatus === 'CHECKED_OUT' || this.currentUserStatus === 'UNKNOWN' ? 'Entrada' : 'Salida';
     
-    this.http.post(`${this.apiUrl}/${action}`, {}).subscribe({
-      next: () => {
-        const msg = action === 'checkin' ? '¡Entrada registrada con éxito!' : '¡Salida registrada con éxito!';
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: msg });
-        this.loadUserStatus();
-        this.loadUserHistory();
-        this.isLoading = false;
+    if (!navigator.geolocation) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Geolocalización no soportada por su navegador.' });
+      this.isLoading = false;
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const payload = {
+          employeeCode: this.authService.getUsername(),
+          deviceTimestamp: new Date().toISOString(),
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+
+        this.http.post(`${this.apiUrl}/register`, payload).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: `¡${actionStr} registrada con éxito!` });
+            this.loadUserStatus();
+            this.loadUserHistory();
+            this.isLoading = false;
+          },
+          error: (err) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al registrar marcaje.' });
+            this.isLoading = false;
+          }
+        });
       },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al registrar marcaje.' });
+      (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Se requiere permiso de ubicación para marcar asistencia.' });
         this.isLoading = false;
       }
-    });
+    );
   }
 
   getButtonLabel(): string {
