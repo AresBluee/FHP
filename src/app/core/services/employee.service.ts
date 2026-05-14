@@ -20,4 +20,8 @@ export class EmployeeService {
   getManagers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/managers?roles=ADMIN,RRHH`);
   }
+
+  getSupervisors(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/managers?roles=SUPERVISOR`);
+  }
 }
