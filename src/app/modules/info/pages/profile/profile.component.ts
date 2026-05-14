@@ -8,10 +8,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs'; // Necesario para limpiar suscripciones
+import { Subscription } from 'rxjs';
 import { environment } from '../../../../Environment/environment';
 import { EmployeeProfileDTO, EmployeeRequestDTO } from '../../../../core/models/employee.model';
 import { EmployeeService } from '../../../../core/services/employee.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +22,8 @@ import { EmployeeService } from '../../../../core/services/employee.service';
     ReactiveFormsModule,
     CurrencyPipe, ButtonModule,
     InputTextModule, AvatarModule,
-    CardModule],
+    CardModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -28,6 +31,7 @@ export class ProfileComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
+  private messageService = inject(MessageService);
   private employeeService = inject(EmployeeService);
   private apiUrl = environment.apiUrl + '/api/employee/me';
 
@@ -123,12 +127,10 @@ export class ProfileComponent {
         phoneNumber: this.profileForm.get('phone')?.value,
         
         // Campos de solo lectura/seguridad que Spring espera
-        employeeCode: this.employeeData!.employeeCode,
         position: this.employeeData!.position,
-        biometricHash: 'SIMULATED_HASH', 
         username: this.profileForm.get('username')?.value,
         password: 'NO_PASSWORD_CHANGE', // No se permite cambio de contraseña desde el perfil
-        roleName: 'ROLE_EMPLOYEE' // Rol debe ser enviado
+        roleName: 'ROLE_EMPLOYEE'
     };
 
     this.http.put<EmployeeProfileDTO>(this.apiUrl, updateDTO).subscribe({
@@ -136,12 +138,12 @@ export class ProfileComponent {
             this.employeeData = updatedData;
             this.loading = false;
             this.toggleEdit();
-            alert('Perfil actualizado con éxito.');
+            this.messageService.add({severity:'success', summary:'Éxito', detail:'Perfil actualizado con éxito.'});
             this.loadProfile(); // Recargar para actualizar el estado del formulario
         },
         error: (err) => {
              this.loading = false;
-             alert('Error al guardar cambios: ' + (err.error.message || 'Error desconocido'));
+             this.messageService.add({severity:'error', summary:'Error', detail:'Error al guardar cambios: ' + (err.error.message || 'Error desconocido')});
         }
     });
   }

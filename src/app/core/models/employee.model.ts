@@ -7,9 +7,7 @@ export interface RoleInfo { id: number; name: string; }
 export interface EmployeeRequestDTO {
     firstName: string; 
     lastName: string;
-    employeeCode: string; 
     position: string;
-    biometricHash: string;
     username: string; 
     password?: string;
     email:string;
