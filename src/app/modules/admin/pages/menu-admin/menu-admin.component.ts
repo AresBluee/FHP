@@ -34,9 +34,18 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.seccionActiva = event.url.split('/').pop() || 'lista-empleados';
+      // Obtenemos la última parte de la ruta ignorando parámetros si los hay
+      const urlParts = event.url.split('/');
+      const lastPart = urlParts[urlParts.length - 1];
+      
+      // Si la última parte es un número (ID), tomamos la penúltima (ej: edit)
+      if (!isNaN(Number(lastPart))) {
+        this.seccionActiva = urlParts[urlParts.length - 2];
+      } else {
+        this.seccionActiva = lastPart || 'lista-empleados';
+      }
     });
-  } 
+  }
 
   ngOnDestroy(): void {
     // Buena práctica: cancelar la suscripción para evitar fugas de memoria
@@ -70,13 +79,14 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   initializeMenuItems(role: string | null): void {
     // Usamos 'routerLink' para la navegación y 'id' para el estilo activo
     const items: MenuItem[] = [
-     /*  { label: 'Dashboard', icon: 'pi pi-chart-line', routerLink: ['dashboard'], id: 'dashboard' }, */
+      { label: 'Dashboard', icon: 'pi pi-chart-line', routerLink: ['dashboard'], id: 'dashboard' },
       { label: 'Mis Solicitudes', icon: 'pi pi-calendar-plus', routerLink: ['mis-solicitudes'], id: 'mis-solicitudes' },
       { label: 'Lista de Empleados', icon: 'pi pi-users', routerLink: ['lista-empleados'], id: 'lista-empleados' },
       { label: 'Registrar Nuevo', icon: 'pi pi-user-plus', routerLink: ['registrar-nuevo'], id: 'registrar-nuevo' },
       { label: 'Asignar Horarios', icon: 'pi pi-calendar-clock', routerLink: ['asignar-horarios'], id: 'asignar-horarios' },
       { label: 'Control Diario', icon: 'pi pi-clock', routerLink: ['control-diario'], id: 'control-diario' },
-     /*  { label: 'Gestion de Documentos', icon: 'pi pi-users', routerLink: ['documentUp'], id: 'documentUp' }, */
+      { label: 'Gestión de Boletas', icon: 'pi pi-dollar', routerLink: ['gestion-boletas'], id: 'gestion-boletas' },
+      { label: 'Archivos de Documentos', icon: 'pi pi-file-pdf', routerLink: ['archivos-documentos'], id: 'archivos-documentos' },
       { label: 'Solicitudes Pendientes', icon: 'pi pi-exclamation-triangle', routerLink: ['solicitudes-pendientes'], id: 'solicitudes-pendientes' }
     ];
 
@@ -84,11 +94,6 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
     if (role === 'ADMIN') {
       items.push({ label: 'Configurar Solicitudes', icon: 'pi pi-cog', routerLink: ['configuracion-solicitudes'], id: 'configuracion-solicitudes' });
     }
-
-    items.push(
-      { label: 'Historial de Archivos y Documentos', icon: 'pi pi-folder-open', routerLink: ['archivos-documentos'], id: 'archivos-documentos' },
-      { label: 'Generar Boletas/Documentos', icon: 'pi pi-folder-open', routerLink: ['Generar-Boletas/Documentos'], id: 'Generar-Boletas/Documentos' }
-    );
 
     this.menuItems = items;
   }

@@ -12,6 +12,8 @@ import { DocumentListComponent } from './pages/document-list/document-list.compo
 import { DocumentUploadComponent } from './components/document-upload/document-upload.component';
 import { DocumentDownloaderComponent } from './components/document-downloader/document-downloader.component';
 import { PayslipManagementComponent } from './pages/payslip-management/payslip-management.component';
+import { RequestTypeManagementComponent } from './pages/request-type-management/request-type-management.component';
+import { MyRequestsComponent } from '../employee/pages/my-requests/my-requests.component';
 
 export const ADMIN_ROUTES: Routes = [
     {
@@ -29,10 +31,11 @@ export const ADMIN_ROUTES: Routes = [
             { path: 'employee/edit/:id', component: EmployeeFormComponent },
             { path: 'asignar-horarios', component: ScheduleManagementComponent },
             { path: 'control-diario', component: AttendanceControlComponent },
-            { path: 'Generar-Boletas/Documentos', component: PayslipManagementComponent },
-            /* { path: 'historial-documentos', component: DocumentDownloaderComponent }, */
+            { path: 'gestion-boletas', component: PayslipManagementComponent },
             { path: 'solicitudes-pendientes', component: RequestManagementComponent },
             { path: 'archivos-documentos', component: DocumentListComponent },
+            { path: 'configuracion-solicitudes', component: RequestTypeManagementComponent },
+            { path: 'mis-solicitudes', component: MyRequestsComponent },
         ]
     }
 ];

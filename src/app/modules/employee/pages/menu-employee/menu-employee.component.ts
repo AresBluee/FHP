@@ -28,7 +28,16 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.seccionActiva = event.url.split('/').pop() || 'employee';
+      // Obtenemos la última parte de la ruta ignorando parámetros si los hay
+      const urlParts = event.url.split('/');
+      const lastPart = urlParts[urlParts.length - 1];
+      
+      // Si la última parte es un número (ID), tomamos la penúltima (ej: edit)
+      if (!isNaN(Number(lastPart))) {
+        this.seccionActiva = urlParts[urlParts.length - 2];
+      } else {
+        this.seccionActiva = lastPart || 'employee';
+      }
     });
   }
 
