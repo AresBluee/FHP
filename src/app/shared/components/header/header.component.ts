@@ -1,8 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Subscription, combineLatest } from 'rxjs'; // Necesario para reactividad
+import { Subscription, combineLatest } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
+import { LayoutService } from '../../../core/services/layout.service'; // <-- AÑADIDO
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { MenuItem } from 'primeng/api';
 import { Button } from "primeng/button";
@@ -14,12 +15,12 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
   standalone: true,
   imports: [CommonModule, RouterModule, TieredMenuModule, AvatarModule, AvatarGroupModule],
   templateUrl: './header.component.html',
-
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
   public authService = inject(AuthService);
   private router = inject(Router);
+  public layoutService = inject(LayoutService); // <-- AÑADIDO
 
   isNavbarCollapsed = true;
 
@@ -28,11 +29,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userRole: string | null = null;
   userInitial: string = '';
   menuItems: MenuItem[] = [];
+  profileLink: string = '/home'; // <-- AÑADIDO
 
   private authSubscription!: Subscription;
 
   ngOnInit(): void {
-
     this.authSubscription = combineLatest([
       this.authService.isLoggedIn$,
       this.authService.userRole$,
@@ -42,22 +43,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isLoggedIn = isLoggedIn;
       this.userRole = role;
 
-
+      // <-- AÑADIDO ROL SUPERVISOR
       this.isEmployeePanel = !!isLoggedIn &&
-        (role === 'EMPLOYEE' || role === 'ADMIN' || role === 'RRHH' || role === 'USER');
-
+        (role === 'EMPLOYEE' || role === 'ADMIN' || role === 'RRHH' || role === 'USER' || role === 'SUPERVISOR');
 
       this.userInitial = this.getInitial(username);
 
-
       this.initializePanelMenu(role);
-
 
       if (isLoggedIn && this.isEmployeePanel && (this.router.url === '/login' || this.router.url === '/home')) {
         this.checkRedirection(role);
       }
     });
   }
+
   initializePanelMenu(role: string | null): void {
     if (!role) {
       this.menuItems = [];
@@ -66,29 +65,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     const accessOptions: MenuItem[] = [];
 
-    let profileRouterLink: string;
-    if (role === 'ADMIN' || role === 'RRHH') {
-      profileRouterLink = '/admin/profile';
+    // <-- AÑADIDO ROL SUPERVISOR Y USO DE profileLink
+    if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
+      this.profileLink = '/admin/profile';
     } else if (role === 'EMPLOYEE' || role === 'USER') {
-      profileRouterLink = '/employee/profile';
+      this.profileLink = '/employee/profile';
     } else {
-      profileRouterLink = '/home'; // Default or error case
+      this.profileLink = '/home';
     }
 
     accessOptions.push({
       label: 'Mi Perfil',
       icon: 'pi pi-user',
-      routerLink: profileRouterLink 
+      routerLink: this.profileLink
     });
 
-    if (role === 'ADMIN' || role === 'RRHH') {
+    if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
       accessOptions.push({
         label: 'Configuración',
         icon: 'pi pi-cog',
         routerLink: '/admin'
       });
     }
-  
+
     this.menuItems = [
       ...accessOptions,
       { separator: true },
@@ -100,14 +99,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ];
   }
 
-
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
   }
 
-  // Función para obtener la inicial del nombre
   getInitial(name: string | null): string {
     if (name) {
       return name.trim().charAt(0).toUpperCase();
@@ -115,14 +112,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return '?';
   }
 
-  // Lógica de redirección (usada después del login exitoso)
   checkRedirection(role: string | null): void {
-    const targetUrl = role === 'ADMIN' || role === 'RRHH' ? '/admin' : '/employee';
+    // <-- AÑADIDO ROL SUPERVISOR
+    const targetUrl = role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR' ? '/admin' : '/employee';
     this.router.navigate([targetUrl]);
   }
 
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  // <-- AÑADIDO FUNCIÓN PARA EL SIDEBAR
+  toggleSidebar() {
+    this.layoutService.toggleSidebar();
   }
 
   cerrarSesion() {

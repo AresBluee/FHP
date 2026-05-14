@@ -1,7 +1,7 @@
 <div class="sticky top-0 w-full z-50 shadow-lg">
 
-    <div  *ngIf="!isLoggedIn"  class="bg-color-verde-postular text-white py-2 text-center text-sm ">
-        Postula ahora y únete a  
+    <div *ngIf="!isLoggedIn" class="bg-color-verde-postular text-white py-2 text-center text-sm ">
+        Postula ahora y únete a
         <a routerLink="/postular"
             class="bg-color-verde-portal hover:bg-color-verde-hover text-white font-semibold py-1 px-4 text-center rounded-md transition duration-300 ">
             Nuestro Equipo
@@ -13,24 +13,34 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
 
-                <a routerLink="/home" class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
-                    <img src="Logo.svg" alt="Logo" style="width: 10%; ">
+                <!-- INICIO CAMBIO: Contenedor flex para el botón del sidebar y el logo -->
+                <div class="flex items-center space-x-4">
+                    <!-- Botón del Sidebar -->
+                    <button *ngIf="isEmployeePanel" (click)="toggleSidebar()"
+                        class="text-white hover:text-yellow-400 focus:outline-none transition duration-300">
+                        <i class="pi pi-bars text-2xl"></i>
+                    </button>
+                    <!-- Enlace dinámico del logo [routerLink]="profileLink" -->
+                    <a [routerLink]="profileLink"
+                        class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
+                        <img src="Logo.svg" alt="Logo" style="width: 10%; ">
 
-                    <div class="font-[tipo1] font-extralight w-72">
-                        <span class="text-3xl text-left">AGRO</span>
-                        <span class="text-2xl text-left">cyt</span>
-                        <small class="text-xs text-righ ml-2">
-                            por Agrokasa
-                        </small>
-                    </div>
-                </a>
+                        <div class="font-[tipo1] font-extralight w-72">
+                            <span class="text-3xl text-left">AGRO</span>
+                            <span class="text-2xl text-left">cyt</span>
+                            <small class="text-xs text-righ ml-2">
+                                por Agrokasa
+                            </small>
+                        </div>
+                    </a>
+                </div>
+                <!-- FIN CAMBIO -->
 
-                <button class="lg:hidden text-color-verde-postular hover:text-color-verde-hover focus:outline-none" (click)="toggleNavbar()"
-                    aria-expanded="!isNavbarCollapsed" aria-controls="navbarNav">
+                <button class="lg:hidden text-color-verde-postular hover:text-color-verde-hover focus:outline-none"
+                    (click)="toggleNavbar()" aria-expanded="!isNavbarCollapsed" aria-controls="navbarNav">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
 
@@ -39,46 +49,45 @@
 
                         <ng-container *ngIf="!isEmployeePanel">
                             <li class="nav-item">
-                                <a routerLink="/home" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Inicio</a>
+                                <!-- Se mantienen tus clases de animación de FrontendFinal -->
+                                <a routerLink="/home"
+                                    class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a routerLink="/nosotros" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Nosotros</a>
+                                <a routerLink="/nosotros"
+                                    class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Nosotros</a>
                             </li>
                             <li class="nav-item">
-                                <a routerLink="/cultivos" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Cultivos</a>
+                                <a routerLink="/cultivos"
+                                    class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Cultivos</a>
                             </li>
-                           <!--  <li class="nav-item">
-                                <a routerLink="/noticias" class="nav-link text-white hover:text-yellow-400 transition duration-300">Noticias</a>
-                            </li> -->
                             <li class="nav-item">
-                                <a routerLink="/postular" class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Postula aquí!</a>
+                                <a routerLink="/postular"
+                                    class="nav-link relative text-white hover:text-yellow-400 transition duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:-bottom-1 after:left-0 after:origin-left after:transition-transform after:duration-300 after:bg-yellow-400">Postula
+                                    aquí!</a>
                             </li>
                         </ng-container>
 
                         <li class="nav-item">
-                                <a *ngIf="!isLoggedIn" (click)="irAPortalEmpleado()"
-                                    class="cursor-pointer font-semibold py-2 px-4 rounded bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
-                                    Portal del Empleado
-                                </a>
+                            <a *ngIf="!isLoggedIn" (click)="irAPortalEmpleado()"
+                                class="cursor-pointer font-semibold py-2 px-4 rounded bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
+                                Portal del Empleado
+                            </a>
 
                             <div *ngIf="isLoggedIn" class="flex items-center space-x-2">
                                 <span class="text-white text-sm font-medium hidden sm:inline">
-                                 {{ authService.getUsername() }}
+                                    {{ authService.getUsername() }}
                                 </span>
-                            
-                                <p-avatar 
-                                    [label]="userInitial" 
-                                    class="cursor-pointer"
-                                    styleClass="bg-yellow-500 text-gray-900 font-bold"
-                                    (click)="menu.toggle($event)"
-                                    aria-haspopup="true" 
-                                    aria-controls="overlay_menu">
+
+                                <p-avatar [label]="userInitial" class="cursor-pointer"
+                                    styleClass="bg-yellow-500 text-gray-900 font-bold" (click)="menu.toggle($event)"
+                                    aria-haspopup="true" aria-controls="overlay_menu">
                                 </p-avatar>
-                            
+
                                 <p-tieredMenu #menu [model]="menuItems" popup="true" appendTo="body"></p-tieredMenu>
                             </div>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -87,19 +96,23 @@
 
     <div id="navbarNav-mobile" [ngClass]="{'hidden': isNavbarCollapsed}" class="lg:hidden bg-color-verde-claro pb-3">
         <ul class="flex flex-col space-y-2 px-4">
-            
+
             <ng-container *ngIf="!isEmployeePanel">
                 <li class="nav-item">
-                    <a routerLink="/home" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Inicio</a>
+                    <a routerLink="/home" (click)="toggleNavbar()"
+                        class="block py-2 text-white rounded-md transition duration-300">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/nosotros" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Nosotros</a>
+                    <a routerLink="/nosotros" (click)="toggleNavbar()"
+                        class="block py-2 text-white rounded-md transition duration-300">Nosotros</a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/cultivos" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Cultivos</a>
+                    <a routerLink="/cultivos" (click)="toggleNavbar()"
+                        class="block py-2 text-white rounded-md transition duration-300">Cultivos</a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/postular" (click)="toggleNavbar()" class="block py-2 text-white rounded-md transition duration-300">Postular aqui!</a>
+                    <a routerLink="/postular" (click)="toggleNavbar()"
+                        class="block py-2 text-white rounded-md transition duration-300">Postular aqui!</a>
                 </li>
             </ng-container>
 
