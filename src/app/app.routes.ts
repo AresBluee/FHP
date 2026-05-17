@@ -10,9 +10,18 @@ import { ResetPasswordComponent } from './modules/auth/pages/reset-password/rese
 
 
 import { CultivosComponent } from './modules/pages/cultivos/cultivos.component';
+import { PaltaComponent } from './modules/pages/productos/palta/palta.component';
+import { EsparragoComponent } from './modules/pages/productos/esparrago/esparrago.component';
+import { UvaComponent } from './modules/pages/productos/uva/uva.component';
+import { ArandanosComponent } from './modules/pages/productos/arandanos/arandanos.component';
+
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'cultivos', component: CultivosComponent }, 
+  { path: 'productos/palta', component: PaltaComponent },
+  { path: 'productos/esparrago', component: EsparragoComponent },
+  { path: 'productos/uva', component: UvaComponent },
+  { path: 'productos/arandanos', component: ArandanosComponent },
   { path: 'nosotros', component: NosotrosComponent },
    
   { path: 'postular', component: PostularComponent },

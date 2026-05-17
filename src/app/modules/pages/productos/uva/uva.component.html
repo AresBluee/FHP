@@ -1,0 +1,171 @@
+<!-- HERO BANNER PREMIUM MINIMALISTA -->
+<section class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center font-[tipo1] overflow-hidden bg-white">
+  <div class="absolute inset-0 z-0">
+    <img src="uva_hero.png" alt="Uva Premium" class="w-full h-full object-cover opacity-20 grayscale">
+    <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+  </div>
+  
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center text-center mt-12 animate-fade-up">
+    <a routerLink="/home" class="inline-flex items-center text-gray-500 hover:text-[#1e7b45] font-bold text-sm mb-8 transition-colors">
+      <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+      Volver al Inicio
+    </a>
+    
+    <span class="text-[#1e7b45] font-bold tracking-widest uppercase mb-4 text-sm md:text-base drop-shadow-sm">Calidad Superior</span>
+    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-gray-900 mb-6 tracking-tight">
+      Uva de <span class="text-[#1e7b45]">Mesa</span>
+    </h1>
+    <p class="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed">
+      Fresca, dulce y cultivada para cautivar. Disfruta de racimos perfectos seleccionados para los paladares más exigentes.
+    </p>
+  </div>
+</section>
+
+<!-- SECCIÓN NUEVA: INFORMACIÓN Y BENEFICIOS (Minimalista) -->
+<section class="py-24 bg-white font-[tipo1]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col lg:flex-row items-center gap-16">
+      <!-- Imagen limpia y estática -->
+      <div class="w-full lg:w-1/2">
+        <img src="uva_field.png" alt="Viñedos de Uva" class="w-full h-[500px] object-cover rounded-xl shadow-lg">
+      </div>
+      
+      <!-- Contenido Minimalista -->
+      <div class="w-full lg:w-1/2">
+        <h2 class="text-sm font-bold text-[#1e7b45] tracking-widest uppercase mb-3">Dulzura Natural</h2>
+        <h3 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+          Sabor, textura y <br>frescura inigualable
+        </h3>
+        <p class="text-lg text-gray-600 mb-10 font-light leading-relaxed">
+          Nuestras uvas de mesa son el resultado de la perfección agrícola. Cultivadas bajo un clima privilegiado, garantizamos bayas crujientes, racimos consistentes y el grado exacto de dulzura para deleitar al mundo entero.
+        </p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-gray-100 pt-8">
+          <div>
+            <div class="w-10 h-10 rounded bg-[#1e7b45]/10 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-[#1e7b45]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h4 class="font-bold text-gray-900 mb-2">Sabor Excepcional</h4>
+            <p class="text-gray-600 text-sm font-light">Altos niveles de grados Brix que aseguran un dulzor perfecto y natural en cada baya.</p>
+          </div>
+          
+          <div>
+            <div class="w-10 h-10 rounded bg-[#1e7b45]/10 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-[#1e7b45]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+            </div>
+            <h4 class="font-bold text-gray-900 mb-2">Frescura Premium</h4>
+            <p class="text-gray-600 text-sm font-light">Racimos abundantes, color vibrante y firmeza prolongada gracias a procesos impecables.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: DISPONIBILIDAD (Diseño Original Agrokasa) -->
+<section class="py-24 max-w-7xl mx-auto px-6 font-[tipo1] flex flex-col md:flex-row items-center gap-16">
+  <div class="w-full md:w-2/3 text-left">
+    <h2 class="text-3xl md:text-5xl font-light text-gray-400 mb-2 tracking-wide">Disponibilidad</h2>
+    <h3 class="text-5xl md:text-6xl font-light text-gray-900 mb-12 uppercase tracking-wide">UVA</h3>
+    
+    <div class="w-full max-w-2xl overflow-x-auto">
+      <div class="min-w-[400px]">
+        <!-- Fila de meses -->
+        <div class="flex justify-between border-b border-gray-100 pb-4 mb-4 px-2">
+          <div *ngFor="let m of disponibilidad" class="flex-1 text-center font-bold text-gray-600 text-sm">
+            {{ m.mes }}
+          </div>
+        </div>
+        <!-- Fila de iconos -->
+        <div class="flex justify-between border-b border-gray-100 pb-4 px-2">
+          <div *ngFor="let m of disponibilidad" class="flex-1 flex justify-center">
+            <svg class="w-6 h-6 transition-transform duration-300 hover:scale-125 cursor-pointer" [ngClass]="m.activo ? 'text-[#1e7b45]' : 'text-gray-200'" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15,4 C14.5,2.5 13,2 12,2 C10,2 9,3 9,5 C9,5 11,5.5 12,7 C13,5.5 15,5 15,5 C15,5 15.5,4.5 15,4 Z M13.5,8 A2.5,2.5 0 1,1 11,10.5 A2.5,2.5 0 0,1 13.5,8 Z M9.5,9 A2.5,2.5 0 1,1 7,11.5 A2.5,2.5 0 0,1 9.5,9 Z M17.5,9 A2.5,2.5 0 1,1 15,11.5 A2.5,2.5 0 0,1 17.5,9 Z M11.5,13 A2.5,2.5 0 1,1 9,15.5 A2.5,2.5 0 0,1 11.5,13 Z M15.5,13 A2.5,2.5 0 1,1 13,15.5 A2.5,2.5 0 0,1 15.5,13 Z M13.5,17 A2.5,2.5 0 1,1 11,19.5 A2.5,2.5 0 0,1 13.5,17 Z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="w-full md:w-1/3 flex justify-center md:justify-end">
+    <!-- Icono GIGANTE -->
+    <svg class="w-64 h-64 md:w-[350px] md:h-[350px] text-[#1e7b45] opacity-20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M15,4 C14.5,2.5 13,2 12,2 C10,2 9,3 9,5 C9,5 11,5.5 12,7 C13,5.5 15,5 15,5 C15,5 15.5,4.5 15,4 Z M13.5,8 A2.5,2.5 0 1,1 11,10.5 A2.5,2.5 0 0,1 13.5,8 Z M9.5,9 A2.5,2.5 0 1,1 7,11.5 A2.5,2.5 0 0,1 9.5,9 Z M17.5,9 A2.5,2.5 0 1,1 15,11.5 A2.5,2.5 0 0,1 17.5,9 Z M11.5,13 A2.5,2.5 0 1,1 9,15.5 A2.5,2.5 0 0,1 11.5,13 Z M15.5,13 A2.5,2.5 0 1,1 13,15.5 A2.5,2.5 0 0,1 15.5,13 Z M13.5,17 A2.5,2.5 0 1,1 11,19.5 A2.5,2.5 0 0,1 13.5,17 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- SECCIÓN 4: PRESENTACIONES -->
+<section class="py-24 bg-white font-[tipo1] border-t border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-sm font-bold text-[#1e7b45] tracking-widest uppercase mb-3">Empaque & Logística</h2>
+      <h3 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+        Formatos que se adaptan a tu mercado
+      </h3>
+    </div>
+    
+    <div class="w-full">
+      <p-carousel [value]="presentaciones" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="4000" [responsiveOptions]="responsiveOptions">
+        <ng-template let-caja pTemplate="item">
+          <div class="bg-gray-50 border border-gray-200 p-8 flex flex-col items-center mx-4 my-6 rounded-xl hover:border-[#1e7b45] transition-colors duration-300">
+            <div class="w-16 h-16 bg-white flex items-center justify-center rounded-full mb-6 shadow-sm">
+              <svg class="w-8 h-8 text-[#1e7b45]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+            </div>
+            <div class="w-full text-center">
+              <h4 class="font-bold text-gray-900 text-lg mb-1">{{ caja.nombre }}</h4>
+              <p class="text-gray-500 text-sm font-medium mb-4">Uva de Mesa Premium</p>
+              <div class="inline-block bg-white border border-gray-200 px-4 py-2 rounded-full">
+                <p class="text-[#1e7b45] font-bold text-sm">{{ caja.caja }}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 5: EXPORTACIONES (Estático Minimalista) -->
+<section class="py-24 max-w-5xl mx-auto px-6 font-[tipo1] bg-white">
+  <div class="text-center mb-16">
+    <h2 class="text-sm font-bold text-[#1e7b45] tracking-widest uppercase mb-3">Crecimiento Sostenido</h2>
+    <h3 class="text-4xl md:text-5xl font-black text-gray-900">
+      Nuestras Exportaciones
+    </h3>
+    <p class="text-gray-500 mt-4 text-sm font-bold">En miles de cajas de 8.2kg (eq.)</p>
+  </div>
+  
+  <div class="relative h-[350px] w-full mt-10 flex items-end justify-between border-b border-gray-200 pb-2 px-2">
+    <!-- Líneas de cuadrícula sutiles -->
+    <div class="absolute inset-0 flex flex-col justify-between pointer-events-none pb-2 z-0">
+      <div class="border-t border-gray-100 w-full h-0"></div>
+      <div class="border-t border-gray-100 w-full h-0"></div>
+      <div class="border-t border-gray-100 w-full h-0"></div>
+      <div class="border-t border-gray-100 w-full h-0"></div>
+      <div class="border-t border-gray-100 w-full h-0"></div>
+    </div>
+    
+    <!-- Barras Estáticas -->
+    <div *ngFor="let item of exportaciones" class="relative z-10 flex flex-col items-center justify-end h-full w-full px-1 sm:px-3">
+      <!-- Valor superior siempre visible -->
+      <span class="text-xs sm:text-sm font-bold text-gray-600 mb-2">{{ item.volumen }}</span>
+      
+      <!-- Barra estática minimalista color corporativo (sin hover ni transiciones) -->
+      <div class="w-full max-w-[60px] bg-[#1e7b45] rounded-t-sm" [style.height]="item.altura"></div>
+      
+      <span class="text-xs sm:text-sm text-gray-800 font-bold mt-4">{{ item.anio }}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fadeUp 1s ease-out forwards;
+  }
+</style>
