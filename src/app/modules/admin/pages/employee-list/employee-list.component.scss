@@ -1,0 +1,160 @@
+/* ══════════════════════════════════════════
+   Employee List – Gestión de Personal
+   Design System: Agro-Modern Management
+   ══════════════════════════════════════════ */
+
+:host {
+  display: block;
+  font-family: var(--admin-font);
+}
+
+// ── Page Container ──
+.page-container {
+  max-width: 1440px;
+}
+
+// ── Page Header ──
+.page-header {
+  @apply mb-6;
+}
+
+.page-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--admin-on-surface);
+  letter-spacing: -0.02em;
+  line-height: 2.375rem;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: var(--admin-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+// ── Stats Row ──
+.stats-row {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--admin-outline-variant);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: var(--admin-card-shadow);
+}
+
+.stat-number {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--admin-primary-container);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--admin-on-surface-variant);
+}
+
+// ── Error Alert ──
+.error-alert {
+  @apply p-4 mb-4 text-sm rounded-lg;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+// ── Content Card ──
+.content-card {
+  background: #ffffff;
+  border: 1px solid var(--admin-outline-variant);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--admin-card-shadow);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--admin-on-surface);
+  margin-bottom: 1rem;
+  line-height: 1.75rem;
+}
+
+// ── Table Toolbar ──
+.table-toolbar {
+  @apply flex flex-col md:flex-row justify-between items-center gap-4;
+}
+
+.search-input {
+  @apply w-full md:w-auto;
+}
+
+// ── Action Buttons ──
+.action-buttons {
+  @apply flex justify-center space-x-2;
+}
+
+// ── Empty State ──
+.empty-state {
+  @apply text-center py-10;
+
+  i {
+    font-size: 2.5rem;
+    color: #9ca3af;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #6b7280;
+  }
+}
+
+// ── PrimeNG Button Override ──
+::ng-deep .btn-primary {
+  background: var(--admin-primary-container) !important;
+  border-color: var(--admin-primary-container) !important;
+
+  &:hover {
+    background: var(--admin-primary) !important;
+    border-color: var(--admin-primary) !important;
+  }
+}
+
+// ── PrimeNG Table Overrides ──
+::ng-deep .p-datatable {
+  .p-datatable-header {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 0 1rem 0 !important;
+  }
+
+  .p-datatable-thead > tr > th {
+    font-family: var(--admin-font) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em;
+    color: var(--admin-on-surface-variant) !important;
+    background: var(--admin-surface) !important;
+    border-bottom: 1px solid var(--admin-outline-variant) !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .p-datatable-tbody > tr > td {
+    font-family: var(--admin-font) !important;
+    font-size: 0.8125rem !important;
+    color: var(--admin-on-surface) !important;
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+  }
+
+  .p-datatable-tbody > tr:hover {
+    background: #f8faf8 !important;
+  }
+}

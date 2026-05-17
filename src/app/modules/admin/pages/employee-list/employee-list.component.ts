@@ -111,4 +111,12 @@ export class EmployeeListComponent implements OnInit {
       }
     });
   }
+
+  getActiveCount(): number {
+    return this.employees.filter(e => e.enabled).length;
+  }
+
+  getInactiveCount(): number {
+    return this.employees.filter(e => !e.enabled).length;
+  }
 }

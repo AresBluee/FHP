@@ -22,6 +22,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class MenuAdminComponent implements OnInit, OnDestroy {
 
   seccionActiva: string = 'lista-empleados';
+  profileLink: string = '/home';
   
   menuItems: MenuItem[] = []; 
   private routerSubscription: Subscription;
@@ -63,6 +64,13 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authSubscription = this.authService.userRole$.subscribe(role => {
       this.initializeMenuItems(role);
+      if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
+        this.profileLink = '/admin/profile';
+      } else if (role === 'EMPLOYEE' || role === 'USER') {
+        this.profileLink = '/employee/profile';
+      } else {
+        this.profileLink = '/home';
+      }
     });
 
     this.layoutSubscription = this.layoutService.sidebarOpen$.subscribe(
@@ -96,6 +104,18 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
     }
 
     this.menuItems = items;
+  }
+
+  cerrarSesion() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Error al revocar token en backend.', err);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }
  

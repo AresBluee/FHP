@@ -1,9 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import "primeicons/primeicons.css";
+
+/* ── Admin Panel Design Tokens ── */
+:root {
+  --admin-font: 'Plus Jakarta Sans', sans-serif;
+  --admin-primary: #005e26;
+  --admin-primary-container: #007a33;
+  --admin-surface: #f7f9fb;
+  --admin-surface-container: #eceef0;
+  --admin-on-surface: #191c1e;
+  --admin-on-surface-variant: #3f4a3e;
+  --admin-outline: #6f7a6d;
+  --admin-outline-variant: #becabb;
+  --admin-active-bg: #dcebdd;
+  --admin-active-text: #005e26;
+  --admin-error: #ba1a1a;
+  --admin-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 20px rgba(0, 0, 0, 0.03);
+  --admin-sidebar-width: 260px;
+}
 
 @font-face {
     font-family: "tipo1";

@@ -1,28 +1,54 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"></p-confirmDialog>
 
-<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-  <div class="bg-white p-6 rounded-xl shadow-lg border">
-    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Gestión de Personal</h1>
-
-    <div *ngIf="errorMessage" class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-      <span class="font-medium">Error:</span> {{ errorMessage }}
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Gestión de Personal</h1>
+      <p class="page-subtitle">Panel administrativo para control de recursos humanos y operaciones.</p>
     </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">{{ employees.length }}</div>
+      <div class="stat-label">Personal registrado</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ getActiveCount() }}</div>
+      <div class="stat-label">En funciones actuales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ getInactiveCount() }}</div>
+      <div class="stat-label">Pendientes de revisión</div>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="errorMessage" class="error-alert" role="alert">
+    <span class="font-medium">Error:</span> {{ errorMessage }}
+  </div>
+
+  <!-- Main Card: Table -->
+  <div class="content-card">
+    <h2 class="section-title">Listado de Personal</h2>
 
     <p-table #dt [value]="employees" [paginator]="true" [rows]="10" [loading]="isLoading"
-      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+      styleClass="p-datatable-sm" responsiveLayout="scroll"
       [globalFilterFields]="['fullName', 'position', 'username', 'employeeCode', 'status']">
 
       <ng-template pTemplate="caption">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="table-toolbar">
           <p-button label="Registrar Nuevo" icon="pi pi-user-plus"
-            styleClass="p-button-success"
+            styleClass="btn-primary"
             (click)="router.navigate(['/admin/registrar-nuevo'])"></p-button>
 
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-search" />
             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
-              class="w-full md:w-auto" />
+              class="search-input" />
           </p-iconField>
         </div>
       </ng-template>
@@ -52,7 +78,7 @@
                    [severity]="emp.enabled ? 'success' : 'danger'"></p-tag>
           </td>
           <td class="text-center">
-            <div class="flex justify-center space-x-2">
+            <div class="action-buttons">
               <p-button icon="pi pi-pencil" styleClass="p-button-sm p-button-info p-button-outlined"
                 pTooltip="Editar Empleado" (click)="router.navigate(['/admin/employee/edit', emp.id])"></p-button>
               <p-button [icon]="emp.enabled ? 'pi pi-user-minus' : 'pi pi-user-plus'"
@@ -77,9 +103,9 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="text-center py-10">
-            <i class="pi pi-users text-4xl text-gray-400 mb-3"></i>
-            <p class="text-lg text-gray-600">No se encontraron empleados.</p>
+          <td colspan="6" class="empty-state">
+            <i class="pi pi-users"></i>
+            <p>No se encontraron empleados.</p>
           </td>
         </tr>
       </ng-template>

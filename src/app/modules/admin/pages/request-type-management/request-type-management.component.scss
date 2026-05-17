@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════
-   Attendance Control – Control de Asistencia
+   Request Type Management – Configurar
    Design System: Agro-Modern Management
    ══════════════════════════════════════════ */
 
@@ -13,7 +13,7 @@
 }
 
 .page-header {
-  @apply mb-6;
+  @apply flex justify-between items-center mb-6;
 }
 
 .page-title {
@@ -37,32 +37,63 @@
   box-shadow: var(--admin-card-shadow);
 }
 
-.table-toolbar {
-  @apply flex flex-col md:flex-row justify-between items-center gap-4;
+.action-buttons {
+  @apply flex justify-center gap-2;
 }
 
-.toolbar-left {
-  @apply flex items-center gap-2;
+.check-icon {
+  color: #22c55e;
 }
 
-.search-input {
-  @apply w-full md:w-auto;
+.times-icon {
+  color: #f87171;
 }
 
 .empty-state {
-  @apply text-center py-10;
+  @apply text-center p-8;
 
   i {
     font-size: 2.5rem;
     color: #9ca3af;
     display: block;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   p {
-    font-size: 1rem;
     color: #6b7280;
   }
+}
+
+// ── Dialog ──
+.dialog-field {
+  margin-bottom: 1rem;
+}
+
+.dialog-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.required {
+  color: var(--admin-error);
+}
+
+.dialog-grid {
+  @apply grid grid-cols-2 gap-4 mb-4;
+}
+
+.checkbox-field {
+  @apply flex items-center gap-2 p-3 rounded-lg border mb-3;
+  background: var(--admin-surface);
+  border-color: var(--admin-outline-variant);
+}
+
+.checkbox-label {
+  cursor: pointer;
+  margin-bottom: 0;
+  font-size: 0.875rem;
 }
 
 // ── PrimeNG Overrides ──
@@ -75,12 +106,6 @@
 }
 
 ::ng-deep .p-datatable {
-  .p-datatable-header {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 0 1rem 0 !important;
-  }
-
   .p-datatable-thead > tr > th {
     font-family: var(--admin-font) !important;
     font-size: 0.75rem !important;

@@ -1,16 +1,16 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
-<div class="p-6">
-  <div class="flex justify-between items-center mb-6">
+<div class="page-container">
+  <div class="page-header">
     <div>
-      <h1 class="text-3xl font-bold text-gray-800">Tipos de Solicitud</h1>
-      <p class="text-gray-600 mt-1">Configuración y reglas de negocio para los documentos laborales</p>
+      <h1 class="page-title">Tipos de Solicitud</h1>
+      <p class="page-subtitle">Configuración y reglas de negocio para los documentos laborales</p>
     </div>
-    <p-button label="Nuevo Tipo" icon="pi pi-plus" (onClick)="openNew()" styleClass="p-button-primary"></p-button>
+    <p-button label="Nuevo Tipo" icon="pi pi-plus" (onClick)="openNew()" styleClass="btn-primary"></p-button>
   </div>
 
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+  <div class="content-card">
     <p-table [value]="requestTypes" [loading]="isLoading" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
       <ng-template pTemplate="header">
         <tr>
@@ -30,13 +30,13 @@
           </td>
           <td>{{ type.slaDays }}</td>
           <td class="text-center">
-            <i class="pi" [ngClass]="{'pi-check-circle text-green-500': type.requiresSignature, 'pi-times-circle text-red-400': !type.requiresSignature}"></i>
+            <i class="pi" [ngClass]="{'pi-check-circle check-icon': type.requiresSignature, 'pi-times-circle times-icon': !type.requiresSignature}"></i>
           </td>
           <td class="text-center">
-            <i class="pi" [ngClass]="{'pi-check-circle text-green-500': type.requiresAttachment, 'pi-times-circle text-red-400': !type.requiresAttachment}"></i>
+            <i class="pi" [ngClass]="{'pi-check-circle check-icon': type.requiresAttachment, 'pi-times-circle times-icon': !type.requiresAttachment}"></i>
           </td>
           <td class="text-center">
-            <div class="flex justify-center gap-2">
+            <div class="action-buttons">
               <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-text p-button-info" (onClick)="openEdit(type)" pTooltip="Editar"></p-button>
               <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-text p-button-danger" (onClick)="deleteType(type)" pTooltip="Eliminar"></p-button>
             </div>
@@ -45,7 +45,10 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="text-center p-4 text-gray-500">No se encontraron tipos de solicitud.</td>
+          <td colspan="6" class="empty-state">
+            <i class="pi pi-cog"></i>
+            <p>No se encontraron tipos de solicitud.</p>
+          </td>
         </tr>
       </ng-template>
     </p-table>
@@ -55,35 +58,35 @@
 <!-- Modal Dialog -->
 <p-dialog [(visible)]="displayDialog" [header]="isEditing ? 'Editar Tipo de Solicitud' : 'Nuevo Tipo de Solicitud'" [modal]="true" [style]="{width: '450px'}" styleClass="p-fluid">
   <ng-template pTemplate="content">
-    <div class="field mb-4">
-      <label for="name" class="font-bold block mb-2">Nombre de la Solicitud <span class="text-red-500">*</span></label>
+    <div class="dialog-field">
+      <label for="name" class="dialog-label">Nombre de la Solicitud <span class="required">*</span></label>
       <input id="name" type="text" pInputText [(ngModel)]="currentType.name" required autofocus placeholder="Ej. Permiso por Mudanza" />
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <div class="field">
-        <label for="priority" class="font-bold block mb-2">Prioridad (1-4)</label>
+    <div class="dialog-grid">
+      <div class="dialog-field">
+        <label for="priority" class="dialog-label">Prioridad (1-4)</label>
         <p-inputNumber id="priority" [(ngModel)]="currentType.basePriority" [min]="1" [max]="4" [showButtons]="true"></p-inputNumber>
       </div>
-      <div class="field">
-        <label for="sla" class="font-bold block mb-2">Días Límite (SLA)</label>
+      <div class="dialog-field">
+        <label for="sla" class="dialog-label">Días Límite (SLA)</label>
         <p-inputNumber id="sla" [(ngModel)]="currentType.slaDays" [min]="1" [showButtons]="true" suffix=" días"></p-inputNumber>
       </div>
     </div>
 
-    <div class="field-checkbox mb-3 flex items-center gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+    <div class="checkbox-field">
       <p-checkbox [(ngModel)]="currentType.requiresSignature" [binary]="true" inputId="signature"></p-checkbox>
-      <label for="signature" class="cursor-pointer mb-0">Requiere Firma del Supervisor</label>
+      <label for="signature" class="checkbox-label">Requiere Firma del Supervisor</label>
     </div>
 
-    <div class="field-checkbox mb-3 flex items-center gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+    <div class="checkbox-field">
       <p-checkbox [(ngModel)]="currentType.requiresAttachment" [binary]="true" inputId="attachment"></p-checkbox>
-      <label for="attachment" class="cursor-pointer mb-0">Obligar a subir un Documento/Prueba</label>
+      <label for="attachment" class="checkbox-label">Obligar a subir un Documento/Prueba</label>
     </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
     <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text" (onClick)="displayDialog = false"></p-button>
-    <p-button label="Guardar" icon="pi pi-check" styleClass="p-button-primary" (onClick)="saveType()"></p-button>
+    <p-button label="Guardar" icon="pi pi-check" styleClass="btn-primary" (onClick)="saveType()"></p-button>
   </ng-template>
 </p-dialog>

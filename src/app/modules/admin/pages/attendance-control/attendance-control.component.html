@@ -1,16 +1,19 @@
 <p-toast></p-toast>
 
-<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-  <div class="bg-white p-6 rounded-xl shadow-lg border">
-    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Control de Asistencia Diario</h1>
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Control de Asistencia Diario</h1>
+    <p class="page-subtitle">Supervisa las marcaciones y registra asistencias manualmente.</p>
+  </div>
 
+  <div class="content-card">
     <p-table #dt [value]="employeeStatuses" [paginator]="true" [rows]="10" [loading]="isLoading"
-      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+      styleClass="p-datatable-sm" responsiveLayout="scroll"
       [globalFilterFields]="['fullName', 'position', 'employeeCode']">
 
       <ng-template pTemplate="caption">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div class="flex items-center gap-2">
+        <div class="table-toolbar">
+          <div class="toolbar-left">
             <p-calendar [(ngModel)]="selectedDate" (onSelect)="loadDailyStatus()" dateFormat="dd/mm/yy"
               [showIcon]="true" inputId="date-selector"></p-calendar>
             <p-button icon="pi pi-refresh" (onClick)="loadDailyStatus()" pTooltip="Actualizar"
@@ -20,7 +23,7 @@
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-search" />
             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
-              class="w-full md:w-auto" />
+              class="search-input" />
           </p-iconField>
         </div>
       </ng-template>
@@ -55,7 +58,7 @@
               [icon]="status.status === 'ASISTIO' ? 'pi pi-sign-out' : 'pi pi-sign-in'"
               [pTooltip]="getButtonText(status.status)"
               [disabled]="status.status === 'SALIO'"
-              [styleClass]="status.status === 'ASISTIO' ? 'p-button-sm p-button-warning' : 'p-button-sm p-button-success'"
+              [styleClass]="status.status === 'ASISTIO' ? 'p-button-sm p-button-warning' : 'p-button-sm btn-primary'"
               (click)="registerManualMark(status)"></p-button>
           </td>
         </tr>
@@ -63,9 +66,9 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="text-center py-10">
-            <i class="pi pi-calendar-times text-4xl text-gray-400 mb-3"></i>
-            <p class="text-lg text-gray-600">No hay datos de asistencia para esta fecha.</p>
+          <td colspan="6" class="empty-state">
+            <i class="pi pi-calendar-times"></i>
+            <p>No hay datos de asistencia para esta fecha.</p>
           </td>
         </tr>
       </ng-template>

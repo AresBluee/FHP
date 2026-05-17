@@ -1,17 +1,20 @@
 <p-toast></p-toast>
 
-<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-  <div class="bg-white p-6 rounded-xl shadow-lg border">
-    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Gestión de Documentos</h1>
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Documentos</h1>
+    <p class="page-subtitle">Administra y consulta los documentos cargados del personal.</p>
+  </div>
 
+  <div class="content-card">
     <p-table #dt [value]="documents" [paginator]="true" [rows]="10" [loading]="isLoading"
-      styleClass="p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+      styleClass="p-datatable-sm" responsiveLayout="scroll"
       [globalFilterFields]="['employeeName', 'documentType', 'uploadedBy', 'employeeCode']">
 
       <ng-template pTemplate="caption">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div class="flex items-center gap-2">
-            <p-button label="Subir Documento" icon="pi pi-upload" styleClass="p-button-success"
+        <div class="table-toolbar">
+          <div class="toolbar-left">
+            <p-button label="Subir Documento" icon="pi pi-upload" styleClass="btn-primary"
               (click)="showUploadModal = true"></p-button>
             <p-button icon="pi pi-refresh" (onClick)="loadDocuments()" pTooltip="Actualizar"
               styleClass="p-button-secondary"></p-button>
@@ -20,7 +23,7 @@
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-search" />
             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar en la tabla..."
-              class="w-full md:w-auto" />
+              class="search-input" />
           </p-iconField>
         </div>
       </ng-template>
@@ -46,7 +49,7 @@
           <td>{{ doc.uploadedBy }}</td>
           <td>{{ doc.uploadDate | date:'dd/MM/yyyy' }}</td>
           <td class="text-center">
-            <div class="flex justify-center space-x-2">
+            <div class="action-buttons">
               <p-button icon="pi pi-eye" styleClass="p-button-sm p-button-info p-button-outlined"
                 (onClick)="viewDocument(doc.id)" pTooltip="Ver en Línea"></p-button>
               <p-button icon="pi pi-download" styleClass="p-button-sm p-button-success p-button-outlined"
@@ -58,9 +61,9 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="text-center py-10">
-            <i class="pi pi-file-excel text-4xl text-gray-400 mb-3"></i>
-            <p class="text-lg text-gray-600">No hay documentos cargados en el sistema.</p>
+          <td colspan="6" class="empty-state">
+            <i class="pi pi-file-excel"></i>
+            <p>No hay documentos cargados en el sistema.</p>
           </td>
         </tr>
       </ng-template>
@@ -71,7 +74,7 @@
 <!-- Diálogo para Visualización de Documento -->
 <p-dialog header="Visualización del Documento" [(visible)]="showViewer" [modal]="true"
   [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
-  <iframe [src]="documentViewerUrl" class="w-full h-full border-none"></iframe>
+  <iframe [src]="documentViewerUrl" class="viewer-iframe"></iframe>
   <ng-template pTemplate="footer">
     <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text"></p-button>
   </ng-template>

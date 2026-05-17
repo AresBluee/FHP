@@ -22,7 +22,8 @@ import { TagModule } from 'primeng/tag';
     InputTextModule, InputNumberModule, CheckboxModule, ToastModule, ConfirmDialogModule, TagModule
   ],
   providers: [MessageService, ConfirmationService],
-  templateUrl: './request-type-management.component.html'
+  templateUrl: './request-type-management.component.html',
+  styleUrls: ['./request-type-management.component.scss']
 })
 export class RequestTypeManagementComponent implements OnInit {
 

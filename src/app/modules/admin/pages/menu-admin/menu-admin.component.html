@@ -1,41 +1,53 @@
-<div class="flex min-h-screen relative">
+<div class="admin-layout">
 
-  <!-- BACKDROP -->
-  <div *ngIf="isSidebarOpen" class="fixed inset-0 bg-black/50 z-40 transition-opacity lg:hidden" (click)="closeSidebar()"></div>
+  <!-- BACKDROP PARA MÓVIL -->
+  <div *ngIf="isSidebarOpen" class="admin-backdrop" (click)="closeSidebar()"></div>
 
-  <!-- MENÚ LATERAL -->
-  <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out"
-       [ngClass]="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}">
-    <div class="flex items-center justify-between p-4 border-b border-gray-200">
-      <span class="text-xl font-bold text-color-verde-oscuro">Menú</span>
-      <button (click)="closeSidebar()" class="text-gray-500 hover:text-gray-800 focus:outline-none">
-        <i class="pi pi-times text-xl"></i>
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" [ngClass]="{'is-open': isSidebarOpen}">
+
+    <!-- Header del sidebar (solo móvil) -->
+    <div class="sidebar-header-mobile">
+      <span class="sidebar-title">Menú</span>
+      <button (click)="closeSidebar()" class="sidebar-close-btn">
+        <i class="pi pi-times"></i>
       </button>
     </div>
-    
-    <div class="h-[calc(100vh-65px)] overflow-y-auto bg-white">
-      <p-menu [model]="menuItems" class="!border-none shadow-none w-full h-full block" styleClass="!border-none !rounded-none">
+
+    <!-- Navegación principal -->
+    <nav class="sidebar-nav">
+      <p-menu [model]="menuItems" class="sidebar-menu" styleClass="sidebar-primeng-menu">
         <ng-template pTemplate="item" let-item>
-          <a 
-          *ngIf="item.routerLink"
-          [routerLink]="item.routerLink" 
-          (click)="closeSidebar()"
-          [ngClass]="{
-                    '!bg-color-verde-hover': seccionActiva === item.id,
-                'text-color-verde-header hover:bg-color-verde-hover':
-                  seccionActiva !== item.id
-              }" 
-              class="p-3 rounded-md transition duration-150 cursor-pointer flex items-center space-x-2">
-            <i [class]="item.icon"></i>
-            <span>{{ item.label }}</span>
-          </a>
+          <div class="sidebar-item-wrapper">
+            <a *ngIf="item.routerLink"
+               [routerLink]="item.routerLink"
+               (click)="closeSidebar()"
+               class="sidebar-link"
+               [class.is-active]="seccionActiva === item.id">
+              <i [class]="item.icon" class="sidebar-icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </div>
         </ng-template>
       </p-menu>
+    </nav>
+
+    <!-- Footer del sidebar -->
+    <div class="sidebar-footer">
+      <a [routerLink]="profileLink" class="sidebar-link footer-link">
+        <i class="pi pi-user sidebar-icon"></i>
+        <span>Mi perfil</span>
+      </a>
+      <a (click)="cerrarSesion()" class="sidebar-link footer-link logout">
+        <i class="pi pi-sign-out sidebar-icon"></i>
+        <span>Cerrar sesión</span>
+      </a>
     </div>
-  </div>
+
+  </aside>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <main class="flex-1 p-6 bg-gray-50 overflow-y-auto w-full min-h-screen transition-all duration-300 lg:ml-0">
+  <main class="admin-content">
     <router-outlet></router-outlet>
   </main>
 
