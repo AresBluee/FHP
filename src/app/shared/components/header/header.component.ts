@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, filter } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { LayoutService } from '../../../core/services/layout.service'; // <-- AÑADIDO
 import { TieredMenuModule } from 'primeng/tieredmenu';
@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   profileLink: string = '/home'; // <-- AÑADIDO
 
   private authSubscription!: Subscription;
+  private routerSubscription!: Subscription;
 
   ngOnInit(): void {
     this.authSubscription = combineLatest([
@@ -43,9 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isLoggedIn = isLoggedIn;
       this.userRole = role;
 
-      // <-- AÑADIDO ROL SUPERVISOR
-      this.isEmployeePanel = !!isLoggedIn &&
-        (role === 'EMPLOYEE' || role === 'ADMIN' || role === 'RRHH' || role === 'USER' || role === 'SUPERVISOR');
+      this.updatePanelStatus();
 
       this.userInitial = this.getInitial(username);
 
@@ -55,6 +54,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.checkRedirection(role);
       }
     });
+
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updatePanelStatus();
+    });
+  }
+
+  updatePanelStatus() {
+    const url = this.router.url;
+    // Solo consideramos que estamos en el panel si la ruta empieza por /admin o /employee
+    // y el usuario está logueado.
+    this.isEmployeePanel = this.isLoggedIn && (url.startsWith('/admin') || url.startsWith('/employee'));
   }
 
   initializePanelMenu(role: string | null): void {
@@ -113,7 +125,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   checkRedirection(role: string | null): void {
-    // <-- AÑADIDO ROL SUPERVISOR
+    // Si ya estamos en una ruta protegida, no redirigimos
+    if (this.router.url.startsWith('/admin') || this.router.url.startsWith('/employee')) {
+      return;
+    }
     const targetUrl = role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR' ? '/admin' : '/employee';
     this.router.navigate([targetUrl]);
   }

@@ -1,54 +1,88 @@
-<div class="admin-layout">
-
-  <!-- BACKDROP PARA MÓVIL -->
-  <div *ngIf="isSidebarOpen" class="admin-backdrop" (click)="closeSidebar()"></div>
-
-  <!-- SIDEBAR -->
-  <aside class="admin-sidebar" [ngClass]="{'is-open': isSidebarOpen}">
-
-    <!-- Header del sidebar (solo móvil) -->
-    <div class="sidebar-header-mobile">
-      <span class="sidebar-title">Menú</span>
-      <button (click)="closeSidebar()" class="sidebar-close-btn">
-        <i class="pi pi-times"></i>
-      </button>
+<div class="bg-background text-on-surface font-body-base antialiased min-h-screen">
+  <!-- Top Navigation Bar -->
+  <header class="bg-surface/80 backdrop-blur-md fixed top-0 right-0 left-0 md:left-[260px] z-40 border-b border-outline-variant flex justify-between items-center h-16 px-6 transition-all duration-300">
+    <button (click)="isSidebarOpen = !isSidebarOpen" class="md:hidden text-on-surface-variant hover:bg-surface-container-high rounded-full p-2 transition-all mr-4 active:scale-95">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    
+    <div class="flex-1 flex items-center">
+      <h2 class="text-on-surface-variant font-medium text-sm hidden md:block opacity-60 uppercase tracking-widest">{{ seccionActiva }}</h2>
     </div>
 
-    <!-- Navegación principal -->
-    <nav class="sidebar-nav">
-      <p-menu [model]="menuItems" class="sidebar-menu" styleClass="sidebar-primeng-menu">
-        <ng-template pTemplate="item" let-item>
-          <div class="sidebar-item-wrapper">
-            <a *ngIf="item.routerLink"
-               [routerLink]="item.routerLink"
-               (click)="closeSidebar()"
-               class="sidebar-link"
-               [class.is-active]="seccionActiva === item.id">
-              <i [class]="item.icon" class="sidebar-icon"></i>
-              <span>{{ item.label }}</span>
-            </a>
-          </div>
-        </ng-template>
-      </p-menu>
+    <!-- Trailing Actions -->
+    <div class="flex items-center gap-2">
+      <div class="relative group">
+        <button class="text-on-surface-variant hover:bg-surface-container-high rounded-full p-2.5 transition-all active:scale-95 relative">
+          <span class="material-symbols-outlined text-[22px]">notifications</span>
+          <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-surface"></span>
+        </button>
+        <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-on-surface text-surface text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          Notificaciones
+        </span>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="flex items-center gap-3 border-l border-outline-variant pl-4 ml-2 group cursor-pointer">
+        <div class="flex flex-col items-end hidden sm:flex">
+          <span class="font-label-bold text-on-surface text-sm leading-none mb-1 group-hover:text-primary transition-colors">{{ authService.getUsername() }}</span>
+          <span class="text-[10px] text-on-surface-variant opacity-60 uppercase tracking-tighter">Administrador</span>
+        </div>
+        <button class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-label-bold flex items-center justify-center hover:ring-4 hover:ring-primary/20 transition-all uppercase active:scale-90 border border-primary/10">
+          {{ authService.getUsername()?.charAt(0) || 'A' }}
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Side Navigation Bar -->
+  <!-- Backdrop -->
+  <div *ngIf="isSidebarOpen" class="fixed inset-0 bg-black/50 z-40 transition-opacity md:hidden" (click)="closeSidebar()"></div>
+  
+  <aside [ngClass]="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}" 
+         class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col py-6 px-4 z-50 transform md:translate-x-0 transition-transform duration-300">
+    <!-- Brand Header -->
+    <div class="flex items-center gap-3 mb-8 px-2">
+      <div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+      </div>
+      <div>
+        <h1 class="text-headline-md font-headline-md font-bold text-primary leading-none">AGROcyt</h1>
+        <span class="text-[10px] text-on-surface-variant uppercase tracking-wide">Panel Admin</span>
+      </div>
+    </div>
+    
+    <!-- Navigation Links -->
+    <nav class="flex-1 flex flex-col gap-1 overflow-y-auto">
+      <a *ngFor="let item of menuItems" 
+         [routerLink]="item.routerLink" 
+         (click)="closeSidebar()"
+         [ngClass]="{
+           'text-primary bg-secondary-container/30 font-bold opacity-90': seccionActiva === item.id,
+           'text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200': seccionActiva !== item.id
+         }"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer">
+        <span class="material-symbols-outlined" [style.font-variation-settings]="seccionActiva === item.id ? '\'FILL\' 1' : '\'FILL\' 0'">{{ item.icon }}</span>
+        <span class="font-body-base text-body-base font-medium">{{ item.label }}</span>
+      </a>
     </nav>
-
-    <!-- Footer del sidebar -->
-    <div class="sidebar-footer">
-      <a [routerLink]="profileLink" class="sidebar-link footer-link">
-        <i class="pi pi-user sidebar-icon"></i>
-        <span>Mi perfil</span>
+    
+    <!-- Footer Actions -->
+    <div class="pt-4 mt-4 border-t border-outline-variant">
+      <a [routerLink]="profileLink" (click)="closeSidebar()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 cursor-pointer mb-1">
+        <span class="material-symbols-outlined">person</span>
+        <span class="font-body-base text-body-base font-medium">Mi Perfil</span>
       </a>
-      <a (click)="cerrarSesion()" class="sidebar-link footer-link logout">
-        <i class="pi pi-sign-out sidebar-icon"></i>
-        <span>Cerrar sesión</span>
+      <a (click)="cerrarSesion()" class="cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors duration-200">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="font-body-base text-body-base font-medium">Cerrar Sesión</span>
       </a>
     </div>
-
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="admin-content">
-    <router-outlet></router-outlet>
+  <!-- Main Content Area -->
+  <main class="md:ml-[260px] pt-16 min-h-screen flex flex-col">
+    <div class="flex-1 p-6 md:p-gutter max-w-container-max-width mx-auto w-full flex flex-col gap-6">
+      <router-outlet></router-outlet>
+    </div>
   </main>
-
 </div>

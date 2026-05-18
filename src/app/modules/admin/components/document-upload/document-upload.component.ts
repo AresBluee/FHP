@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../Environment/environment';
 
-
 // PrimeNG Imports
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -34,18 +33,16 @@ export class DocumentUploadComponent implements OnInit {
   private apiUrl = environment.apiUrl + '/api/documents/upload';
   private employeesUrl = environment.apiUrl + '/api/employee';
 
-  @ViewChild('fileUpload') fileUpload: any; // Referencia para limpiar el componente de archivo
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
 
   employees: EmployeeListDTO[] = [];
 
-  // Modelos de formulario
   selectedEmployeeId: number | null = null;
   documentType: string = '';
-  selectedFile: File | null = null; // 🚨 Cambiamos uploadedFiles a single File
-  uploadedFiles: any[] = []; // Array temporal para mostrar el nombre del archivo
+  selectedFile: File | null = null;
 
   isLoading = false;
-  submitted = false; // Nueva variable para controlar el envío del formulario
+  submitted = false;
 
   ngOnInit(): void {
     this.loadEmployees();
@@ -58,26 +55,19 @@ export class DocumentUploadComponent implements OnInit {
     });
   }
 
-  // -------------------------------------------------------------
-  // 💡 LÓGICA CLAVE: Capturar el archivo cuando se selecciona
-  // -------------------------------------------------------------
-  onFileSelect(event: any): void {
-    // Al usar multiple=false, solo tomamos el primer archivo
+  onFileSelect(event: { files: File[] | null }): void {
     if (event.files && event.files.length > 0) {
       this.selectedFile = event.files[0];
-      this.uploadedFiles = event.files; // Solo para mostrar en el template
-      console.log('Archivo Seleccionado:', this.selectedFile);
     } else {
       this.selectedFile = null;
-      this.uploadedFiles = [];
     }
   }
 
-  // -------------------------------------------------------------
-  // FUNCIÓN CRÍTICA: Subir el Archivo al hacer click en el botón Submit
-  // -------------------------------------------------------------
-  uploadDocument(): void {
-    this.submitted = true; // Marcar el formulario como enviado
+  /**
+   * Se dispara cuando se envía el formulario: valida y envía manualmente vía HttpClient.
+   */
+  submitUpload(): void {
+    this.submitted = true;
 
     if (!this.selectedEmployeeId || !this.documentType || !this.selectedFile) {
       this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Por favor, complete todos los campos requeridos.' });
@@ -86,34 +76,40 @@ export class DocumentUploadComponent implements OnInit {
 
     this.isLoading = true;
 
-    // 1. Crear el objeto FormData
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('employeeId', this.selectedEmployeeId.toString());
-    formData.append('documentType', this.documentType);
+    formData.append('metadata', JSON.stringify({
+      employeeId: this.selectedEmployeeId,
+      documentType: this.documentType
+    }));
 
-    // 2. Llamar al endpoint POST /api/documents/upload
-    this.http.post(this.apiUrl, formData).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Documento subido y asociado con éxito.' });
-        this.resetForm();
+    this.http.post<any>(this.apiUrl, formData).subscribe({
+      next: (response) => {
+        this.onUploadSuccess();
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Fallo', detail: `Error: ${err.error?.message || 'Error desconocido.'}` });
-        this.isLoading = false;
+        this.onUploadError(err);
       }
     });
+  }
+
+  onUploadSuccess(): void {
+    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Documento subido y asociado con éxito.' });
+    this.resetForm();
+  }
+
+  onUploadError(err: any): void {
+    this.isLoading = false;
+    const errorMsg = err.error?.message || 'Error al procesar la subida del documento.';
+    this.messageService.add({ severity: 'error', summary: 'Fallo', detail: errorMsg });
   }
 
   resetForm(): void {
     this.selectedEmployeeId = null;
     this.documentType = '';
     this.selectedFile = null;
-    this.uploadedFiles = [];
     this.isLoading = false;
-    this.submitted = false; // Resetear el estado de envío del formulario
-
-    // Limpiar el componente p-fileupload usando su referencia
+    this.submitted = false;
     if (this.fileUpload) {
       this.fileUpload.clear();
     }

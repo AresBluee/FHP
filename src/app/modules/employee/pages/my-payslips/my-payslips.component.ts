@@ -58,8 +58,7 @@ export class MyPayslipsComponent implements OnInit {
   }
 
   downloadPayslip(payslipId: number): void {
-    // Para descargar usamos la URL del documento
-    const downloadUrl = `${environment.apiUrl}/api/documents/${payslipId}/download`;
+    const downloadUrl = `${this.payslipsApiUrl}/${payslipId}/download`;
     this.http.get(downloadUrl, { responseType: 'blob' }).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { Subscription, filter } from 'rxjs';
 import { LayoutService } from '../../../../core/services/layout.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-menu-employee',
@@ -24,7 +25,7 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
   private layoutSubscription!: Subscription;
   isSidebarOpen: boolean = false;
 
-  constructor(private router: Router, private layoutService: LayoutService) {
+  constructor(private router: Router, private layoutService: LayoutService, public authService: AuthService) {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -65,13 +66,25 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
 
   initializeMenuItems(): void {
     this.menuItems = [
-      { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: ['profile'], id: 'profile' },
-      { label: 'Horarios', icon: 'pi pi-calendar', routerLink: ['my-schedule'], id: 'my-schedule' },
-      { label: 'Certificados', icon: 'pi pi-file-word', routerLink: ['my-certificates'], id: 'my-certificates' },
-      { label: 'Asistencias', icon: 'pi pi-calendar-clock', routerLink: ['my-attendance-history'], id: 'my-attendance-history' },
-      { label: 'Solicitudes', icon: 'pi pi-envelope', routerLink: ['my-requests'], id: 'my-requests' },
-      { label: 'Boletas de Pago', icon: 'pi pi-dollar', routerLink: ['my-payslips'], id: 'my-payslips' },
+      { label: 'Mi Perfil', icon: 'person', routerLink: ['profile'], id: 'profile' },
+      { label: 'Mis Horarios', icon: 'schedule', routerLink: ['my-schedule'], id: 'my-schedule' },
+      { label: 'Mis Certificados', icon: 'workspace_premium', routerLink: ['my-certificates'], id: 'my-certificates' },
+      { label: 'Mi Asistencia', icon: 'how_to_reg', routerLink: ['my-attendance-history'], id: 'my-attendance-history' },
+      { label: 'Mis Solicitudes', icon: 'description', routerLink: ['my-requests'], id: 'my-requests' },
+      { label: 'Boletas de Pago', icon: 'receipt_long', routerLink: ['my-payslips'], id: 'my-payslips' },
     ];
+  }
+
+  cerrarSesion() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Error al revocar token en backend.', err);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
 }

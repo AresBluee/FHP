@@ -1,0 +1,236 @@
+/* ══════════════════════════════════════════
+   Employee Form – Registro de Empleado
+   Design System: Agro-Modern Management
+   ══════════════════════════════════════════ */
+
+:host {
+  display: block;
+  font-family: var(--admin-font);
+  background: var(--admin-surface);
+  min-height: 100vh;
+}
+
+// ── Page Container ──
+:host > div {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+// ── Page Header ──
+:host h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--admin-on-surface);
+  letter-spacing: -0.02em;
+  line-height: 2.375rem;
+}
+
+:host h1 + p {
+  font-size: 0.875rem;
+  color: var(--admin-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+// ── Section Cards ──
+:host .bg-white {
+  background: #ffffff;
+  border: 1px solid var(--admin-outline-variant);
+  border-radius: 1rem;
+  box-shadow: var(--admin-card-shadow);
+  overflow: hidden;
+}
+
+// ── Section Header ──
+:host .bg-gradient-to-r {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--admin-outline-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--admin-on-surface);
+    margin: 0;
+    line-height: 1.75rem;
+  }
+}
+
+// Step badge
+:host .bg-green-100,
+:host .bg-blue-100,
+:host .bg-purple-100 {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+:host .bg-green-100 { background: var(--admin-active-bg); color: var(--admin-active-text); }
+:host .bg-blue-100  { background: #dbeafe;  color: #1d4ed8; }
+:host .bg-purple-100 { background: #ede9fe; color: #7c3aed; }
+
+// ── Form Field: Float Labels ──
+:host .p-floatLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+:host .p-floatLabel label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--admin-on-surface-variant);
+  margin-bottom: 0.375rem;
+}
+
+:host .p-floatLabel input,
+:host .p-floatLabel .p-inputtext {
+  border: 1px solid var(--admin-outline-variant);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  font-family: var(--admin-font);
+  font-size: 0.875rem;
+  color: var(--admin-on-surface);
+  transition: border-color 0.15s ease-in-out;
+  padding: 0.625rem 0.875rem;
+
+  &:focus {
+    border-color: var(--admin-primary-container);
+    box-shadow: 0 0 0 2px rgba(0, 122, 51, 0.15);
+    outline: none;
+  }
+
+  &.ng-invalid.ng-dirty {
+    border-color: var(--admin-error) !important;
+  }
+}
+
+:host .p-floatLabel .p-dropdown {
+  border: 1px solid var(--admin-outline-variant);
+  border-radius: 0.5rem;
+}
+
+:host .p-floatLabel .p-password {
+  width: 100%;
+}
+
+// ── Field content area ──
+:host .p-6 {
+  padding: 1.5rem;
+}
+
+:host .grid {
+  gap: 1.5rem;
+}
+
+// ── Validation Messages ──
+:host small.text-red-500,
+:host small.p-error {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--admin-error);
+  margin-top: 0.25rem;
+  display: block;
+}
+
+// ── Create New Position Dialog ──
+:host .p-dialog {
+  border-radius: 1rem;
+  box-shadow: var(--admin-card-shadow);
+  overflow: hidden;
+
+  .p-dialog-header {
+    background: var(--admin-surface);
+    border-bottom: 1px solid var(--admin-outline-variant);
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: var(--admin-on-surface);
+    font-family: var(--admin-font);
+  }
+
+  .p-dialog-content {
+    padding: 1.5rem;
+  }
+}
+
+// ── Input Group (icon + label) ──
+:host .p-inputgroup-addon {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-outline-variant);
+  border-right: none;
+  color: var(--admin-on-surface-variant);
+}
+
+:host .p-inputgroup .p-floatLabel {
+  flex: 1;
+}
+
+:host .p-inputgroup .p-floatLabel input,
+:host .p-inputgroup .p-floatLabel .p-inputtext {
+  border-left: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+
+  &:focus {
+    border-left: none;
+  }
+}
+
+// ── Input Group border fix: left field (when it comes first) ──
+:host .p-inputgroup > .p-floatLabel:first-child input,
+:host .p-inputgroup > .p-floatLabel:first-child .p-inputtext {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+// ── Submit Button ──
+:host .p-button-success {
+  background: var(--admin-primary-container) !important;
+  border-color: var(--admin-primary-container) !important;
+  border-radius: 0.75rem;
+  font-family: var(--admin-font);
+  font-weight: 600;
+
+  &:hover {
+    background: var(--admin-primary) !important;
+    border-color: var(--admin-primary) !important;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ── CancelButton on dialog ──
+:host .p-button-text.p-button-secondary {
+  font-family: var(--admin-font);
+  color: var(--admin-on-surface-variant);
+
+  &:hover {
+    background: var(--admin-surface-container);
+    color: var(--admin-on-surface);
+  }
+}
+
+// ── Error message helper class ──
+:host .text-gray-500 {
+  color: var(--admin-on-surface-variant);
+  font-size: 0.8125rem;
+  margin-top: 0.375rem;
+}
+
+:host .text-gray-700 {
+  color: var(--admin-on-surface);
+}
+
+// Override default label grey if present
+:host label.text-sm {
+  font-size: 0.8125rem !important;
+  font-weight: 500;
+  color: var(--admin-on-surface-variant);
+}

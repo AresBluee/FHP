@@ -1,79 +1,77 @@
-<div class="p-6 md:p-10 pt-4 bg-gray-50 min-h-screen">
-    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-2xl border p-8">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Mi Horario de Turnos</h1>
-        <p class="text-gray-600 mb-8">Consulta tus turnos y las tareas asignadas para la semana.</p>
+<div class="mb-8">
+  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mi Horario de Turnos</h2>
+  <p class="text-body-base font-body-base text-on-surface-variant">Consulta tus turnos y las tareas asignadas para la semana.</p>
+</div>
 
-        <p-card styleClass="shadow-lg mb-6 p-card-content p-4">
-            <div class="flex flex-wrap items-center justify-between">
-                
-                <div class="flex space-x-3 mb-4 sm:mb-0">
-                    <button pButton icon="pi pi-angle-left" 
-                            label="Anterior" 
-                            (onClick)="changeWeek(-7)"
-                            [disabled]="isLoading"
-                            styleClass="p-button-sm p-button-secondary p-button-outlined">
-                    </button>
-                    <button pButton icon="pi pi-angle-right" 
-                            label="Siguiente" 
-                            (onClick)="changeWeek(7)"
-                            [disabled]="isLoading"
-                            styleClass="p-button-sm p-button-secondary p-button-outlined">
-                    </button>
-                </div>
-
-                <h2 class="text-xl font-semibold text-gray-800 text-center">
-                    Semana que comienza: 
-                    <span class="text-blue-600 ml-2">{{ currentWeekStart | date:'mediumDate' }}</span>
-                </h2>
-                
-                <button pButton icon="pi pi-refresh" 
-                        label="Actualizar" 
-                        (onClick)="loadWeeklySchedule()"
-                        [loading]="isLoading"
-                        styleClass="p-button-sm p-button-success transition duration-300">
-                </button>
-            </div>
-        </p-card>
-
-
-        <p-table [value]="shiftsForTable" 
-             styleClass="p-datatable-gridlines p-datatable-striped shadow-xl mt-6">
-            
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="w-1/6">Día</th>
-                    <th class="w-1/6">Entrada</th>
-                    <th class="w-1/6">Salida</th>
-                    <th class="w-1/6">Descanso</th>
-                    <th class="w-2/6">Tarea / Turno</th>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-shift>
-                <tr [ngClass]="{'bg-yellow-50/50': shift.dayOfWeek === 'SÁBADO' || shift.dayOfWeek === 'DOMINGO'}">
-                    
-                    <td class="font-bold text-gray-800">{{ shift.dayOfWeek }}</td>
-                    
-                    <td [ngClass]="{'text-green-700 font-medium': shift.startTime !== '--', 'text-gray-400': shift.startTime === '--'}">
-                        {{ shift.startTime }}
-                    </td>
-                    <td [ngClass]="{'text-red-700 font-medium': shift.endTime !== '--', 'text-gray-400': shift.endTime === '--'}">
-                        {{ shift.endTime }}
-                    </td>
-                    
-                    <td>{{ shift.breakDuration }}</td>
-                    
-                    <td>
-                        <span [ngClass]="{'font-semibold': shift.startTime !== '--', 'text-gray-400': shift.startTime === '--'}">
-                            {{ shift.taskDescription }}
-                        </span>
-                    </td>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="emptymessage">
-                <tr><td colspan="5" class="text-center py-4 text-gray-500">No tienes un horario asignado para esta semana.</td></tr>
-            </ng-template>
-        </p-table>
+<!-- Schedule Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
+  
+  <!-- Controls Header -->
+  <div class="p-6 border-b border-outline-variant/50 flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-bright">
+    <div class="flex items-center gap-2">
+      <button (click)="changeWeek(-7)" [disabled]="isLoading" class="flex items-center gap-1 px-4 py-2 bg-surface-container-low text-secondary font-label-bold text-label-bold rounded-lg hover:bg-surface-container transition-colors border border-outline-variant/50 disabled:opacity-50">
+        <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+        Anterior
+      </button>
+      <button (click)="changeWeek(7)" [disabled]="isLoading" class="flex items-center gap-1 px-4 py-2 bg-surface-container-low text-secondary font-label-bold text-label-bold rounded-lg hover:bg-surface-container transition-colors border border-outline-variant/50 disabled:opacity-50">
+        Siguiente
+        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+      </button>
     </div>
+    <div class="flex items-center gap-2">
+      <span class="font-body-base text-body-base text-on-surface-variant">Semana que comienza:</span>
+      <span class="font-headline-md text-headline-md text-primary font-bold">{{ currentWeekStart | date:'mediumDate' }}</span>
+    </div>
+    <div>
+      <button (click)="loadWeeklySchedule()" [disabled]="isLoading" class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-label-bold text-label-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm disabled:opacity-50">
+        <span class="material-symbols-outlined text-[18px] {{ isLoading ? 'animate-spin' : '' }}">refresh</span>
+        Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="border-b border-outline-variant/50 bg-surface-container-lowest">
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Día</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Entrada</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Salida</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Descanso</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Tarea / Turno</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-outline-variant/30">
+        <tr *ngFor="let shift of shiftsForTable" class="hover:bg-surface-container-lowest transition-colors group" [ngClass]="{'bg-secondary-container/10': shift.startTime !== '--'}">
+          <td class="py-5 px-6 font-label-bold text-label-bold text-on-surface uppercase">{{ shift.dayOfWeek }}</td>
+          <td class="py-5 px-6 font-body-base text-body-base" [ngClass]="{'text-on-surface font-medium': shift.startTime !== '--', 'text-on-surface-variant': shift.startTime === '--'}">
+            {{ shift.startTime }}
+          </td>
+          <td class="py-5 px-6 font-body-base text-body-base" [ngClass]="{'text-on-surface font-medium': shift.endTime !== '--', 'text-on-surface-variant': shift.endTime === '--'}">
+            {{ shift.endTime }}
+          </td>
+          <td class="py-5 px-6 font-body-base text-body-base text-on-surface-variant">
+            {{ shift.breakDuration }}
+          </td>
+          <td class="py-5 px-6">
+            <span *ngIf="shift.startTime !== '--'" class="inline-flex items-center px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-bold text-label-bold">
+              {{ shift.taskDescription }}
+            </span>
+            <span *ngIf="shift.startTime === '--'" class="font-body-base text-body-base text-outline italic">
+              {{ shift.taskDescription || 'No Asignado' }}
+            </span>
+          </td>
+        </tr>
+        
+        <!-- Empty State -->
+        <tr *ngIf="shiftsForTable?.length === 0">
+          <td colspan="5" class="py-8 px-6 text-center text-on-surface-variant font-body-base">
+            No tienes un horario asignado para esta semana.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
 </div>

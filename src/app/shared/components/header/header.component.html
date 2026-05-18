@@ -1,4 +1,4 @@
-<div class="sticky top-0 w-full z-50 shadow-lg">
+<div *ngIf="!isEmployeePanel" class="sticky top-0 w-full z-50 shadow-lg">
 
     <div *ngIf="!isLoggedIn" class="bg-color-verde-postular text-white py-2 text-center text-sm ">
         Postula ahora y únete a
@@ -68,23 +68,40 @@
                             </li>
                         </ng-container>
 
-                        <li class="nav-item">
+                        <li class="nav-item flex items-center space-x-4">
+                            <!-- Icono de Notificaciones -->
+                            <div *ngIf="isLoggedIn" class="relative group">
+                                <button class="p-2 text-white hover:text-yellow-400 transition-all duration-300 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95">
+                                    <span class="material-symbols-outlined text-2xl">notifications</span>
+                                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-color-verde-oscuro"></span>
+                                </button>
+                                <!-- Tooltip Minimalista -->
+                                <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                    Notificaciones
+                                </span>
+                            </div>
+
                             <a *ngIf="!isLoggedIn" (click)="irAPortalEmpleado()"
                                 class="cursor-pointer font-semibold py-2 px-4 rounded bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
                                 Portal del Empleado
                             </a>
 
-                            <div *ngIf="isLoggedIn" class="flex items-center space-x-2">
-                                <span class="text-white text-sm font-medium hidden sm:inline">
+                            <div *ngIf="isLoggedIn" class="flex items-center space-x-3 pl-2 border-l border-white/10">
+                                <span class="text-white text-sm font-medium hidden sm:inline opacity-80">
                                     {{ authService.getUsername() }}
                                 </span>
 
-                                <p-avatar [label]="userInitial" class="cursor-pointer"
-                                    styleClass="bg-yellow-500 text-gray-900 font-bold" (click)="menu.toggle($event)"
-                                    aria-haspopup="true" aria-controls="overlay_menu">
-                                </p-avatar>
+                                <div class="relative group">
+                                    <p-avatar [label]="userInitial" class="cursor-pointer block transition-transform duration-300 group-hover:scale-105 active:scale-95"
+                                        styleClass="bg-yellow-500 text-gray-900 font-bold border-2 border-transparent group-hover:border-yellow-400" 
+                                        (click)="menu.toggle($event)"
+                                        aria-haspopup="true" aria-controls="overlay_menu">
+                                    </p-avatar>
+                                    <!-- Glow effect on hover -->
+                                    <div class="absolute inset-0 bg-yellow-400/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
+                                </div>
 
-                                <p-tieredMenu #menu [model]="menuItems" popup="true" appendTo="body"></p-tieredMenu>
+                                <p-tieredMenu #menu [model]="menuItems" popup="true" appendTo="body" styleClass="minimal-menu"></p-tieredMenu>
                             </div>
                         </li>
 

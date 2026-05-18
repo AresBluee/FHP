@@ -1,65 +1,126 @@
-<div class="p-6 pt-0">
-    <p-toast></p-toast> <!-- Componente Toast de PrimeNG -->
-    <p-card header="Carga y Envío de Documentos al Empleado" styleClass="shadow-2xl">
-        <p class="mb-6 text-gray-600">Suba una boleta de pago o un certificado y asócielo al perfil del trabajador.</p>
-
-        <form (ngSubmit)="uploadDocument()" class="space-y-6"> 
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Seleccionar Empleado (Destino)</label>
-                    <p-dropdown 
-                        [options]="employees" 
-                        [(ngModel)]="selectedEmployeeId" 
-                        optionLabel="fullName" 
-                        optionValue="id" 
-                        placeholder="-- Seleccione Trabajador --" 
-                        name="employeeId" 
-                        required
-                        [ngClass]="{'ng-invalid ng-dirty': submitted && !selectedEmployeeId}"
-                        styleClass="w-full">
-                         <ng-template let-emp pTemplate="item">
-                            <div>{{ emp.fullName }} ({{ emp.employeeCode }})</div>
-                        </ng-template>
-                    </p-dropdown>
-                    <small class="p-error" *ngIf="submitted && !selectedEmployeeId">Empleado es requerido.</small>
+<div class="p-4 md:p-8">
+    <p-toast></p-toast>
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden">
+            <!-- Header del Overlay -->
+            <div class="bg-gradient-to-r from-color-verde-oscuro to-color-verde-claro p-8 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-extrabold mb-2 tracking-tight">Carga de Documentos</h2>
+                    <p class="text-white/80 font-medium">Asocia boletas o certificados al perfil del trabajador de forma segura.</p>
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Documento</label>
-                    <input pInputText type="text" [(ngModel)]="documentType" name="documentType" required
-                           placeholder="Ej: Boleta de Pago Noviembre" 
-                           class="w-full p-2 border rounded-md"
-                           [ngClass]="{'ng-invalid ng-dirty': submitted && !documentType}">
-                    <small class="p-error" *ngIf="submitted && !documentType">Tipo de documento es requerido.</small>
-                </div>
+                <!-- Decoración abstracta -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="absolute right-20 bottom-0 w-20 h-20 bg-black/10 rounded-full blur-xl"></div>
             </div>
 
-            <div class="border p-4 rounded-lg bg-gray-50">
-                <p-fileupload 
-                    #fileUpload 
-                    mode="basic" 
-                    name="file" (onSelect)="onFileSelect($event)" 
-                    [auto]="false" 
-                    [customUpload]="true"
-                    [chooseLabel]="selectedFile ? selectedFile.name : 'Seleccionar Archivo'"
-                    [multiple]="false" 
-                    accept=".pdf,.docx,.xlsx" 
-                    maxFileSize="1000000">
-                </p-fileupload>
-                <p class="text-xs text-gray-500 mt-2">Formatos aceptados: PDF, DOCX, XLSX. Máx. 1MB.</p>
-                <small class="p-error" *ngIf="submitted && !selectedFile">Archivo es requerido.</small>
-            </div>
+            <div class="p-8 md:p-10">
+                <form class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Selección de Empleado -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Empleado Destinatario</label>
+                            <div class="relative group">
+                                <p-dropdown
+                                    [options]="employees"
+                                    [(ngModel)]="selectedEmployeeId"
+                                    name="selectedEmployeeId"
+                                    optionLabel="fullName"
+                                    optionValue="id"
+                                    placeholder="Buscar trabajador..."
+                                    [filter]="true"
+                                    filterBy="fullName"
+                                    [required]="true"
+                                    styleClass="w-full custom-upload-dropdown group-hover:border-color-verde-claro transition-all"
+                                    appendTo="body">
+                                     <ng-template let-emp pTemplate="item">
+                                        <div class="flex items-center py-1">
+                                            <div class="w-8 h-8 rounded-full bg-color-verde-claro/10 text-color-verde-oscuro flex items-center justify-center font-bold text-xs mr-3">
+                                                {{ emp.fullName.charAt(0) }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-gray-800">{{ emp.fullName }}</div>
+                                                <div class="text-xs text-gray-500">ID: {{ emp.employeeCode }}</div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            <small class="text-red-500 font-medium ml-1 block" *ngIf="submitted && !selectedEmployeeId">
+                                <i class="pi pi-exclamation-triangle mr-1"></i>Debe seleccionar un empleado.
+                            </small>
+                        </div>
 
-            <div class="pt-4">
-                <p-button type="submit" [label]="isLoading ? 'Subiendo...' : 'Subir y Asociar Documento'" 
-                          icon="pi pi-upload" 
-                          [loading]="isLoading"
-                          [disabled]="isLoading"
-                          styleClass="p-button-success w-full shadow-md">
-                </p-button>
+                        <!-- Tipo de Documento -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Referencia del Documento</label>
+                            <div class="relative group">
+                                <input pInputText type="text" [(ngModel)]="documentType" name="documentType" required
+                                       placeholder="Ej: Boleta Noviembre 2024"
+                                       class="w-full pl-4 pr-10 py-3 rounded-xl border-gray-200 focus:border-color-verde-claro focus:ring-4 focus:ring-color-verde-claro/10 transition-all"
+                                       [ngClass]="{'border-red-300': submitted && !documentType}">
+                                <i class="pi pi-file-edit absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-color-verde-claro"></i>
+                            </div>
+                            <small class="text-red-500 font-medium ml-1 block" *ngIf="submitted && !documentType">
+                                <i class="pi pi-exclamation-triangle mr-1"></i>Indique una referencia o nombre.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Área de Carga -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Archivo Digital</label>
+                        <div class="border-2 border-dashed border-gray-200 rounded-3xl p-8 transition-all hover:border-color-verde-claro/50 hover:bg-gray-50/50 group text-center">
+                            <p-fileupload
+                                #fileUpload
+                                mode="basic"
+                                name="file"
+                                (onSelect)="onFileSelect($event)"
+                                [auto]="false"
+                                [customUpload]="true"
+                                [multiple]="false"
+                                accept=".pdf,.docx,.xlsx"
+                                [maxFileSize]="5000000"
+                                chooseLabel="Seleccionar Archivo"
+                                chooseIcon="pi pi-cloud-upload"
+                                styleClass="custom-file-upload">
+                            </p-fileupload>
+                            
+                            <!-- Visualización del archivo seleccionado -->
+                            <div *ngIf="selectedFile" class="mt-4 p-4 bg-color-verde-claro/5 rounded-2xl border border-color-verde-claro/20 flex items-center justify-between animate-fade-in">
+                                <div class="flex items-center">
+                                    <i class="pi pi-file-pdf text-2xl text-red-500 mr-3"></i>
+                                    <div class="text-left">
+                                        <div class="text-sm font-bold text-gray-800">{{ selectedFile.name }}</div>
+                                        <div class="text-xs text-gray-500">{{ selectedFile.size | fileSize }}</div>
+                                    </div>
+                                </div>
+                                <button (click)="selectedFile = null; fileUpload.clear()" class="p-2 hover:bg-red-50 text-red-400 rounded-full transition-colors">
+                                    <i class="pi pi-trash"></i>
+                                </button>
+                            </div>
+
+                            <p class="text-[11px] text-gray-400 mt-4 uppercase tracking-tighter font-bold">PDF, DOCX o XLSX hasta 5MB</p>
+                            <small class="text-red-500 font-medium block mt-2" *ngIf="submitted && !selectedFile">
+                                <i class="pi pi-exclamation-triangle mr-1"></i>El archivo es obligatorio.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-100">
+                        <button pButton type="button" label="Limpiar Formulario" icon="pi pi-refresh" (click)="resetForm()"
+                                class="p-button-text p-button-secondary font-bold"></button>
+                        
+                        <button pButton type="button" 
+                                [label]="isLoading ? 'Subiendo...' : 'Enviar Documento'" 
+                                [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-send'" 
+                                (click)="submitUpload()"
+                                [disabled]="isLoading"
+                                class="p-button-success px-10 py-4 rounded-2xl shadow-xl shadow-color-verde-claro/20 hover:shadow-color-verde-claro/40 transform hover:-translate-y-1 transition-all font-bold">
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </p-card>
+        </div>
+    </div>
 </div>

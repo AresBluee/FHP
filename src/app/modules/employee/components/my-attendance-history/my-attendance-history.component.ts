@@ -8,6 +8,7 @@ import { environment } from '../../../../Environment/environment';
 import { TableModule } from 'primeng/table'; 
 import { ButtonModule } from 'primeng/button'; 
 import { TagModule } from 'primeng/tag'; 
+import { DatePickerModule } from 'primeng/datepicker';
 
 import { of, catchError } from 'rxjs';
 import { Router } from '@angular/router';
@@ -26,7 +27,7 @@ interface DailyWorkSummary {
   selector: 'app-my-attendance-history',
   standalone: true,
   
-  imports: [CommonModule, FormsModule, TableModule, ButtonModule, TagModule],
+  imports: [CommonModule, FormsModule, TableModule, ButtonModule, TagModule, DatePickerModule],
   templateUrl: './my-attendance-history.component.html',
   styleUrl: './my-attendance-history.component.scss'
 })
@@ -47,6 +48,15 @@ export class MyAttendanceHistoryComponent implements OnInit{
     
     // FILTRO POR FECHA ESPECÍFICA (Inicializado en HOY)
     selectedDate: string = this.currentDate.toISOString().split('T')[0]; 
+
+    // Date object for PrimeNG calendar binding
+    calendarDate: Date = new Date(this.currentDate);
+
+    onCalendarSelect(date: Date): void {
+        this.calendarDate = date;
+        this.selectedDate = date.toISOString().split('T')[0];
+        this.loadAttendanceHistory(true);
+    }
 
     ngOnInit(): void {
         // ✅ CORRECCIÓN CRÍTICA: Busca por el rango del mes actual (false) para cargar la lista completa.

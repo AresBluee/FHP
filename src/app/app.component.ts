@@ -20,6 +20,14 @@ export class AppComponent implements OnInit, OnDestroy{
   // Variable de control para el template
   showPublicFooter: boolean = true; 
 
+  constructor() {
+    // Forzar la visibilidad del navbar al inicio si hay sesión
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      this.showPublicFooter = false;
+    }
+  }
+
   ngOnInit(): void {
     // 💡 Suscribirse al estado reactivo del login
     this.authSubscription = this.authService.isLoggedIn$.subscribe(isLoggedIn => {

@@ -1,41 +1,55 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Mis Boletas de Pago</h2>
-
-  <div *ngIf="loading">
-    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
-    <p-skeleton height="2rem" width="10rem" styleClass="mb-2"></p-skeleton>
+<!-- Page Header -->
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+  <div>
+    <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Mis Boletas de Pago</h2>
+    <p class="text-body-base font-body-base text-on-surface-variant mt-1">Consulta y descarga tus recibos de nómina recientes.</p>
   </div>
+</header>
 
-  <div *ngIf="error" class="text-red-500 bg-red-100 border border-red-400 rounded p-4">
-    {{ error }}
-  </div>
+<div *ngIf="loading" class="animate-pulse flex flex-col gap-4">
+  <div class="h-8 bg-surface-variant rounded w-1/4"></div>
+  <div class="h-64 bg-surface-variant rounded w-full"></div>
+</div>
 
-  <div *ngIf="!loading && !error && payslips.length > 0">
-    <p-table [value]="payslips" styleClass="p-datatable-striped">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Periodo Inicio</th>
-          <th>Periodo Fin</th>
-          <th>Salario Neto</th>
-          <th>Fecha Generación</th>
-          <th>Acciones</th>
+<div *ngIf="error" class="text-error bg-error-container/30 border border-error/50 rounded-xl p-4">
+  {{ error }}
+</div>
+
+<!-- Content Card -->
+<div *ngIf="!loading && !error" class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden flex-1">
+  <div *ngIf="payslips.length > 0" class="overflow-x-auto">
+    <table class="w-full text-left min-w-[800px]">
+      <thead>
+        <tr class="bg-surface-container-low border-b border-outline-variant/50">
+          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Periodo Inicio</th>
+          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Periodo Fin</th>
+          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Salario Neto</th>
+          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Fecha Generación</th>
+          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-payslip>
-        <tr>
-          <td>{{ payslip.periodStartDate | date:'dd/MM/yyyy' }}</td>
-          <td>{{ payslip.periodEndDate | date:'dd/MM/yyyy' }}</td>
-          <td>{{ payslip.netSalary | currency:'S/.' }}</td>
-          <td>{{ payslip.generationDate | date:'dd/MM/yyyy' }}</td>
-          <td>
-            <button pButton type="button" icon="pi pi-download" (click)="downloadPayslip(payslip.id)" class="p-button-rounded p-button-info"></button>
+      </thead>
+      <tbody class="divide-y divide-outline-variant/30">
+        <tr *ngFor="let payslip of payslips" class="hover:bg-[#F8FAFC] transition-colors duration-150 group">
+          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface">{{ payslip.periodStartDate | date:'dd/MM/yyyy' }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface">{{ payslip.periodEndDate | date:'dd/MM/yyyy' }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base font-medium text-on-surface">{{ payslip.netSalary | currency:'S/.' }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface-variant">{{ payslip.generationDate | date:'dd/MM/yyyy' }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-right">
+            <button (click)="downloadPayslip(payslip.id)" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary-container/10 text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all duration-200" title="Descargar PDF">
+              <span class="material-symbols-outlined text-[20px]">download</span>
+            </button>
           </td>
         </tr>
-      </ng-template>
-    </p-table>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="payslips.length === 0" class="p-8 text-center">
+    <p class="text-body-base font-body-base text-on-surface-variant">No tienes boletas de pago disponibles.</p>
   </div>
 
-  <div *ngIf="!loading && !error && payslips.length === 0" class="text-center text-gray-500 mt-4">
-    <p>No tienes boletas de pago disponibles.</p>
+  <!-- Footer Hint -->
+  <div *ngIf="payslips.length > 0" class="px-6 py-4 border-t border-outline-variant/30 bg-surface text-center">
+    <p class="text-body-sm font-body-sm text-on-surface-variant">Mostrando las boletas más recientes. Las boletas antiguas están archivadas.</p>
   </div>
 </div>

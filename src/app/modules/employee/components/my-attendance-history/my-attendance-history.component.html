@@ -1,88 +1,116 @@
-<div class="card shadow-xl rounded-lg bg-white p-6 lg:p-8 mt-4 space-y-8">
-    <div class="max-w-7xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-green-500 pb-2">Mi Historial de Asistencia</h1>
+<div class="mb-8">
+  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mi Historial de Asistencia</h2>
+  <p class="text-body-base font-body-base text-on-surface-variant">Revisa tus registros de entrada y salida.</p>
+</div>
 
-        <div class="flex flex-wrap items-center space-y-3 md:space-y-0 md:space-x-4 mb-6 p-4 bg-white rounded-xl shadow-md border">
-            
-            <h3 class="text-lg font-semibold text-gray-700">Filtrar por:</h3>
+<!-- Attendance Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
+  
+  <!-- Controls Header -->
+  <div class="p-6 border-b border-outline-variant/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-surface-bright">
+    
+    <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+      <div class="flex flex-col">
+        <label for="date-select" class="text-label-bold font-label-bold text-on-surface-variant mb-1 uppercase tracking-wider">Día Específico</label>
+        <p-datepicker 
+          [(ngModel)]="calendarDate" 
+          (onSelect)="onCalendarSelect($event)"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [showButtonBar]="true"
+          inputId="date-select"
+          [style]="{'width': '100%'}"
+          inputStyleClass="px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all w-full"
+          appendTo="body">
+        </p-datepicker>
+      </div>
 
-            <label for="date-select" class="text-sm font-medium text-gray-700">Día Específico:</label>
-            <input type="date" id="date-select" [(ngModel)]="selectedDate" name="selectedDate" 
-                   class="p-2 border border-gray-300 rounded-md focus:ring-green-500"
-                   (change)="loadAttendanceHistory(true)"> 
-            
-            <span class="text-gray-400">|</span> 
+      <span class="hidden md:inline-block text-outline-variant mt-5">|</span>
 
-            <label for="month-select" class="text-sm font-medium text-gray-700">Mes/Año:</label>
-            <select id="month-select" [(ngModel)]="selectedMonth" (change)="loadAttendanceHistory(false)"
-                    class="p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
-                <option [ngValue]="1">Enero</option>
-                <option [ngValue]="2">Febrero</option>
-                <option [ngValue]="3">Marzo</option>
-                <option [ngValue]="4">Abril</option>
-                <option [ngValue]="5">Mayo</option>
-                <option [ngValue]="6">Junio</option>
-                <option [ngValue]="7">Julio</option>
-                <option [ngValue]="8">Agosto</option>
-                <option [ngValue]="9">Septiembre</option>
-                <option [ngValue]="10">Octubre</option>
-                <option [ngValue]="11">Noviembre</option>
-                <option [ngValue]="12">Diciembre</option>
-            </select>
+      <div class="flex flex-col">
+        <label for="month-select" class="text-label-bold font-label-bold text-on-surface-variant mb-1 uppercase tracking-wider">Mes</label>
+        <select id="month-select" [(ngModel)]="selectedMonth" (change)="loadAttendanceHistory(false)"
+                class="px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all min-w-[120px]">
+            <option [ngValue]="1">Enero</option>
+            <option [ngValue]="2">Febrero</option>
+            <option [ngValue]="3">Marzo</option>
+            <option [ngValue]="4">Abril</option>
+            <option [ngValue]="5">Mayo</option>
+            <option [ngValue]="6">Junio</option>
+            <option [ngValue]="7">Julio</option>
+            <option [ngValue]="8">Agosto</option>
+            <option [ngValue]="9">Septiembre</option>
+            <option [ngValue]="10">Octubre</option>
+            <option [ngValue]="11">Noviembre</option>
+            <option [ngValue]="12">Diciembre</option>
+        </select>
+      </div>
 
-            <select id="year-select" [(ngModel)]="selectedYear" (change)="loadAttendanceHistory(false)"
-                    class="p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
-                <option *ngFor="let year of availableYears" [ngValue]="year">{{ year }}</option>
-            </select>
-            
-            <button pButton icon="pi pi-calendar" label="Buscar Período" 
-                    (onClick)="loadAttendanceHistory(false)"
-                    [loading]="isLoading"
-                    styleClass="p-button-sm p-button-success transition duration-300 ml-auto">
-            </button>
-        </div>
-
-        <p-table [value]="attendanceRecords" 
-             [paginator]="true" 
-             [rows]="15" 
-             [loading]="isLoading"
-             styleClass="p-datatable-gridlines p-datatable-striped shadow-xl mt-6">
-            
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="w-1/6">Fecha</th>
-                    <th class="w-1/6">Entrada</th>
-                    <th class="w-1/6">Salida</th>
-                    <th class="w-1/6">Horas Totales</th>
-                    <th class="w-2/6">Estado</th>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-record>
-                <tr>
-                    <td class="font-bold">{{ record.date | date:'shortDate' }}</td> 
-                    
-                    <td class="font-medium text-green-700">{{ record.checkInTime || '--' }}</td>
-                    <td class="font-medium text-red-700">{{ record.checkOutTime || '--' }}</td>
-                    
-                    <td class="font-bold">
-                        {{ record.totalDuration }} 
-                        @if (record.overtimeMinutes > 0) {
-                            <span class="text-xs text-red-500 block"> (+ {{ record.overtimeMinutes }}m extra)</span>
-                        }
-                    </td>
-                    
-                    <td>
-                        <p-tag [value]="record.complete ? 'COMPLETA' : 'INCOMPLETA'" 
-                          [severity]="record.complete ? 'success' : 'danger'">
-                        </p-tag>
-                    </td>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="emptymessage">
-                <tr><td colspan="5" class="text-center py-4 text-gray-500">No se encontraron registros para el período seleccionado.</td></tr>
-            </ng-template>
-        </p-table>
+      <div class="flex flex-col">
+        <label for="year-select" class="text-label-bold font-label-bold text-on-surface-variant mb-1 uppercase tracking-wider">Año</label>
+        <select id="year-select" [(ngModel)]="selectedYear" (change)="loadAttendanceHistory(false)"
+                class="px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all min-w-[80px]">
+            <option *ngFor="let year of availableYears" [ngValue]="year">{{ year }}</option>
+        </select>
+      </div>
     </div>
+
+    <div class="w-full md:w-auto mt-2 md:mt-0 md:self-end">
+      <button (click)="loadAttendanceHistory(false)" [disabled]="isLoading" class="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-label-bold text-label-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm disabled:opacity-50">
+        <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+        Buscar Período
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto relative">
+    
+    <div *ngIf="isLoading" class="absolute inset-0 bg-surface-container-lowest/50 backdrop-blur-sm z-10 flex items-center justify-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+
+    <table class="w-full text-left border-collapse min-w-[800px]">
+      <thead>
+        <tr class="border-b border-outline-variant/50 bg-surface-container-lowest">
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Fecha</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Entrada</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Salida</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Horas Totales</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Estado</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-outline-variant/30">
+        <tr *ngFor="let record of attendanceRecords" class="hover:bg-surface-container-lowest transition-colors group">
+          <td class="py-5 px-6 font-label-bold text-label-bold text-on-surface">{{ record.date | date:'shortDate' }}</td>
+          <td class="py-5 px-6 font-body-base text-body-base" [ngClass]="{'text-primary font-medium': record.checkInTime, 'text-on-surface-variant': !record.checkInTime}">
+            {{ record.checkInTime || '--' }}
+          </td>
+          <td class="py-5 px-6 font-body-base text-body-base" [ngClass]="{'text-error font-medium': record.checkOutTime, 'text-on-surface-variant': !record.checkOutTime}">
+            {{ record.checkOutTime || '--' }}
+          </td>
+          <td class="py-5 px-6 font-label-bold text-label-bold text-on-surface">
+            {{ record.totalDuration }}
+            <span *ngIf="record.overtimeMinutes > 0" class="text-[10px] text-error block font-normal tracking-wide uppercase mt-1">
+              (+ {{ record.overtimeMinutes }}m extra)
+            </span>
+          </td>
+          <td class="py-5 px-6">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-bold text-label-bold"
+                  [ngClass]="record.complete ? 'bg-primary-fixed/30 text-on-primary-fixed-variant' : 'bg-error-container/50 text-on-error-container'">
+              {{ record.complete ? 'COMPLETA' : 'INCOMPLETA' }}
+            </span>
+          </td>
+        </tr>
+        
+        <!-- Empty State -->
+        <tr *ngIf="!isLoading && (!attendanceRecords || attendanceRecords.length === 0)">
+          <td colspan="5" class="py-8 px-6 text-center text-on-surface-variant font-body-base">
+            No se encontraron registros para el período seleccionado.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

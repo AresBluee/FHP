@@ -1,39 +1,63 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Mis Certificados</h2>
+<div class="mb-8">
+  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mis Certificados</h2>
+  <p class="text-body-base font-body-base text-on-surface-variant">Descarga tus constancias, certificados y documentos laborales.</p>
+</div>
 
-  <div *ngIf="loading">
-    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
-    <p-skeleton height="2rem" width="10rem" styleClass="mb-2"></p-skeleton>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
+  
+  <div class="p-6 md:p-8 border-b border-outline-variant/50 bg-surface-bright flex justify-between items-center">
+    <h3 class="text-headline-md font-headline-md text-on-background">Documentos Disponibles</h3>
   </div>
 
-  <div *ngIf="error" class="text-red-500 bg-red-100 border border-red-400 rounded p-4">
-    {{ error }}
-  </div>
+  <div class="overflow-x-auto relative min-h-[200px]">
+    
+    <div *ngIf="loading" class="absolute inset-0 bg-surface-container-lowest/50 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
+      <p class="text-body-base font-body-base text-on-surface-variant">Cargando certificados...</p>
+    </div>
 
-  <div *ngIf="!loading && !error && certificates.length > 0">
-    <p-table [value]="certificates" styleClass="p-datatable-striped">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Nombre del Archivo</th>
-          <th>Tipo de Documento</th>
-          <th>Fecha de Carga</th>
-          <th>Acciones</th>
+    <div *ngIf="error" class="m-6 bg-error-container text-on-error-container p-4 rounded-lg font-body-base flex items-center gap-3">
+      <span class="material-symbols-outlined">error</span>
+      {{ error }}
+    </div>
+
+    <table *ngIf="!error" class="w-full text-left border-collapse min-w-[600px]">
+      <thead>
+        <tr class="border-b border-outline-variant/50 bg-surface-container-lowest">
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Nombre del Archivo</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Tipo de Documento</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Fecha de Carga</th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Acciones</th>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-cert>
-        <tr>
-          <td>{{ cert.fileName }}</td>
-          <td><p-tag [value]="cert.documentType"></p-tag></td>
-          <td>{{ cert.uploadDate | date:'dd/MM/yyyy' }}</td>
-          <td>
-            <button pButton type="button" icon="pi pi-download" (click)="downloadCertificate(cert)" class="p-button-rounded p-button-info"></button>
+      </thead>
+      <tbody class="divide-y divide-outline-variant/30">
+        <tr *ngFor="let cert of certificates" class="hover:bg-surface-container-lowest transition-colors group">
+          <td class="py-5 px-6 font-label-bold text-label-bold text-on-surface flex items-center gap-3">
+            <span class="material-symbols-outlined text-outline-variant">description</span>
+            {{ cert.fileName }}
+          </td>
+          <td class="py-5 px-6">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-bold text-label-bold bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
+              {{ cert.documentType }}
+            </span>
+          </td>
+          <td class="py-5 px-6 font-body-base text-body-base text-on-surface-variant">
+            {{ cert.uploadDate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="py-5 px-6 text-center">
+            <button (click)="downloadCertificate(cert)" class="p-2 text-primary bg-primary-fixed/30 hover:bg-primary-container rounded-full transition-colors inline-flex items-center justify-center tooltip-target" title="Descargar Documento">
+              <span class="material-symbols-outlined text-[20px]">download</span>
+            </button>
           </td>
         </tr>
-      </ng-template>
-    </p-table>
-  </div>
-
-  <div *ngIf="!loading && !error && certificates.length === 0" class="text-center text-gray-500 mt-4">
-    <p>No tienes certificados disponibles.</p>
+        
+        <tr *ngIf="!loading && (!certificates || certificates.length === 0)">
+          <td colspan="4" class="py-12 px-6 text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant block">history_edu</span>
+            <span class="font-body-base">No tienes certificados disponibles en este momento.</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

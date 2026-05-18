@@ -1,0 +1,93 @@
+/* Modern Calendar Overrides for AGROcyt */
+:host ::ng-deep {
+  .p-datepicker {
+    .p-datepicker-input {
+      border-radius: 0.5rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  }
+
+  .p-datepicker-panel {
+    border-radius: 1rem !important;
+    border: 1px solid rgba(202, 196, 208, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+
+    .p-datepicker-header {
+      background: #F5F0FF;
+      border-bottom: 1px solid rgba(202, 196, 208, 0.3);
+      padding: 0.75rem 1rem;
+      
+      .p-datepicker-title {
+        font-weight: 700;
+        color: #1D1B20;
+      }
+
+      button {
+        color: #6750A4;
+        border-radius: 50%;
+        transition: background 0.2s;
+
+        &:hover {
+          background: rgba(103, 80, 164, 0.08);
+        }
+      }
+    }
+
+    .p-datepicker-calendar {
+      th {
+        color: #49454F;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      td {
+        padding: 0.15rem;
+        
+        span {
+          border-radius: 50% !important;
+          width: 2.25rem;
+          height: 2.25rem;
+          line-height: 2.25rem;
+          transition: all 0.2s;
+          font-weight: 500;
+          
+          &:hover:not(.p-disabled):not(.p-highlight) {
+            background: rgba(103, 80, 164, 0.08) !important;
+            color: #6750A4;
+          }
+        }
+
+        .p-highlight {
+          background: #6750A4 !important;
+          color: #FFFFFF !important;
+          font-weight: 700;
+          box-shadow: 0 2px 8px rgba(103, 80, 164, 0.35);
+        }
+      }
+
+      .p-datepicker-today > span:not(.p-highlight) {
+        border: 2px solid #6750A4 !important;
+        background: transparent !important;
+        color: #6750A4 !important;
+        font-weight: 700;
+      }
+    }
+
+    .p-datepicker-buttonbar {
+      border-top: 1px solid rgba(202, 196, 208, 0.3);
+      padding: 0.5rem;
+
+      button {
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+    }
+  }
+}

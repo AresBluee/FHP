@@ -29,7 +29,7 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   private layoutSubscription!: Subscription;
   private authSubscription!: Subscription;
   isSidebarOpen: boolean = false;
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
 
   constructor(private router: Router, private layoutService: LayoutService) {
     this.routerSubscription = this.router.events.pipe(
@@ -85,22 +85,20 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   }
 
   initializeMenuItems(role: string | null): void {
-    // Usamos 'routerLink' para la navegación y 'id' para el estilo activo
     const items: MenuItem[] = [
-      { label: 'Dashboard', icon: 'pi pi-chart-line', routerLink: ['dashboard'], id: 'dashboard' },
-      { label: 'Mis Solicitudes', icon: 'pi pi-calendar-plus', routerLink: ['mis-solicitudes'], id: 'mis-solicitudes' },
-      { label: 'Lista de Empleados', icon: 'pi pi-users', routerLink: ['lista-empleados'], id: 'lista-empleados' },
-      { label: 'Registrar Nuevo', icon: 'pi pi-user-plus', routerLink: ['registrar-nuevo'], id: 'registrar-nuevo' },
-      { label: 'Asignar Horarios', icon: 'pi pi-calendar-clock', routerLink: ['asignar-horarios'], id: 'asignar-horarios' },
-      { label: 'Control Diario', icon: 'pi pi-clock', routerLink: ['control-diario'], id: 'control-diario' },
-      { label: 'Gestión de Boletas', icon: 'pi pi-dollar', routerLink: ['gestion-boletas'], id: 'gestion-boletas' },
-      { label: 'Archivos de Documentos', icon: 'pi pi-file-pdf', routerLink: ['archivos-documentos'], id: 'archivos-documentos' },
-      { label: 'Solicitudes Pendientes', icon: 'pi pi-exclamation-triangle', routerLink: ['solicitudes-pendientes'], id: 'solicitudes-pendientes' }
+      { label: 'Dashboard', icon: 'dashboard', routerLink: ['dashboard'], id: 'dashboard' },
+      { label: 'Mis Solicitudes', icon: 'description', routerLink: ['mis-solicitudes'], id: 'mis-solicitudes' },
+      { label: 'Lista de Empleados', icon: 'group', routerLink: ['lista-empleados'], id: 'lista-empleados' },
+      { label: 'Registrar Nuevo', icon: 'person_add', routerLink: ['registrar-nuevo'], id: 'registrar-nuevo' },
+      { label: 'Asignar Horarios', icon: 'calendar_month', routerLink: ['asignar-horarios'], id: 'asignar-horarios' },
+      { label: 'Control Diario', icon: 'schedule', routerLink: ['control-diario'], id: 'control-diario' },
+      { label: 'Gestión de Boletas', icon: 'receipt_long', routerLink: ['gestion-boletas'], id: 'gestion-boletas' },
+      { label: 'Archivos', icon: 'folder_open', routerLink: ['archivos-documentos'], id: 'archivos-documentos' },
+      { label: 'Solicitudes Pendientes', icon: 'pending_actions', routerLink: ['solicitudes-pendientes'], id: 'solicitudes-pendientes' }
     ];
 
-    // Solo el administrador puede crear tipos de solicitudes
     if (role === 'ADMIN') {
-      items.push({ label: 'Configurar Solicitudes', icon: 'pi pi-cog', routerLink: ['configuracion-solicitudes'], id: 'configuracion-solicitudes' });
+      items.push({ label: 'Configurar Solicitudes', icon: 'settings', routerLink: ['configuracion-solicitudes'], id: 'configuracion-solicitudes' });
     }
 
     this.menuItems = items;

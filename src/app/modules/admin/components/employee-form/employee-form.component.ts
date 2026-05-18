@@ -113,9 +113,15 @@ export class EmployeeFormComponent implements OnInit {
       })
     ).subscribe(employee => {
       if (employee) {
+        // Manejar el caso donde position viene como objeto o como string
+        let posId = null;
+        if (employee.position && typeof employee.position === 'object') {
+          posId = (employee.position as any).id;
+        }
+        
         this.employeeForm.patchValue({
           ...employee,
-          positionId: employee.position.id 
+          positionId: posId 
         });
       }
     });
@@ -184,7 +190,7 @@ export class EmployeeFormComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Empleado actualizado correctamente.' });
           this.isLoading = false;
           this.employeeUpdated.emit();
-          this.router.navigate(['/admin/employee-list']);
+          this.router.navigate(['/admin/lista-empleados']);
         },
         error: (err) => {
           this.isLoading = false;

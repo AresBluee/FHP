@@ -14,6 +14,7 @@ import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 
 // Interfaces necesarias
@@ -32,7 +33,7 @@ interface ManagerContactDTO {
 @Component({
   selector: 'app-my-requests',
   standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, TableModule, ButtonModule, TagModule, DropdownModule, CalendarModule, ToastModule],
+  imports: [CommonModule, DatePipe, FormsModule, TableModule, ButtonModule, TagModule, DropdownModule, CalendarModule, ToastModule, TooltipModule],
   providers: [MessageService],
   templateUrl: './my-requests.component.html',
   styleUrl: './my-requests.component.scss'
@@ -53,7 +54,7 @@ export class MyRequestsComponent implements OnInit{
   selectedFile: File | null = null;
 
   newRequest: RequestCreationDTO = {
-    requestTypeId: 1,
+    requestTypeId: 0,
     startDate: new Date().toISOString().split('T')[0],
     endDate: new Date().toISOString().split('T')[0],
     details: ''
@@ -62,6 +63,11 @@ export class MyRequestsComponent implements OnInit{
   private requestTypeService = inject(RequestTypeService);
 
   requestTypes: RequestTypeDTO[] = [];
+
+  get requiresSignature(): boolean {
+    const selectedType = this.requestTypes.find(t => t.id === this.newRequest.requestTypeId);
+    return selectedType ? selectedType.requiresSignature : false;
+  }
 
   get requiresAttachment(): boolean {
     const selectedType = this.requestTypes.find(t => t.id === this.newRequest.requestTypeId);
@@ -78,8 +84,11 @@ export class MyRequestsComponent implements OnInit{
     this.requestTypeService.getAll().subscribe({
       next: (data) => {
         this.requestTypes = data;
-        if (data.length > 0 && !this.newRequest.requestTypeId) {
+        const currentTypeExists = data.some(type => type.id === this.newRequest.requestTypeId);
+        if (data.length > 0 && !currentTypeExists) {
           this.newRequest.requestTypeId = data[0].id!;
+        } else if (data.length === 0) {
+          this.newRequest.requestTypeId = 0;
         }
       },
       error: (err) => console.error('Error cargando tipos de solicitud:', err)
@@ -128,6 +137,13 @@ export class MyRequestsComponent implements OnInit{
 
   submitRequest(): void {
     this.isSendingRequest = true;
+
+    const selectedType = this.requestTypes.find(type => type.id === this.newRequest.requestTypeId);
+    if (!selectedType) {
+        this.messageService.add({severity:'warn', summary:'Validación', detail:'Debe seleccionar un tipo de solicitud válido.'});
+        this.isSendingRequest = false;
+        return;
+    }
 
     if (!this.newRequest.details) {
         this.messageService.add({severity:'warn', summary:'Validación', detail:'Debe completar la justificación.'});
@@ -200,7 +216,7 @@ export class MyRequestsComponent implements OnInit{
 
   resetForm(): void {
     this.newRequest = {
-      requestTypeId: this.requestTypes.length > 0 ? this.requestTypes[0].id! : 1,
+      requestTypeId: this.requestTypes.length > 0 ? this.requestTypes[0].id! : 0,
       startDate: new Date().toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0],
       details: ''

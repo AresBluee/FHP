@@ -113,7 +113,7 @@ export interface PayslipGenerationDTO {
          * No abre nuevas ventanas y funciona con autenticación JWT.
          */
         downloadPayslip(payslipId: number, fileName: string): void {
-            const downloadUrl = `${this.documentsApiUrl}/${payslipId}/download`;
+            const downloadUrl = `${this.payslipsApiUrl}/${payslipId}/download`;
     
             this.http.get(downloadUrl, {
                 responseType: 'blob' // MUY IMPORTANTE: Le decimos a Angular que esperamos un archivo

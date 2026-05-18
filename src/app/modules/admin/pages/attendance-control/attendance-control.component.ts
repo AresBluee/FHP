@@ -25,7 +25,6 @@ interface EmployeeStatus {
   status: 'ASISTIO' | 'NO_REGISTRADO' | 'SALIO';
   lastMarkTime: string | null;
   reportDate: string;
-  biometricHash: string;
 }
 
 @Component({
@@ -73,7 +72,7 @@ export class AttendanceControlComponent implements OnInit {
     const actionText = employeeStatus.status === 'ASISTIO' ? 'Salida' : 'Entrada';
 
     const payload = {
-      biometricHash: employeeStatus.biometricHash,
+      employeeCode: employeeStatus.employeeCode,
       deviceTimestamp: new Date().toISOString(),
       latitude: 0,
       longitude: 0,
