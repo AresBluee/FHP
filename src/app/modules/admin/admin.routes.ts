@@ -20,7 +20,7 @@ export const ADMIN_ROUTES: Routes = [
         path: '',       
         canActivate: [authGuard], 
         component: MenuAdminComponent, 
-        data: { roles: ['ADMIN', 'RRHH'] },
+        data: { roles: ['ADMIN', 'RRHH','SUPERVISOR'] },
         children: [
             { path: 'profile', component: ProfileComponent },
             { path: '', redirectTo: 'lista-empleados', pathMatch: 'full' },
