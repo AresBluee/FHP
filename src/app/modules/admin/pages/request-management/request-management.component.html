@@ -119,22 +119,18 @@
                 </div>
 
                 <!-- Card Footer -->
-                <div class="request-card-footer">
+                <div class="request-card-footer flex justify-between gap-2">
                   @if (req.status === 'PENDING' || req.status === 'AWAITING_SIGNATURE') {
-                    <p-button icon="pi pi-eye" styleClass="p-button-secondary p-button-text p-button-sm mr-auto" (onClick)="openRequestDialog(req)" pTooltip="Ver"></p-button>
-
-                    @if (req.status === 'PENDING') {
-                      @if (req.requiresSignature) {
-                        <p-button label="Enviar" icon="pi pi-send" styleClass="p-button-info p-button-sm" (onClick)="openRequestDialog(req)"></p-button>
-                      } @else {
-                        <p-button label="Aprobar" icon="pi pi-check" styleClass="p-button-success p-button-sm" (onClick)="openRequestDialog(req)"></p-button>
-                      }
-                    } @else {
-                      <p-button label="Firmar y Aprobar" icon="pi pi-pencil" styleClass="p-button-help p-button-sm" (onClick)="openRequestDialog(req)"></p-button>
-                    }
-                    <p-button label="Rechazar" icon="pi pi-times" styleClass="p-button-danger p-button-outlined p-button-sm" (onClick)="openRequestDialog(req)"></p-button>
+                    <button class="p-button p-component p-button-sm p-button-outlined p-button-secondary flex-grow flex items-center justify-center gap-1" (click)="openRequestDialog(req)">
+                      <i class="pi pi-eye"></i> Abrir
+                    </button>
+                    <button class="p-button p-component p-button-sm p-button-outlined p-button-danger flex-grow flex items-center justify-center gap-1" (click)="openRequestDialog(req)">
+                      <i class="pi pi-times"></i> Rechazar
+                    </button>
                   } @else {
-                    <p-button label="Ver Detalles" icon="pi pi-eye" styleClass="p-button-secondary p-button-text p-button-sm w-full" (onClick)="openRequestDialog(req)"></p-button>
+                    <button class="p-button p-component p-button-sm p-button-text p-button-secondary w-full flex items-center justify-center gap-1" (click)="openRequestDialog(req)">
+                      <i class="pi pi-eye"></i> Ver Detalles
+                    </button>
                   }
                 </div>
 
@@ -149,69 +145,88 @@
 </div>
 
 <!-- Modal para Observaciones y Documentos -->
-<p-dialog header="Detalles y Observaciones" [(visible)]="displayDialog" [modal]="true" [style]="{width: '80vw'}" [maximizable]="false">
+<p-dialog header="Detalles y Observaciones" [(visible)]="displayDialog" [modal]="true" [style]="{width: '90vw', maxWidth: '1400px'}" [maximizable]="true" (onHide)="cleanupDocUrl()">
   <div class="dialog-grid" *ngIf="selectedRequest">
 
-    <!-- Lado Izquierdo -->
-    <div class="dialog-left">
-      <h3 class="dialog-section-title">Información</h3>
-      <div class="info-box">
-        <p><strong>Empleado:</strong> {{ selectedRequest.employeeName }}</p>
-        <p><strong>Tipo:</strong> {{ selectedRequest.requestType }}</p>
-        <p><strong>Detalle:</strong> {{ selectedRequest.details }}</p>
-      </div>
-
-      <h3 class="dialog-section-title">Documento Adjunto</h3>
-      @if (safeDocumentUrl) {
-        <div class="doc-viewer">
-          <iframe [src]="safeDocumentUrl" class="doc-iframe"></iframe>
+    <!-- Lado Izquierdo: Documento Adjunto (Resaltado) -->
+    <div class="dialog-left flex flex-col gap-4">
+      <h3 class="dialog-section-title flex items-center gap-2 text-gray-800 font-bold border-b pb-2"><i class="pi pi-file-pdf text-red-500"></i> Documento Adjunto</h3>
+      @if (isLoadingDoc) {
+        <div class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border border-dashed border-gray-300 min-h-[500px] flex-grow shadow-inner">
+          <i class="pi pi-spin pi-spinner text-3xl text-blue-500 mb-2"></i>
+          <p class="text-sm text-gray-500 font-semibold">Descargando documento...</p>
+        </div>
+      } @else if (safeDocumentUrl) {
+        <div class="doc-viewer flex-grow flex flex-col border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-gray-100 min-h-[600px]">
+          <iframe [src]="safeDocumentUrl" class="doc-iframe flex-grow w-full border-0"></iframe>
         </div>
       } @else {
-        <div class="no-doc">
-          <i class="pi pi-file-excel"></i>
-          <p>No hay documento adjunto</p>
+        <div class="no-doc bg-gray-50 border border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-gray-400 min-h-[400px] flex-grow">
+          <i class="pi pi-file-excel text-4xl mb-2"></i>
+          <p class="text-sm font-medium">No hay documento adjunto</p>
         </div>
       }
     </div>
 
-    <!-- Lado Derecho -->
-    <div class="dialog-right">
-      <h3 class="dialog-section-title">Observaciones de RRHH / Manager</h3>
-      <textarea rows="10" [(ngModel)]="observationComment"
-                placeholder="Escribe tus observaciones o comentarios aquí. Si rechazas, es obligatorio explicar por qué..."
-                class="observation-textarea"></textarea>
+    <!-- Lado Derecho: Información de la Solicitud y Observaciones/Acciones -->
+    <div class="dialog-right flex flex-col gap-4">
+      <h3 class="dialog-section-title flex items-center gap-2 text-gray-800 font-bold border-b pb-2"><i class="pi pi-info-circle text-blue-500"></i> Información de la Solicitud</h3>
+      
+      <div class="info-box bg-white p-4 rounded-xl border border-gray-150 shadow-sm space-y-3">
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Empleado</span>
+          <span class="text-sm font-medium text-gray-900">{{ selectedRequest.employeeName }}</span>
+        </div>
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo de Solicitud</span>
+          <span class="text-sm font-medium text-gray-900">{{ selectedRequest.requestType }}</span>
+        </div>
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Período</span>
+          <span class="text-sm font-medium text-gray-900">{{ selectedRequest.startDate | date:'dd/MM/yyyy' }} - {{ selectedRequest.endDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Justificación / Detalle</span>
+          <p class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100 italic leading-relaxed">{{ selectedRequest.details || 'Sin justificación adicional.' }}</p>
+        </div>
+      </div>
 
-      <div class="dialog-actions">
+      <h3 class="dialog-section-title flex items-center gap-2 text-gray-800 font-bold border-b pb-2"><i class="pi pi-comment text-green-500"></i> Observaciones de RRHH / Manager</h3>
+      <textarea rows="6" [(ngModel)]="observationComment"
+                placeholder="Escribe tus observaciones o comentarios aquí. En caso de RECHAZAR, explica detalladamente los motivos de manera obligatoria..."
+                class="observation-textarea w-full border border-gray-200 rounded-xl p-3 flex-grow resize-none text-sm leading-relaxed focus:ring-2 focus:ring-blue-100 focus:border-blue-400 focus:outline-none shadow-inner"></textarea>
+
+      <div class="dialog-actions mt-auto">
         @if (selectedRequest.status === 'PENDING' || selectedRequest.status === 'AWAITING_SIGNATURE') {
           @if (selectedRequest.status === 'PENDING' && selectedRequest.requiresSignature) {
-            <div class="supervisor-select">
-              <label class="supervisor-label"><i class="pi pi-user"></i> Seleccionar Supervisor para Firma</label>
+            <div class="supervisor-select bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-4 shadow-sm">
+              <label class="supervisor-label text-blue-900 font-bold text-xs uppercase tracking-wider block mb-2"><i class="pi pi-user-plus"></i> Seleccionar Supervisor para Firma</label>
               <p-dropdown [options]="supervisors" [(ngModel)]="selectedSupervisorId" placeholder="Elija un supervisor de la lista" styleClass="w-full" optionLabel="label" optionValue="value" [filter]="true" filterBy="label"></p-dropdown>
             </div>
           }
 
-          <div class="action-grid">
+          <div class="action-grid grid grid-cols-2 gap-3">
             @if (selectedRequest.status === 'PENDING') {
               @if (selectedRequest.requiresSignature) {
-                <button (click)="updateStatusFromDialog('AWAITING_SIGNATURE')" class="action-btn action-send">
+                <button (click)="updateStatusFromDialog('AWAITING_SIGNATURE')" class="action-btn action-send w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 text-sm shadow transition-all hover:bg-blue-700 bg-blue-600 text-white">
                   <i class="pi pi-send"></i> Enviar a Supervisor
                 </button>
               } @else {
-                <button (click)="updateStatusFromDialog('APPROVED')" class="action-btn action-approve">
-                  <i class="pi pi-check"></i> Aprobar Directamente
+                <button (click)="updateStatusFromDialog('APPROVED')" class="action-btn action-approve w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 text-sm shadow transition-all hover:bg-green-700 bg-green-600 text-white">
+                  <i class="pi pi-check"></i> Aprobar
                 </button>
               }
             } @else {
-              <button (click)="updateStatusFromDialog('APPROVED')" class="action-btn action-sign">
-                <i class="pi pi-pencil"></i> Firmar y Aprobar
+              <button (click)="updateStatusFromDialog('APPROVED')" class="action-btn action-sign w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 text-sm shadow transition-all hover:bg-purple-700 bg-purple-600 text-white">
+                <i class="pi pi-pencil"></i> Aprobar
               </button>
             }
-            <button (click)="updateStatusFromDialog('REJECTED')" class="action-btn action-reject">
+            <button (click)="updateStatusFromDialog('REJECTED')" class="action-btn action-reject w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 text-sm transition-all hover:bg-red-100 border border-red-200 text-red-600 bg-red-50">
               <i class="pi pi-times"></i> Rechazar
             </button>
           </div>
         } @else {
-          <div class="managed-notice">
+          <div class="managed-notice bg-gray-50 border border-gray-150 p-4 rounded-xl text-center text-sm font-medium text-gray-500 shadow-inner">
             Esta solicitud ya fue gestionada (Estado: {{ selectedRequest.status }}).
           </div>
         }

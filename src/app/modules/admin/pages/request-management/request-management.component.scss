@@ -31,15 +31,15 @@
 
 // ── Layout Grid ──
 .layout-grid {
-  @apply grid grid-cols-1 lg:grid-cols-4 gap-6;
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-8;
 }
 
 .filters-column {
-  @apply lg:col-span-1;
+  @apply lg:col-span-3;
 }
 
 .content-column {
-  @apply lg:col-span-3;
+  @apply lg:col-span-9;
 }
 
 .content-card {
@@ -153,21 +153,24 @@
 
 // ── Requests Grid ──
 .requests-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+  @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
 }
 
 .request-card {
   background: #ffffff;
-  border: 1px solid var(--admin-outline-variant);
-  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   font-size: 0.875rem;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    border-color: rgba(59, 130, 246, 0.25);
   }
 }
 
@@ -244,8 +247,8 @@
 }
 
 .request-card-footer {
-  @apply p-2 border-t flex justify-end space-x-2;
-  background: #f9fafb;
+  @apply p-3 border-t flex gap-2;
+  background: #fafafa;
 }
 
 // ── Loading / Empty ──
@@ -281,33 +284,31 @@
 
 // ── Dialog ──
 .dialog-grid {
-  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-8;
 }
 
-.dialog-left,
+.dialog-left {
+  @apply lg:col-span-8 flex flex-col h-full;
+}
+
 .dialog-right {
-  @apply flex flex-col h-full;
+  @apply lg:col-span-4 flex flex-col h-full;
 }
 
 .dialog-section-title {
   font-weight: 700;
-  color: var(--admin-on-surface);
+  color: #1f2937;
   font-size: 1.125rem;
   margin-bottom: 0.75rem;
 }
 
 .info-box {
-  @apply p-4 rounded-lg mb-4 border;
-  background: var(--admin-surface);
-
-  p {
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-  }
+  @apply p-4 rounded-xl mb-4 border;
+  background: #ffffff;
 }
 
 .doc-viewer {
-  @apply flex-grow border rounded flex flex-col;
+  @apply flex-grow border rounded-xl flex flex-col;
   background: #f3f4f6;
   min-height: 500px;
 }

@@ -95,6 +95,8 @@ export class RequestManagementComponent implements OnInit {
   observationComment = '';
   documentUrl = '';
   safeDocumentUrl: SafeResourceUrl | null = null;
+  rawBlobUrl = '';
+  isLoadingDoc = false;
   supervisors: any[] = [];
   selectedSupervisorId: number | null = null;
 
@@ -106,8 +108,8 @@ export class RequestManagementComponent implements OnInit {
   loadSupervisors(): void {
     this.employeeService.getSupervisors().subscribe(data => {
       this.supervisors = data.map(s => ({
-        label: `${s.firstName} ${s.lastName} - ${s.positionName}`,
-        value: s.employeeId
+        label: `${s.fullName} - ${s.position}`,
+        value: s.id
       }));
     });
   }
@@ -181,14 +183,41 @@ export class RequestManagementComponent implements OnInit {
       this.observationComment = req.managerComment || '';
       this.selectedSupervisorId = null; // Reset selection
       
+      this.cleanupDocUrl();
+      
       if (req.documentPath) {
-          this.documentUrl = environment.apiUrl + '/' + req.documentPath.replace(/\\/g, '/');
-          this.safeDocumentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.documentUrl);
+          let path = req.documentPath.replace(/\\/g, '/');
+          if (path.startsWith('/')) {
+              path = path.substring(1);
+          }
+          this.documentUrl = environment.apiUrl + '/' + path;
+          this.isLoadingDoc = true;
+          
+          this.http.get(this.documentUrl, { responseType: 'blob' }).subscribe({
+              next: (blob) => {
+                  const blobUrl = URL.createObjectURL(blob);
+                  this.rawBlobUrl = blobUrl;
+                  this.safeDocumentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
+                  this.isLoadingDoc = false;
+              },
+              error: (err) => {
+                  console.error('Error al descargar el PDF:', err);
+                  this.isLoadingDoc = false;
+                  this.safeDocumentUrl = null;
+              }
+          });
       } else {
           this.documentUrl = '';
-          this.safeDocumentUrl = null;
       }
       this.displayDialog = true;
+  }
+
+  cleanupDocUrl(): void {
+      if (this.rawBlobUrl) {
+          URL.revokeObjectURL(this.rawBlobUrl);
+          this.rawBlobUrl = '';
+      }
+      this.safeDocumentUrl = null;
   }
 
   updateStatusFromDialog(status: 'APPROVED' | 'REJECTED' | 'AWAITING_SIGNATURE'): void {

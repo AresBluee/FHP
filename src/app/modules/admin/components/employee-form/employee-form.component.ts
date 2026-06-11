@@ -62,6 +62,7 @@ export class EmployeeFormComponent implements OnInit {
   availableRoles = [
     { label: 'Administrador', value: 'ROLE_ADMIN' },
     { label: 'Recursos Humanos', value: 'ROLE_RRHH' },
+    { label: 'Supervisor', value: 'ROLE_SUPERVISOR' },
     { label: 'Empleado', value: 'ROLE_USER' }
   ];
   workPositions$!: Observable<WorkPosition[]>; // <-- Observable para el dropdown de cargos
