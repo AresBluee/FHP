@@ -1,22 +1,22 @@
 <p-toast></p-toast>
 
-<div class="min-h-screen p-4 md:p-8">
+<div class="page-container p-4 md:p-8">
   <div class="max-w-4xl mx-auto">
     <!-- Encabezado Principal -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-extrabold tracking-tight">{{ headerTitle }}</h1>
-      <p class="mt-2 text-sm">Completa la información a continuación para registrar o actualizar los datos del empleado en el sistema.</p>
+    <div class="page-header mb-8 text-left">
+      <h1 class="text-3xl font-extrabold tracking-tight text-gray-800">{{ headerTitle }}</h1>
+      <p class="mt-2 text-sm text-gray-500">Completa la información a continuación para registrar o actualizar los datos del empleado en el sistema.</p>
     </div>
 
-    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="space-y-6">
-
-      <!-- 1. Datos Personales -->
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6 transition-all hover:shadow-md">
-        <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 px-6 py-4 flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold shadow-inner">1</div>
-          <h3 class="text-lg font-bold text-white m-0">Información de Identidad</h3>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
+        
+        <!-- 1. Información de Identidad -->
+        <div class="px-8 py-6 flex items-center gap-4 border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg shadow-sm">1</div>
+          <h3 class="text-xl font-bold text-primary m-0">Información de Identidad</h3>
         </div>
-        <div class="p-8">
+        <div class="p-8 md:p-10">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="col-span-1">
               <label class="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest">Documento de Identidad</label>
@@ -36,7 +36,7 @@
                   <p-dropdown id="positionId" [options]="(workPositions$ | async) ?? []" formControlName="positionId"
                     optionLabel="name" optionValue="id" [filter]="true" filterBy="name"
                     placeholder="-- Seleccione un cargo --"
-                    styleClass="w-full custom-dropdown" inputId="positionId"></p-dropdown>
+                    styleClass="w-full custom-dropdown" inputId="positionId" appendTo="body"></p-dropdown>
                 </div>
                 <button pButton icon="pi pi-plus" type="button" (click)="showNewPositionDialog = true"
                   class="p-button-success rounded-xl shadow-sm hover:shadow-lg transition-all" style="width: 3.5rem;" pTooltip="Añadir nuevo cargo"></button>
@@ -60,15 +60,15 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 2. Información de Contacto -->
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6 transition-all hover:shadow-md">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-4 flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold shadow-inner">2</div>
-          <h3 class="text-lg font-bold text-white m-0">Canales de Comunicación</h3>
+        <p-divider styleClass="m-0"></p-divider>
+
+        <!-- 2. Información de Contacto -->
+        <div class="px-8 py-6 flex items-center gap-4 border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg shadow-sm">2</div>
+          <h3 class="text-xl font-bold text-primary m-0">Canales de Comunicación</h3>
         </div>
-        <div class="p-8">
+        <div class="p-8 md:p-10 bg-gray-50/50">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="col-span-1">
               <label class="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest">Correo Electrónico Institucional</label>
@@ -90,21 +90,21 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 3. Configuración de Cuenta -->
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6 transition-all hover:shadow-md">
-        <div class="bg-gradient-to-r from-violet-600 to-violet-500 px-6 py-4 flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold shadow-inner">3</div>
-          <h3 class="text-lg font-bold text-white m-0">Credenciales de Acceso</h3>
+        <p-divider styleClass="m-0"></p-divider>
+
+        <!-- 3. Credenciales de Acceso -->
+        <div class="px-8 py-6 flex items-center gap-4 border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg shadow-sm">3</div>
+          <h3 class="text-xl font-bold text-primary m-0">Credenciales de Acceso</h3>
         </div>
-        <div class="p-8">
+        <div class="p-8 md:p-10">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="col-span-1 md:col-span-2">
               <label class="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest">Rol dentro del Sistema</label>
               <p-dropdown id="roleName" [options]="availableRoles" formControlName="roleName"
                 placeholder="-- Asigne un nivel de acceso --"
-                styleClass="w-full custom-dropdown" inputId="roleName">
+                styleClass="w-full custom-dropdown" inputId="roleName" appendTo="body">
                 <ng-template let-role pTemplate="item">
                   <div class="flex items-center py-1">
                     <span class="material-symbols-outlined mr-3 text-violet-500">
@@ -135,18 +135,17 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Botón de Envío -->
-      <div class="pt-4 pb-10 flex justify-end">
-        <p-button type="submit"
-          [label]="isEditMode ? (isLoading ? 'Actualizando...' : 'Guardar Cambios') : (isLoading ? 'Registrando...' : 'Finalizar Registro')"
-          [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-          [disabled]="employeeForm.invalid || isLoading"
-          styleClass="p-button-success px-8" [style]="{'border-radius': '0.75rem', 'font-weight': '600', 'font-family': 'var(--admin-font)'}">
-        </p-button>
+        <!-- Botón de Envío -->
+        <div class="bg-gray-50 px-8 py-6 border-t border-gray-100 flex justify-end">
+          <p-button type="submit"
+            [label]="isEditMode ? (isLoading ? 'Actualizando...' : 'Guardar Cambios') : (isLoading ? 'Registrando...' : 'Finalizar Registro')"
+            [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+            [disabled]="employeeForm.invalid || isLoading"
+            styleClass="p-button-success px-8" [style]="{'border-radius': '0.75rem', 'font-weight': '600', 'font-family': 'var(--admin-font)'}">
+          </p-button>
+        </div>
       </div>
-
     </form>
   </div>
 </div>

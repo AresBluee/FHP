@@ -1,124 +1,173 @@
 <p-toast></p-toast>
 
-<div class="page-container">
+<div class="page-container p-4 md:p-8">
   <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-title">Gestión de Horarios y Turnos</h1>
-    <p class="page-subtitle">Crea plantillas de turno y asigna horarios al personal.</p>
+  <div class="page-header mb-8">
+    <h1 class="text-3xl font-extrabold tracking-tight">Gestión de Horarios y Turnos</h1>
+    <p class="mt-2 text-sm text-gray-500">Administra las plantillas de turnos y asigna los horarios al personal.</p>
   </div>
 
-  <!-- 1. Tabla de Plantillas Existentes -->
-  <div class="content-card">
-    <h2 class="section-title">Plantillas de Turno Existentes</h2>
-    <p-table [value]="(schedules$ | async) ?? []" [paginator]="true" [rows]="5"
-      styleClass="p-datatable-sm" responsiveLayout="scroll">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Nombre del Turno</th>
-          <th>Hora Entrada</th>
-          <th>Hora Salida</th>
-          <th>Tolerancia (min)</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-schedule>
-        <tr>
-          <td>{{ schedule.name }}</td>
-          <td>{{ schedule.startTime }}</td>
-          <td>{{ schedule.endTime }}</td>
-          <td>{{ schedule.toleranceMinutes }}</td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="4" class="empty-state">
-            <i class="pi pi-clock"></i>
-            <p>No hay plantillas de turno creadas.</p>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- LEFT COLUMN: Templates Table -->
+    <div class="lg:col-span-5 flex flex-col gap-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-primary px-6 py-4 flex items-center justify-between">
+          <h3 class="text-lg font-bold text-white m-0 flex items-center gap-2">
+            <i class="pi pi-clock"></i> Plantillas Existentes
+          </h3>
+          <button pButton icon="pi pi-plus" (click)="showScheduleDialog = true" 
+                  class="p-button-sm p-button-success p-button-rounded shadow-sm" pTooltip="Nuevo Turno"></button>
+        </div>
+        <div class="p-4">
+          <p-table [value]="(schedules$ | async) ?? []" [paginator]="true" [rows]="5"
+            styleClass="p-datatable-sm" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Turno</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Tolerancia</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-schedule>
+              <tr>
+                <td class="font-bold text-primary">{{ schedule.name }}</td>
+                <td><p-tag [value]="schedule.startTime" severity="info"></p-tag></td>
+                <td><p-tag [value]="schedule.endTime" severity="warning"></p-tag></td>
+                <td>{{ schedule.toleranceMinutes }}m</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="4" class="text-center py-8 text-gray-400">
+                  <i class="pi pi-calendar-times text-3xl mb-2"></i>
+                  <p>No hay plantillas de turno creadas.</p>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
 
-  <!-- 2. Formularios en un Acordeón -->
-  <div class="accordion-container">
-    <p-accordion>
-      <!-- Panel para Crear Plantilla de Turno -->
-      <p-accordionTab header="Crear Nueva Plantilla de Turno">
-        <form (ngSubmit)="createSchedule()" class="form-section">
-          <p-floatLabel>
-            <input pInputText id="name" [(ngModel)]="newSchedule.name" name="name" required class="w-full" />
-            <label for="name">Nombre del Turno (Ej: Mañana Uva)</label>
-          </p-floatLabel>
+    <!-- RIGHT COLUMN: Assign Schedule Form -->
+    <div class="lg:col-span-7">
+      <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+        <div class="bg-primary-container px-6 py-5">
+          <h2 class="text-xl font-bold text-white m-0 flex items-center gap-2">
+            <i class="pi pi-user-edit"></i> Asignar Horario a Empleado
+          </h2>
+          <p class="text-primary-fixed text-sm mt-1">Sigue los pasos para programar el horario de un trabajador.</p>
+        </div>
+        
+        <form (ngSubmit)="assignSchedule()" class="p-8 space-y-8">
+          
+          <!-- STEP 1 -->
+          <div>
+            <h4 class="text-sm font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center">1</span>
+              Seleccionar Empleado y Turno
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-2">Empleado</label>
+                <p-dropdown [options]="(employees$ | async) ?? []" [(ngModel)]="assignmentForm.employeeId" name="employeeId"
+                  required optionLabel="fullName" optionValue="id" [filter]="true" filterBy="fullName"
+                  placeholder="-- Buscar empleado --" styleClass="w-full" appendTo="body"></p-dropdown>
+              </div>
 
-          <div class="form-grid-2">
-            <p-floatLabel>
-              <p-calendar [(ngModel)]="newSchedule.startTime" name="startTime" [timeOnly]="true" hourFormat="24"
-                inputId="startTime" required styleClass="w-full" appendTo="body"></p-calendar>
-              <label for="startTime">Hora Entrada</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-calendar [(ngModel)]="newSchedule.endTime" name="endTime" [timeOnly]="true" hourFormat="24"
-                inputId="endTime" required styleClass="w-full" appendTo="body"></p-calendar>
-              <label for="endTime">Hora Salida</label>
-            </p-floatLabel>
-          </div>
-
-          <p-floatLabel>
-            <p-inputNumber [(ngModel)]="newSchedule.toleranceMinutes" name="toleranceMinutes" inputId="tolerance"
-              required [min]="0" [max]="60" suffix=" minutos"></p-inputNumber>
-            <label for="tolerance">Tolerancia (minutos)</label>
-          </p-floatLabel>
-
-          <p-button type="submit" [label]="isLoading ? 'Guardando...' : 'Guardar Plantilla'" icon="pi pi-save"
-            [loading]="isLoading" styleClass="btn-secondary w-full"></p-button>
-        </form>
-      </p-accordionTab>
-
-      <!-- Panel para Asignar Horario -->
-      <p-accordionTab header="Asignar Horario a Empleado">
-        <form (ngSubmit)="assignSchedule()" class="form-section">
-          <div class="form-grid-2">
-            <p-floatLabel>
-              <p-dropdown [options]="(employees$ | async) ?? []" [(ngModel)]="assignmentForm.employeeId" name="employeeId"
-                required optionLabel="fullName" optionValue="id" [filter]="true"
-                styleClass="w-full"></p-dropdown>
-              <label>Empleado</label>
-            </p-floatLabel>
-
-            <p-floatLabel>
-              <p-dropdown [options]="(schedules$ | async) ?? []" [(ngModel)]="assignmentForm.scheduleId"
-                name="scheduleId" required optionLabel="name" optionValue="id"
-                styleClass="w-full"></p-dropdown>
-              <label>Turno (Plantilla)</label>
-            </p-floatLabel>
-          </div>
-
-          <div class="form-grid-2">
-            <p-floatLabel>
-              <p-calendar [(ngModel)]="assignmentForm.validFrom" name="validFrom" dateFormat="yy-mm-dd"
-                inputId="validFrom" required appendTo="body"></p-calendar>
-              <label for="validFrom">Válido Desde</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-calendar [(ngModel)]="assignmentForm.validTo" name="validTo" dateFormat="yy-mm-dd"
-                inputId="validTo" appendTo="body"></p-calendar>
-              <label for="validTo">Válido Hasta (Opcional)</label>
-            </p-floatLabel>
-          </div>
-
-          <div class="days-section">
-            <label class="field-label">Días Laborables:</label>
-            <div class="days-grid">
-              <p-button *ngFor="let day of weekDays" type="button" [label]="day.name" (onClick)="toggleDay(day)"
-                [styleClass]="day.selected ? 'p-button-sm btn-day-active' : 'p-button-sm p-button-outlined p-button-secondary'">
-              </p-button>
+              <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-2">Turno Base</label>
+                <p-dropdown [options]="(schedules$ | async) ?? []" [(ngModel)]="assignmentForm.scheduleId"
+                  name="scheduleId" required optionLabel="name" optionValue="id"
+                  placeholder="-- Seleccionar turno --" styleClass="w-full" appendTo="body"></p-dropdown>
+              </div>
             </div>
           </div>
 
-          <p-button type="submit" [label]="isLoading ? 'Asignando...' : 'Asignar Horario'" icon="pi pi-check"
-            [loading]="isLoading" styleClass="btn-primary w-full"></p-button>
+          <p-divider></p-divider>
+
+          <!-- STEP 2 -->
+          <div>
+            <h4 class="text-sm font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center">2</span>
+              Período de Validez
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-2">Fecha de Inicio</label>
+                <p-calendar [(ngModel)]="assignmentForm.validFrom" name="validFrom" dateFormat="yy-mm-dd"
+                  inputId="validFrom" required appendTo="body" styleClass="w-full" placeholder="Seleccione fecha"></p-calendar>
+              </div>
+              <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-2">Fecha de Fin (Opcional)</label>
+                <p-calendar [(ngModel)]="assignmentForm.validTo" name="validTo" dateFormat="yy-mm-dd"
+                  inputId="validTo" appendTo="body" styleClass="w-full" placeholder="Indefinido"></p-calendar>
+              </div>
+            </div>
+          </div>
+
+          <p-divider></p-divider>
+
+          <!-- STEP 3 -->
+          <div>
+            <h4 class="text-sm font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center">3</span>
+              Días Laborables
+            </h4>
+            <div class="flex flex-wrap gap-3 mt-4">
+              <button *ngFor="let day of weekDays" type="button" (click)="toggleDay(day)"
+                [ngClass]="{'bg-primary text-white border-primary shadow-md': day.selected, 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50': !day.selected}"
+                class="px-4 py-3 rounded-xl border font-bold transition-all min-w-[80px] flex items-center justify-center">
+                {{ day.name }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="pt-6">
+            <button type="submit" pButton [label]="isLoading ? 'Asignando...' : 'Asignar Horario Definitivo'" icon="pi pi-check-circle"
+              [loading]="isLoading" class="p-button-success w-full p-button-lg shadow-md"></button>
+          </div>
         </form>
-      </p-accordionTab>
-    </p-accordion>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Modal para Crear Plantilla -->
+<p-dialog header="Crear Nueva Plantilla de Turno" [(visible)]="showScheduleDialog" [modal]="true" 
+          [style]="{width: '450px'}" [draggable]="false" [resizable]="false">
+  <form (ngSubmit)="createSchedule()" class="p-4 space-y-6">
+    <div class="flex flex-col">
+      <label for="name" class="text-xs font-bold text-gray-500 uppercase mb-2">Nombre del Turno</label>
+      <input pInputText id="name" [(ngModel)]="newSchedule.name" name="name" required class="w-full" placeholder="Ej: Mañana Uva" />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col">
+        <label for="startTime" class="text-xs font-bold text-gray-500 uppercase mb-2">Hora Entrada</label>
+        <p-calendar [(ngModel)]="newSchedule.startTime" name="startTime" [timeOnly]="true" hourFormat="24"
+          inputId="startTime" required styleClass="w-full" appendTo="body" placeholder="00:00"></p-calendar>
+      </div>
+      <div class="flex flex-col">
+        <label for="endTime" class="text-xs font-bold text-gray-500 uppercase mb-2">Hora Salida</label>
+        <p-calendar [(ngModel)]="newSchedule.endTime" name="endTime" [timeOnly]="true" hourFormat="24"
+          inputId="endTime" required styleClass="w-full" appendTo="body" placeholder="00:00"></p-calendar>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="tolerance" class="text-xs font-bold text-gray-500 uppercase mb-2">Tolerancia (minutos)</label>
+      <p-inputNumber [(ngModel)]="newSchedule.toleranceMinutes" name="toleranceMinutes" inputId="tolerance"
+        required [min]="0" [max]="60" suffix=" min" styleClass="w-full"></p-inputNumber>
+    </div>
+
+    <div class="pt-4 flex justify-end gap-2">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="showScheduleDialog = false"></button>
+      <button pButton type="submit" [label]="isLoading ? 'Guardando...' : 'Guardar Plantilla'" icon="pi pi-save"
+        [loading]="isLoading" class="p-button-primary"></button>
+    </div>
+  </form>
+</p-dialog>

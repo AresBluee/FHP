@@ -58,6 +58,9 @@ export class EmployeeFormComponent implements OnInit {
   isCreatingPosition = false;
   showNewPositionDialog = false;
 
+  // Wizard state
+  currentStep: number = 1;
+
   // Catálogo de Roles y Posiciones (Data para Dropdowns)
   availableRoles = [
     { label: 'Administrador', value: 'ROLE_ADMIN' },
@@ -74,6 +77,8 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initForm();
+    this.setupAutoFill();
     this.loadWorkPositions();
     this.checkEditMode();
   }
@@ -95,6 +100,24 @@ export class EmployeeFormComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       roleName: ['ROLE_USER', Validators.required]
+    });
+  }
+
+  setupAutoFill(): void {
+    // 1. Auto-generar contraseña con el DNI
+    this.employeeForm.get('dni')?.valueChanges.subscribe(dni => {
+      if (!this.isEditMode && !this.employeeForm.get('password')?.dirty) {
+        this.employeeForm.get('password')?.setValue(dni, { emitEvent: false });
+      }
+    });
+
+    // 2. Auto-generar nombre de usuario con el Nombre
+    this.employeeForm.get('firstName')?.valueChanges.subscribe(name => {
+      if (!this.isEditMode && !this.employeeForm.get('username')?.dirty) {
+        // Convierte "Juan Carlos" en "juancarlos"
+        const usernameBase = name ? name.toLowerCase().replace(/\s+/g, '') : '';
+        this.employeeForm.get('username')?.setValue(usernameBase, { emitEvent: false });
+      }
     });
   }
 
@@ -214,5 +237,20 @@ export class EmployeeFormComponent implements OnInit {
         }
       });
     }
+  }
+
+  // ---------------------------------------------------------------------
+  // FUNCIÓN 3: WIZARD NAVIGATION
+  // ---------------------------------------------------------------------
+  nextStep(): void {
+    if (this.currentStep < 3) this.currentStep++;
+  }
+
+  prevStep(): void {
+    if (this.currentStep > 1) this.currentStep--;
+  }
+
+  setStep(step: number): void {
+    this.currentStep = step;
   }
 }

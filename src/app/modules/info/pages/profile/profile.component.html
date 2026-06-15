@@ -1,221 +1,221 @@
-<div class="mb-8">
-  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mi Perfil</h2>
-  <p class="text-body-base font-body-base text-on-surface-variant">Visualiza y actualiza tu información personal y laboral.</p>
-</div>
-
-<p-toast></p-toast>
-
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-  
-  <!-- Left Column: Profile Card & Summary (4/12) -->
-  <div class="lg:col-span-4 space-y-6">
-    
-    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
-      
-      @if (loading && !employeeData) {
-        <div class="p-8 flex flex-col items-center justify-center min-h-[300px]">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
-          <span class="text-body-base font-body-base text-on-surface-variant">Cargando perfil...</span>
-        </div>
-      } 
-      @else if (employeeData) {
-        <!-- Top Colored Section -->
-        <div class="bg-primary-container px-6 py-8 flex flex-col items-center relative overflow-hidden">
-          <div class="absolute inset-0 bg-primary opacity-5 mix-blend-overlay"></div>
-          
-          <div class="relative z-10 flex flex-col items-center">
-            <p-avatar [label]="getInitial(employeeData.firstName)" 
-                      size="xlarge" 
-                      shape="circle" 
-                      styleClass="bg-surface-container-lowest text-primary font-display-lg text-3xl ring-4 ring-surface-container-lowest/50 shadow-sm h-24 w-24">
-            </p-avatar>
-            <div class="text-center mt-4 space-y-1">
-              <h1 class="text-headline-md font-headline-md text-on-primary-container">
-                {{ employeeData.firstName }} {{ employeeData.lastName }}
-              </h1>
-              <p class="text-body-base font-body-base text-on-primary-container/80">{{ employeeData.position }}</p>
-              <div class="inline-block mt-2 px-3 py-1 bg-primary/10 rounded-full">
-                <p class="text-label-bold font-label-bold text-primary uppercase tracking-wider">Código: {{ employeeData.employeeCode }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Stats Section -->
-        <div class="p-6 grid grid-cols-1 gap-4 bg-surface-container-lowest">
-          <div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
-            <div class="h-10 w-10 rounded-full bg-secondary-container/50 flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-secondary">payments</span>
-            </div>
-            <div>
-              <p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider mb-1">Salario Mensual</p>
-              <p class="text-headline-sm font-headline-sm text-on-surface">{{ employeeData.fixedSalary | currency:'PEN':'symbol':'1.2-2' }}</p>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
-            <div class="h-10 w-10 rounded-full bg-tertiary-container/50 flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-tertiary">schedule</span>
-            </div>
-            <div>
-              <p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider mb-1">Horas Extra Totales</p>
-              <p class="text-headline-sm font-headline-sm text-on-surface">{{ employeeData.totalOvertimeDuration || '0' }} hrs</p>
-            </div>
-          </div>
-        </div>
-      }
+<div class="page-container p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-3xl font-extrabold tracking-tight text-gray-800 mb-2">Mi Perfil</h2>
+      <p class="text-sm text-gray-500">Visualiza y actualiza tu información personal y laboral.</p>
     </div>
-  </div>
 
-  <!-- Right Column: Edit Form (8/12) -->
-  <div class="lg:col-span-8 space-y-6">
-    
-    @if (employeeData) {
-      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 p-6 md:p-8">
+    <p-toast></p-toast>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Profile Card & Summary (4/12) -->
+      <div class="lg:col-span-4 space-y-6">
         
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 border-b border-outline-variant/50 pb-4">
-          <h2 class="text-headline-md font-headline-md text-on-background flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-2xl">person</span>
-            Información Personal
-          </h2>
-          @if (!isEditing) {
-            <button (click)="toggleEdit()" class="flex items-center justify-center gap-2 px-4 py-2 border border-outline text-on-surface font-label-bold text-label-bold rounded-lg hover:bg-surface-container-low transition-colors uppercase tracking-wider">
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-              Editar Perfil
-            </button>
-          }
-        </div>
-        
-        <form [formGroup]="profileForm" (ngSubmit)="saveChanges()" class="space-y-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          @if (loading && !employeeData) {
+            <div class="p-8 flex flex-col items-center justify-center min-h-[300px]">
+              <i class="pi pi-spin pi-spinner text-primary text-4xl mb-4"></i>
+              <span class="text-sm text-gray-500 font-bold">Cargando perfil...</span>
+            </div>
+          } 
+          @else if (employeeData) {
+            <!-- Top Colored Section -->
+            <div class="bg-slate-800 px-6 py-8 flex flex-col items-center relative overflow-hidden">
+              <div class="absolute inset-0 bg-black opacity-20 mix-blend-overlay"></div>
+              
+              <div class="relative z-10 flex flex-col items-center">
+                <div class="h-24 w-24 rounded-full bg-white flex items-center justify-center text-slate-800 font-bold text-4xl ring-4 ring-white/20 shadow-md">
+                  {{ getInitial(employeeData.firstName) }}
+                </div>
+                <div class="text-center mt-4 space-y-1">
+                  <h1 class="text-xl font-bold text-white">
+                    {{ employeeData.firstName }} {{ employeeData.lastName }}
+                  </h1>
+                  <p class="text-sm text-white/80">{{ employeeData.position }}</p>
+                  <div class="inline-block mt-3 px-4 py-1 bg-white/10 rounded-full border border-white/20 backdrop-blur-sm">
+                    <p class="text-xs font-bold text-white uppercase tracking-wider">Código: {{ employeeData.employeeCode }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            <!-- Información Básica -->
-            <div class="space-y-5">
-              <h3 class="text-lg font-bold text-on-surface flex items-center gap-2">
-                <span class="material-symbols-outlined text-outline-variant text-[20px]">badge</span>
-                Datos Básicos
-              </h3>
-              
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Nombres</label>
-                <input type="text" formControlName="firstName" 
-                       [disabled]="!isEditing"
-                       class="w-full px-4 py-3 rounded-lg text-body-base font-body-base transition-all shadow-sm"
-                       [ngClass]="!isEditing ? 'bg-surface-container-low text-on-surface-variant border-transparent' : 'bg-surface-container-lowest text-on-surface border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'">
-                <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" 
-                     class="text-body-sm font-body-sm text-error mt-2 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">error</span>
-                  El nombre es obligatorio
+            <!-- Stats Section -->
+            <div class="p-6 grid grid-cols-1 gap-4 bg-gray-50/50">
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <i class="pi pi-money-bill text-blue-600 text-lg"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Salario Mensual</p>
+                  <p class="text-lg font-bold text-gray-800">{{ employeeData.fixedSalary | currency:'PEN':'symbol':'1.2-2' }}</p>
                 </div>
               </div>
               
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Apellidos</label>
-                <input type="text" formControlName="lastName"
-                       [disabled]="!isEditing"
-                       class="w-full px-4 py-3 rounded-lg text-body-base font-body-base transition-all shadow-sm"
-                       [ngClass]="!isEditing ? 'bg-surface-container-low text-on-surface-variant border-transparent' : 'bg-surface-container-lowest text-on-surface border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'">
-                <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" 
-                     class="text-body-sm font-body-sm text-error mt-2 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">error</span>
-                  Los apellidos son obligatorios
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                <div class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                  <i class="pi pi-clock text-orange-600 text-lg"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Horas Extra Totales</p>
+                  <p class="text-lg font-bold text-gray-800">{{ employeeData.totalOvertimeDuration || '0' }} hrs</p>
                 </div>
               </div>
-            </div>
-
-            <!-- Información de Contacto -->
-            <div class="space-y-5">
-              <h3 class="text-lg font-bold text-on-surface flex items-center gap-2">
-                <span class="material-symbols-outlined text-outline-variant text-[20px]">contact_mail</span>
-                Contacto
-              </h3>
-              
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Email</label>
-                <input type="email" formControlName="email"
-                       [disabled]="!isEditing"
-                       class="w-full px-4 py-3 rounded-lg text-body-base font-body-base transition-all shadow-sm"
-                       [ngClass]="!isEditing ? 'bg-surface-container-low text-on-surface-variant border-transparent' : 'bg-surface-container-lowest text-on-surface border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'">
-                <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" 
-                     class="text-body-sm font-body-sm text-error mt-2 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">error</span>
-                  Email inválido
-                </div>
-              </div>
-              
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Teléfono</label>
-                <input type="text" formControlName="phone"
-                       [disabled]="!isEditing"
-                       class="w-full px-4 py-3 rounded-lg text-body-base font-body-base transition-all shadow-sm"
-                       [ngClass]="!isEditing ? 'bg-surface-container-low text-on-surface-variant border-transparent' : 'bg-surface-container-lowest text-on-surface border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'">
-                <div *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" 
-                     class="text-body-sm font-body-sm text-error mt-2 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">error</span>
-                  Teléfono es obligatorio
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Información de Usuario -->
-          <div class="pt-8 border-t border-outline-variant/50">
-            <h3 class="text-lg font-bold text-on-surface flex items-center gap-2 mb-5">
-              <span class="material-symbols-outlined text-outline-variant text-[20px]">manage_accounts</span>
-              Cuenta del Sistema
-            </h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Nombre de Usuario</label>
-                <input type="text" formControlName="username"
-                       [disabled]="!isEditing"
-                       class="w-full px-4 py-3 rounded-lg text-body-base font-body-base transition-all shadow-sm"
-                       [ngClass]="!isEditing ? 'bg-surface-container-low text-on-surface-variant border-transparent' : 'bg-surface-container-lowest text-on-surface border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'">
-              </div>
-              
-              <div class="flex flex-col">
-                <label class="text-label-bold font-label-bold text-on-surface-variant mb-2 uppercase tracking-wider">Fecha de Ingreso</label>
-                <input type="text" 
-                       [value]="employeeData.hireDate | date:'dd/MM/yyyy'"
-                       disabled
-                       class="w-full px-4 py-3 bg-surface-container-low text-on-surface-variant border-transparent rounded-lg text-body-base font-body-base">
-              </div>
-            </div>
-          </div>
-
-          <!-- Botones de Acción -->
-          @if (isEditing) {
-            <div class="flex justify-end gap-3 pt-6 border-t border-outline-variant/50">
-              <button type="button" (click)="toggleEdit()" 
-                      class="px-5 py-2.5 border border-outline text-on-surface font-label-bold text-label-bold rounded-lg hover:bg-surface-container-low transition-colors uppercase tracking-wider">
-                Cancelar
-              </button>
-              <button type="submit" 
-                      [disabled]="profileForm.invalid || loading"
-                      class="flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-on-primary font-label-bold text-label-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm disabled:opacity-50 uppercase tracking-wider">
-                <span class="material-symbols-outlined animate-spin" *ngIf="loading">progress_activity</span>
-                <span class="material-symbols-outlined" *ngIf="!loading">save</span>
-                {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
-              </button>
             </div>
           }
-        </form>
-      </div>
-    } 
-    @else if (!loading) {
-      <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-error-container p-8 text-center flex flex-col items-center">
-        <div class="h-16 w-16 bg-error-container rounded-full flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-error text-3xl">error</span>
         </div>
-        <h3 class="text-headline-sm font-headline-sm text-on-surface mb-2">Error al cargar el perfil</h3>
-        <p class="text-body-base font-body-base text-on-surface-variant mb-6">No se pudieron cargar los datos del perfil. Por favor, intenta nuevamente.</p>
-        <button (click)="loadProfile()" class="flex items-center gap-2 px-5 py-2 bg-primary text-on-primary rounded-lg hover:bg-primary-container transition-colors font-label-bold text-label-bold">
-          <span class="material-symbols-outlined text-[18px]">refresh</span>
-          Reintentar
-        </button>
       </div>
-    }
+
+      <!-- Right Column: Edit Form (8/12) -->
+      <div class="lg:col-span-8 space-y-6">
+        
+        @if (employeeData) {
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4">
+              <h2 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                  <i class="pi pi-user"></i>
+                </div>
+                Información Personal
+              </h2>
+              @if (!isEditing) {
+                <button (click)="toggleEdit()" class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-50 transition-colors uppercase tracking-wider shadow-sm">
+                  <i class="pi pi-pencil"></i>
+                  Editar Perfil
+                </button>
+              }
+            </div>
+            
+            <form [formGroup]="profileForm" (ngSubmit)="saveChanges()" class="space-y-8">
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- Información Básica -->
+                <div class="space-y-5">
+                  <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="pi pi-id-card text-gray-400"></i>
+                    Datos Básicos
+                  </h3>
+                  
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Nombres</label>
+                    <input type="text" formControlName="firstName" 
+                           [disabled]="!isEditing"
+                           class="w-full px-4 py-3 rounded-xl transition-all shadow-sm outline-none"
+                           [ngClass]="!isEditing ? 'bg-gray-50 text-gray-500 border border-gray-100' : 'bg-white text-gray-800 border border-gray-300 focus:ring-2 focus:ring-primary'">
+                    <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" 
+                         class="text-xs font-bold text-red-500 mt-2 flex items-center gap-1">
+                      <i class="pi pi-exclamation-circle"></i> El nombre es obligatorio
+                    </div>
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Apellidos</label>
+                    <input type="text" formControlName="lastName"
+                           [disabled]="!isEditing"
+                           class="w-full px-4 py-3 rounded-xl transition-all shadow-sm outline-none"
+                           [ngClass]="!isEditing ? 'bg-gray-50 text-gray-500 border border-gray-100' : 'bg-white text-gray-800 border border-gray-300 focus:ring-2 focus:ring-primary'">
+                    <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" 
+                         class="text-xs font-bold text-red-500 mt-2 flex items-center gap-1">
+                      <i class="pi pi-exclamation-circle"></i> Los apellidos son obligatorios
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="space-y-5">
+                  <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="pi pi-envelope text-gray-400"></i>
+                    Contacto
+                  </h3>
+                  
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Email</label>
+                    <input type="email" formControlName="email"
+                           [disabled]="!isEditing"
+                           class="w-full px-4 py-3 rounded-xl transition-all shadow-sm outline-none"
+                           [ngClass]="!isEditing ? 'bg-gray-50 text-gray-500 border border-gray-100' : 'bg-white text-gray-800 border border-gray-300 focus:ring-2 focus:ring-primary'">
+                    <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" 
+                         class="text-xs font-bold text-red-500 mt-2 flex items-center gap-1">
+                      <i class="pi pi-exclamation-circle"></i> Email inválido
+                    </div>
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Teléfono</label>
+                    <input type="text" formControlName="phone"
+                           [disabled]="!isEditing"
+                           class="w-full px-4 py-3 rounded-xl transition-all shadow-sm outline-none"
+                           [ngClass]="!isEditing ? 'bg-gray-50 text-gray-500 border border-gray-100' : 'bg-white text-gray-800 border border-gray-300 focus:ring-2 focus:ring-primary'">
+                    <div *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" 
+                         class="text-xs font-bold text-red-500 mt-2 flex items-center gap-1">
+                      <i class="pi pi-exclamation-circle"></i> Teléfono es obligatorio
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Información de Usuario -->
+              <div class="pt-8 border-t border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2 mb-5">
+                  <i class="pi pi-cog text-gray-400"></i>
+                  Cuenta del Sistema
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Nombre de Usuario</label>
+                    <input type="text" formControlName="username"
+                           [disabled]="!isEditing"
+                           class="w-full px-4 py-3 rounded-xl transition-all shadow-sm outline-none"
+                           [ngClass]="!isEditing ? 'bg-gray-50 text-gray-500 border border-gray-100' : 'bg-white text-gray-800 border border-gray-300 focus:ring-2 focus:ring-primary'">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Fecha de Ingreso</label>
+                    <input type="text" 
+                           [value]="employeeData.hireDate | date:'dd/MM/yyyy'"
+                           disabled
+                           class="w-full px-4 py-3 bg-gray-50 text-gray-500 border border-gray-100 rounded-xl font-bold shadow-sm outline-none cursor-not-allowed">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones de Acción -->
+              @if (isEditing) {
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                  <button type="button" (click)="toggleEdit()" 
+                          class="px-6 py-3 border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors uppercase tracking-wider shadow-sm text-xs">
+                    Cancelar
+                  </button>
+                  <button type="submit" 
+                          [disabled]="profileForm.invalid || loading"
+                          class="flex items-center justify-center gap-2 px-8 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-md disabled:opacity-50 uppercase tracking-wider text-xs">
+                    <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+                    <i class="pi pi-save" *ngIf="!loading"></i>
+                    {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+                  </button>
+                </div>
+              }
+            </form>
+          </div>
+        } 
+        @else if (!loading) {
+          <div class="bg-white rounded-2xl shadow-sm border border-red-200 p-8 text-center flex flex-col items-center">
+            <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
+              <i class="pi pi-exclamation-triangle text-red-500 text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Error al cargar el perfil</h3>
+            <p class="text-sm text-gray-500 mb-6">No se pudieron cargar los datos del perfil. Por favor, intenta nuevamente.</p>
+            <button (click)="loadProfile()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold shadow-sm text-sm">
+              <i class="pi pi-refresh"></i>
+              Reintentar
+            </button>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

@@ -5,14 +5,14 @@
     <form (ngSubmit)="generateGlobalReport()" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700">Fecha de Inicio:</label>
-                <input type="date" [(ngModel)]="startDate" name="startDate" required
-                       class="w-full p-2 border rounded-md">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio:</label>
+                <p-calendar [(ngModel)]="startDate" name="startDate" required
+                            dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="startDate" appendTo="body"></p-calendar>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700">Fecha de Fin:</label>
-                <input type="date" [(ngModel)]="endDate" name="endDate" required
-                       class="w-full p-2 border rounded-md">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Fin:</label>
+                <p-calendar [(ngModel)]="endDate" name="endDate" required
+                            dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="endDate" appendTo="body"></p-calendar>
             </div>
         </div>
         

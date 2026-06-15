@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '../../../../Environment/environment';
 
+import { CalendarModule } from 'primeng/calendar';
+
 @Component({
   selector: 'app-global-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule],
+  imports: [CommonModule, FormsModule, ButtonModule, CalendarModule],
   templateUrl: './global-reports.component.html',
   styleUrl: './global-reports.component.scss'
 })

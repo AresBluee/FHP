@@ -18,6 +18,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AccordionModule } from 'primeng/accordion';
+import { DialogModule } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { TagModule } from 'primeng/tag';
 
 // Interfaces de Datos
 interface WorkSchedule {
@@ -42,7 +46,7 @@ interface EmployeeScheduleAssignmentDTO {
 @Component({
   selector: 'app-schedule-management',
   imports: [
-    CommonModule, FormsModule, ButtonModule, DropdownModule, InputTextModule, ToastModule, PanelModule, TableModule, CalendarModule, InputNumberModule, FloatLabelModule, AccordionModule
+    CommonModule, FormsModule, ButtonModule, DropdownModule, InputTextModule, ToastModule, PanelModule, TableModule, CalendarModule, InputNumberModule, FloatLabelModule, AccordionModule, DialogModule, CardModule, DividerModule, TagModule
   ],
   providers: [MessageService],
   templateUrl: './schedule-management.component.html',
@@ -56,6 +60,9 @@ export class ScheduleManagementComponent implements OnInit {
   // Modelos para los Formularios
   newSchedule: WorkSchedule = { id: 0, name: '', startTime: '', endTime: '', toleranceMinutes: 15 };
   assignmentForm: EmployeeScheduleAssignmentDTO = { employeeId: null, scheduleId: null, validFrom: null, validTo: null, workingDays: '' };
+
+  // Control UI
+  showScheduleDialog = false;
 
   // Observables para los datos
   schedules$!: Observable<WorkSchedule[]>;
@@ -109,6 +116,7 @@ export class ScheduleManagementComponent implements OnInit {
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Plantilla de turno creada' });
         this.newSchedule = { id: 0, name: '', startTime: '', endTime: '', toleranceMinutes: 15 };
+        this.showScheduleDialog = false;
         this.isLoading = false;
       },
       error: (err) => {

@@ -13,6 +13,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { of, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 
+import { DropdownModule } from 'primeng/dropdown';
+
 interface DailyWorkSummary {
     employeeId: number;
     date: string; // YYYY-MM-DD
@@ -27,7 +29,7 @@ interface DailyWorkSummary {
   selector: 'app-my-attendance-history',
   standalone: true,
   
-  imports: [CommonModule, FormsModule, TableModule, ButtonModule, TagModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, TableModule, ButtonModule, TagModule, DatePickerModule, DropdownModule],
   templateUrl: './my-attendance-history.component.html',
   styleUrl: './my-attendance-history.component.scss'
 })
@@ -45,6 +47,21 @@ export class MyAttendanceHistoryComponent implements OnInit{
     selectedMonth: number = this.currentDate.getMonth() + 1; // Mes actual
     selectedYear: number = this.currentDate.getFullYear();
     availableYears: number[] = this.generateYearRange();
+    
+    months = [
+        { label: 'Enero', value: 1 },
+        { label: 'Febrero', value: 2 },
+        { label: 'Marzo', value: 3 },
+        { label: 'Abril', value: 4 },
+        { label: 'Mayo', value: 5 },
+        { label: 'Junio', value: 6 },
+        { label: 'Julio', value: 7 },
+        { label: 'Agosto', value: 8 },
+        { label: 'Septiembre', value: 9 },
+        { label: 'Octubre', value: 10 },
+        { label: 'Noviembre', value: 11 },
+        { label: 'Diciembre', value: 12 }
+    ];
     
     // FILTRO POR FECHA ESPECÍFICA (Inicializado en HOY)
     selectedDate: string = this.currentDate.toISOString().split('T')[0]; 
