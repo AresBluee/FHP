@@ -179,28 +179,28 @@
         </div>
       </div>
 
-      <!-- Distribución de Personal en Cultivos (Donut / Barras) -->
+      <!-- Distribución de Personal por Cargo / Puesto (Barras de progreso) -->
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
         <div>
           <div class="flex justify-between items-center mb-4">
             <div>
-              <h3 class="text-lg font-bold text-gray-800">Personal por Cultivo</h3>
-              <p class="text-xs text-gray-500">Distribución de trabajadores en lotes</p>
+              <h3 class="text-lg font-bold text-gray-800">Personal por Cargo / Puesto</h3>
+              <p class="text-xs text-gray-500">Distribución de colaboradores según puesto en la empresa</p>
             </div>
-            <i class="pi pi-chart-pie text-color-verde-oscuro text-xl"></i>
+            <i class="pi pi-briefcase text-color-verde-oscuro text-xl"></i>
           </div>
 
           <div class="space-y-4 my-6">
-            <div *ngFor="let crop of cropDistribution" class="space-y-1.5">
+            <div *ngFor="let item of positionDistribution" class="space-y-1.5">
               <div class="flex justify-between text-sm font-semibold">
                 <span class="text-gray-700 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full" [ngClass]="crop.color"></span>
-                  {{ crop.name }}
+                  <span class="w-2.5 h-2.5 rounded-full" [ngClass]="item.color"></span>
+                  {{ item.name }}
                 </span>
-                <span class="text-gray-900 font-bold">{{ crop.count }} <span class="text-xs text-gray-400 font-normal">({{ crop.percentage }}%)</span></span>
+                <span class="text-gray-900 font-bold">{{ item.count }} <span class="text-xs text-gray-400 font-normal">({{ item.percentage }}%)</span></span>
               </div>
               <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                <div [ngClass]="crop.color" class="h-full rounded-full transition-all duration-500" [style.width]="crop.percentage + '%'"></div>
+                <div [ngClass]="item.color" class="h-full rounded-full transition-all duration-500" [style.width]="item.percentage + '%'"></div>
               </div>
             </div>
           </div>

@@ -69,12 +69,12 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   // Lista de actividad en tiempo real / reciente
   recentActivities: ActivityLog[] = [];
 
-  // Datos por Cultivo para barra de distribución
-  cropDistribution = [
-    { name: 'Palta', count: 45, percentage: 40, color: 'bg-emerald-600' },
-    { name: 'Espárrago', count: 32, percentage: 28, color: 'bg-green-500' },
-    { name: 'Uva', count: 22, percentage: 20, color: 'bg-teal-500' },
-    { name: 'Arándanos', count: 14, percentage: 12, color: 'bg-lime-500' }
+  // Datos por Cargo/Puesto de Trabajo (Calculado dinámicamente o por defecto)
+  positionDistribution = [
+    { name: 'Cosechador de Campo', count: 48, percentage: 42, color: 'bg-emerald-600' },
+    { name: 'Supervisor de Campo', count: 26, percentage: 23, color: 'bg-green-500' },
+    { name: 'Operario de Riego', count: 22, percentage: 19, color: 'bg-teal-500' },
+    { name: 'Administración / RRHH', count: 17, percentage: 16, color: 'bg-blue-500' }
   ];
 
   ngOnInit(): void {
@@ -98,16 +98,20 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   loadStats(): void {
     this.isLoading = true;
 
-    // Cargar empleados
+    // Cargar empleados y calcular distribución por Cargo / Puesto real
     this.http.get<EmployeeDTO[]>(this.employeesUrl).subscribe({
       next: (data) => {
         this.totalEmployees = data ? data.length : 0;
         this.activeEmployees = data ? data.filter(e => e.enabled !== false).length : 0;
+        
+        if (data && data.length > 0) {
+          this.calculatePositionDistribution(data);
+        }
+        
         this.checkLoadingComplete();
       },
       error: (err) => {
         console.error('Error cargando empleados para dashboard:', err);
-        // Valores de respaldo visual en caso el backend esté reiniciando
         this.totalEmployees = 113;
         this.activeEmployees = 108;
         this.checkLoadingComplete();
@@ -126,6 +130,34 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         this.checkLoadingComplete();
       }
     });
+  }
+
+  private calculatePositionDistribution(data: EmployeeDTO[]): void {
+    if (!data || data.length === 0) return;
+    
+    const counts: { [key: string]: number } = {};
+    data.forEach(emp => {
+      let posName = 'Sin Cargo Asignado';
+      if (emp.position) {
+        posName = typeof emp.position === 'object' ? ((emp.position as any).name || 'Sin Cargo Asignado') : String(emp.position);
+      } else if (emp.roleName) {
+        posName = emp.roleName.replace('ROLE_', '');
+      }
+      counts[posName] = (counts[posName] || 0) + 1;
+    });
+
+    const total = data.length;
+    const colors = ['bg-emerald-600', 'bg-green-500', 'bg-teal-500', 'bg-blue-500', 'bg-amber-500', 'bg-lime-600'];
+    const entries = Object.keys(counts).map((key, idx) => ({
+      name: key,
+      count: counts[key],
+      percentage: Math.round((counts[key] / total) * 100) || 1,
+      color: colors[idx % colors.length]
+    })).sort((a, b) => b.count - a.count);
+
+    if (entries.length > 0) {
+      this.positionDistribution = entries.slice(0, 5);
+    }
   }
 
   private checkLoadingComplete(): void {
