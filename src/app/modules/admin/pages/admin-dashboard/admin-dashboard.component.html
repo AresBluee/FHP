@@ -1,0 +1,260 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/50 p-2 sm:p-6">
+  <div class="max-w-7xl mx-auto space-y-8 animate-fade-in">
+    
+    <!-- Header de Bienvenida con Glassmorphism y Reloj en Tiempo Real -->
+    <div class="relative bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-color-verde-oscuro to-color-verde-claro flex items-center justify-center text-white shadow-lg shadow-green-200">
+          <i class="pi pi-shield text-3xl"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Centro de Comando Agrícola</h1>
+          <p class="text-gray-500 text-sm font-medium flex items-center gap-2 mt-1">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Supervisión Operativa en Tiempo Real • AGROcyt
+          </p>
+        </div>
+      </div>
+      
+      <!-- Reloj Operativo -->
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
+        <div class="text-center md:text-right">
+          <p class="text-2xl font-bold text-gray-800 font-mono">{{ currentTime | date:'HH:mm:ss' }}</p>
+          <p class="text-xs text-gray-400 font-medium">{{ currentTime | date:'EEEE, d MMMM yyyy' }}</p>
+        </div>
+        <div class="h-10 w-px bg-gray-100 hidden sm:block"></div>
+        <button (click)="loadStats()" pTooltip="Refrescar métricas del panel" 
+                class="p-3 bg-green-50 hover:bg-green-100 text-color-verde-oscuro rounded-xl transition-all active:scale-95 flex items-center justify-center font-bold text-sm gap-2">
+          <i class="pi pi-sync" [ngClass]="{'animate-spin': isLoading}"></i>
+          <span class="hidden sm:inline">Actualizar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicadores Estadísticos / Tarjetas KPI -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- KPI: Personal Activo -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Personal Activo</p>
+            <h3 class="text-3xl font-extrabold text-gray-800">
+              <ng-container *ngIf="!isLoading; else skeletonNum">{{ activeEmployees }}</ng-container>
+            </h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-green-50 text-color-verde-oscuro flex items-center justify-center">
+            <i class="pi pi-users text-xl font-bold"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-between text-xs font-semibold text-emerald-600 bg-emerald-50/80 px-3 py-1.5 rounded-lg">
+          <span>De {{ totalEmployees }} registrados</span>
+          <span class="flex items-center gap-1"><i class="pi pi-arrow-up text-[10px]"></i> {{ (activeEmployees / (totalEmployees || 1) * 100) | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+
+      <!-- KPI: Asistencia Diaria -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Puntualidad en Campo</p>
+            <h3 class="text-3xl font-extrabold text-gray-800">
+              <ng-container *ngIf="!isLoading; else skeletonNum">{{ dailyAttendanceRate }}%</ng-container>
+            </h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <i class="pi pi-clock text-xl font-bold"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-between text-xs font-semibold text-blue-600 bg-blue-50/80 px-3 py-1.5 rounded-lg">
+          <span>Turno Mañana/Tarde</span>
+          <span class="text-emerald-600">Óptimo</span>
+        </div>
+      </div>
+
+      <!-- KPI: Solicitudes Pendientes -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group" (click)="navigateTo('/admin/solicitudes-pendientes')">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1 group-hover:text-amber-600 transition-colors">Solicitudes en Revisión</p>
+            <h3 class="text-3xl font-extrabold text-gray-800 group-hover:text-amber-600 transition-colors">
+              <ng-container *ngIf="!isLoading; else skeletonNum">{{ pendingRequests }}</ng-container>
+            </h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i class="pi pi-file-edit text-xl font-bold"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-between text-xs font-semibold text-amber-700 bg-amber-50/80 px-3 py-1.5 rounded-lg">
+          <span>Requiere atención de RRHH</span>
+          <i class="pi pi-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+
+      <!-- KPI: Archivos / Boletas -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group" (click)="navigateTo('/admin/archivos-documentos')">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1 group-hover:text-teal-600 transition-colors">Documentos Cargados</p>
+            <h3 class="text-3xl font-extrabold text-gray-800 group-hover:text-teal-600 transition-colors">
+              <ng-container *ngIf="!isLoading; else skeletonNum">{{ totalDocuments }}</ng-container>
+            </h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i class="pi pi-folder-open text-xl font-bold"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-between text-xs font-semibold text-teal-700 bg-teal-50/80 px-3 py-1.5 rounded-lg">
+          <span>Boletas y Constancias</span>
+          <i class="pi pi-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Rápida: Operaciones y Distribución de Cultivos -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Accesos Directos de Acción Administrativa (2 Columnas) -->
+      <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Acciones de Gestión Rápida</h2>
+              <p class="text-xs text-gray-500">Ejecuta tareas operativas en un solo clic</p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-green-100 text-color-verde-oscuro">Panel Ejecutivo</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Registrar Empleado -->
+            <div (click)="navigateTo('/admin/registrar-nuevo')" 
+                 class="group p-5 rounded-xl border border-gray-100 hover:border-color-verde-claro/50 bg-gray-50/50 hover:bg-green-50/30 transition-all cursor-pointer flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-color-verde-oscuro group-hover:scale-110 transition-transform flex-shrink-0">
+                <i class="pi pi-user-plus text-xl font-bold"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 text-sm group-hover:text-color-verde-oscuro transition-colors">Registrar Colaborador</h4>
+                <p class="text-xs text-gray-500 mt-1">Alta de nuevo trabajador y asignación de código/DNI.</p>
+              </div>
+            </div>
+
+            <!-- Subir Documentos -->
+            <div (click)="navigateTo('/admin/archivos-documentos')" 
+                 class="group p-5 rounded-xl border border-gray-100 hover:border-teal-300 bg-gray-50/50 hover:bg-teal-50/30 transition-all cursor-pointer flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-teal-600 group-hover:scale-110 transition-transform flex-shrink-0">
+                <i class="pi pi-cloud-upload text-xl font-bold"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 text-sm group-hover:text-teal-600 transition-colors">Subir Boletas / Archivos</h4>
+                <p class="text-xs text-gray-500 mt-1">Carga digital de boletas de pago y certificados médicos.</p>
+              </div>
+            </div>
+
+            <!-- Asignar Horarios -->
+            <div (click)="navigateTo('/admin/asignar-horarios')" 
+                 class="group p-5 rounded-xl border border-gray-100 hover:border-blue-300 bg-gray-50/50 hover:bg-blue-50/30 transition-all cursor-pointer flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform flex-shrink-0">
+                <i class="pi pi-calendar text-xl font-bold"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 text-sm group-hover:text-blue-600 transition-colors">Asignar Horarios</h4>
+                <p class="text-xs text-gray-500 mt-1">Configura turnos rotativos y horarios de cosecha.</p>
+              </div>
+            </div>
+
+            <!-- Control Diario -->
+            <div (click)="navigateTo('/admin/control-diario')" 
+                 class="group p-5 rounded-xl border border-gray-100 hover:border-amber-300 bg-gray-50/50 hover:bg-amber-50/30 transition-all cursor-pointer flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform flex-shrink-0">
+                <i class="pi pi-check-square text-xl font-bold"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 text-sm group-hover:text-amber-600 transition-colors">Control de Asistencia</h4>
+                <p class="text-xs text-gray-500 mt-1">Verificación de marcajes diarios y validación en campo.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribución de Personal en Cultivos (Donut / Barras) -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">Personal por Cultivo</h3>
+              <p class="text-xs text-gray-500">Distribución de trabajadores en lotes</p>
+            </div>
+            <i class="pi pi-chart-pie text-color-verde-oscuro text-xl"></i>
+          </div>
+
+          <div class="space-y-4 my-6">
+            <div *ngFor="let crop of cropDistribution" class="space-y-1.5">
+              <div class="flex justify-between text-sm font-semibold">
+                <span class="text-gray-700 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full" [ngClass]="crop.color"></span>
+                  {{ crop.name }}
+                </span>
+                <span class="text-gray-900 font-bold">{{ crop.count }} <span class="text-xs text-gray-400 font-normal">({{ crop.percentage }}%)</span></span>
+              </div>
+              <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                <div [ngClass]="crop.color" class="h-full rounded-full transition-all duration-500" [style.width]="crop.percentage + '%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+          <span>Actualizado en tiempo real</span>
+          <a (click)="navigateTo('/admin/lista-empleados')" class="font-bold text-color-verde-oscuro hover:underline cursor-pointer">Ver lista general →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed de Actividad Reciente -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-lg font-bold text-gray-800">Actividad Reciente en Sistema</h2>
+          <p class="text-xs text-gray-500">Últimos eventos operativos y transacciones de personal</p>
+        </div>
+        <p-tag severity="info" value="Monitoreo Activo" icon="pi pi-bolt"></p-tag>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-100 text-xs uppercase tracking-wider text-gray-400">
+              <th class="py-3 px-4 font-bold">Colaborador</th>
+              <th class="py-3 px-4 font-bold">Acción / Operación</th>
+              <th class="py-3 px-4 font-bold">Hora</th>
+              <th class="py-3 px-4 font-bold text-right">Estado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50 text-sm">
+            <tr *ngFor="let log of recentActivities" class="hover:bg-gray-50/80 transition-colors">
+              <td class="py-3.5 px-4 font-bold text-gray-800 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 font-bold flex items-center justify-center text-xs">
+                  {{ log.user.charAt(0) }}
+                </div>
+                <span>{{ log.user }}</span>
+              </td>
+              <td class="py-3.5 px-4 text-gray-600">{{ log.action }}</td>
+              <td class="py-3.5 px-4 text-gray-400 text-xs font-mono">{{ log.time }}</td>
+              <td class="py-3.5 px-4 text-right">
+                <p-tag [value]="log.statusLabel" [severity]="log.status === 'SUCCESS' ? 'success' : log.status === 'WARNING' ? 'warning' : 'info'"></p-tag>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #skeletonNum>
+    <p-skeleton width="3rem" height="2rem"></p-skeleton>
+  </ng-template>
+</div>

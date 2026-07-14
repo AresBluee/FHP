@@ -48,7 +48,7 @@ export class MyCertificatesComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = doc.fileName;
+      a.download = doc.fileName || `Certificado_${doc.id}.pdf`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

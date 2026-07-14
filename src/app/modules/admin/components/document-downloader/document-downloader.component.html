@@ -1,5 +1,6 @@
 
 <div class="p-6 pt-0">
+    <p-toast></p-toast>
     <p-card header="Prueba de Descarga Segura por ID" styleClass="shadow-lg">
       <p class="mb-4 text-gray-600">
           Ingrese el ID del documento generado (ej. 1, 2, 3) para probar la descarga directa.
@@ -17,6 +18,7 @@
           <p-button
               label="Descargar Documento" 
               icon="pi pi-download" 
+              [loading]="isLoading"
               (onClick)="downloadDocument()"
               styleClass="p-button-success p-button-sm">
           </p-button>

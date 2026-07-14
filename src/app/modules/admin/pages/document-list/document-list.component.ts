@@ -84,7 +84,7 @@ export class DocumentListComponent implements OnInit {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = doc.fileName;
+        a.download = doc.fileName || `Documento_${doc.id}.pdf`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

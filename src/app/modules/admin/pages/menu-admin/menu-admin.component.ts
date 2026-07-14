@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import {  MenuModule } from "primeng/menu";
+import { MenuModule } from "primeng/menu";
+import { TieredMenuModule } from "primeng/tieredmenu";
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { Subscription, filter } from 'rxjs';
@@ -14,6 +15,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 
     CommonModule,
     MenuModule,
+    TieredMenuModule,
     RouterModule
 ], 
   templateUrl: './menu-admin.component.html',
@@ -25,6 +27,7 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   profileLink: string = '/home';
   
   menuItems: MenuItem[] = []; 
+  userMenuItems: MenuItem[] = []; 
   private routerSubscription: Subscription;
   private layoutSubscription!: Subscription;
   private authSubscription!: Subscription;
@@ -71,6 +74,7 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
       } else {
         this.profileLink = '/home';
       }
+      this.initializeUserMenuItems(role);
     });
 
     this.layoutSubscription = this.layoutService.sidebarOpen$.subscribe(
@@ -102,6 +106,43 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
     }
 
     this.menuItems = items;
+  }
+
+  initializeUserMenuItems(role: string | null): void {
+    const opts: MenuItem[] = [
+      {
+        label: 'Mi Perfil',
+        icon: 'pi pi-user',
+        routerLink: [this.profileLink],
+        command: () => this.router.navigate([this.profileLink])
+      },
+      {
+        label: 'Ir a Inicio (/home)',
+        icon: 'pi pi-home',
+        routerLink: ['/home'],
+        command: () => this.router.navigate(['/home'])
+      }
+    ];
+
+    if (role === 'ADMIN') {
+      opts.push({
+        label: 'Configurar Solicitudes',
+        icon: 'pi pi-cog',
+        routerLink: ['configuracion-solicitudes'],
+        command: () => this.router.navigate(['/admin/configuracion-solicitudes'])
+      });
+    }
+
+    opts.push(
+      { separator: true },
+      {
+        label: 'Cerrar Sesión',
+        icon: 'pi pi-power-off',
+        command: () => this.cerrarSesion()
+      }
+    );
+
+    this.userMenuItems = opts;
   }
 
   cerrarSesion() {

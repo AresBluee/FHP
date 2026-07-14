@@ -1,6 +1,6 @@
 // Archivo: src/app/modules/admin/components/document-upload/document-upload.component.ts
 
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -34,6 +34,7 @@ export class DocumentUploadComponent implements OnInit {
   private employeesUrl = environment.apiUrl + '/api/employee';
 
   @ViewChild('fileUpload') fileUpload!: FileUpload;
+  @Output() uploadSuccess = new EventEmitter<void>();
 
   employees: EmployeeListDTO[] = [];
 
@@ -78,6 +79,8 @@ export class DocumentUploadComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
+    formData.append('employeeId', this.selectedEmployeeId.toString());
+    formData.append('documentType', this.documentType);
     formData.append('metadata', JSON.stringify({
       employeeId: this.selectedEmployeeId,
       documentType: this.documentType
@@ -95,6 +98,7 @@ export class DocumentUploadComponent implements OnInit {
 
   onUploadSuccess(): void {
     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Documento subido y asociado con éxito.' });
+    this.uploadSuccess.emit();
     this.resetForm();
   }
 

@@ -89,14 +89,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     accessOptions.push({
       label: 'Mi Perfil',
       icon: 'pi pi-user',
-      routerLink: this.profileLink
+      routerLink: [this.profileLink],
+      command: () => this.router.navigate([this.profileLink])
     });
 
     if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
       accessOptions.push({
         label: 'Configuración',
         icon: 'pi pi-cog',
-        routerLink: '/admin'
+        routerLink: ['/admin'],
+        command: () => this.router.navigate(['/admin'])
       });
     }
 
