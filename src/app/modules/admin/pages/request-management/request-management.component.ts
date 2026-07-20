@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../Environment/environment';
-import { of, catchError } from 'rxjs';
+import { of, catchError, Subscription, interval } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -65,7 +65,7 @@ interface RequestResponseDTO {
   templateUrl: './request-management.component.html',
   styleUrls: ['./request-management.component.scss']
 })
-export class RequestManagementComponent implements OnInit {
+export class RequestManagementComponent implements OnInit, OnDestroy {
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -78,6 +78,7 @@ export class RequestManagementComponent implements OnInit {
   requests: RequestResponseDTO[] = [];
   filteredRequests: RequestResponseDTO[] = [];
   isLoading = true;
+  private refreshSubscription?: Subscription;
 
   priorityStats: PriorityStats[] = [
     { level: 4, label: 'Prioridad Crítica', total: 0, managed: 0, pending: 0, progress: 0, colorClass: 'bg-red-50 text-red-800 border-red-200 hover:bg-red-100', iconClass: 'pi pi-bolt text-red-600' },
@@ -103,6 +104,17 @@ export class RequestManagementComponent implements OnInit {
   ngOnInit(): void {
     this.loadRequests();
     this.loadSupervisors();
+
+    // Auto-refresh every 15 seconds
+    this.refreshSubscription = interval(15000).subscribe(() => {
+        this.loadRequests(true);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+        this.refreshSubscription.unsubscribe();
+    }
   }
 
   loadSupervisors(): void {
@@ -114,13 +126,15 @@ export class RequestManagementComponent implements OnInit {
     });
   }
 
-  loadRequests(): void {
-    this.isLoading = true;
+  loadRequests(silent: boolean = false): void {
+    if (!silent) this.isLoading = true;
     // Asumimos que el backend GET /api/requests devuelve todo (o podemos llamar getPriorityQueue)
     this.http.get<RequestResponseDTO[]>(this.requestApiUrl).pipe(
       catchError(error => {
-        this.isLoading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar las solicitudes.' });
+        if (!silent) {
+            this.isLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar las solicitudes.' });
+        }
         return of([]);
       })
     ).subscribe(data => {
@@ -130,7 +144,7 @@ export class RequestManagementComponent implements OnInit {
       });
       this.calculateStats();
       this.applyFilters();
-      this.isLoading = false;
+      if (!silent) this.isLoading = false;
     });
   }
 
@@ -253,5 +267,32 @@ export class RequestManagementComponent implements OnInit {
   }
   onGlobalFilter(table: any, event: Event): void {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  downloadDocument(): void {
+    if (!this.selectedRequest || !this.selectedRequest.documentPath) return;
+    
+    let path = this.selectedRequest.documentPath.replace(/\\/g, '/');
+    if (path.startsWith('/')) {
+        path = path.substring(1);
+    }
+    const docUrl = environment.apiUrl + '/' + path;
+
+    this.http.get(docUrl, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const objectUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = `Documento_Solicitud_${this.selectedRequest!.id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(objectUrl);
+        document.body.removeChild(a);
+      },
+      error: (err) => {
+        console.error('Error al descargar el documento', err);
+        this.messageService.add({severity:'error', summary:'Error', detail:'No se pudo descargar el documento.'});
+      }
+    });
   }
 }

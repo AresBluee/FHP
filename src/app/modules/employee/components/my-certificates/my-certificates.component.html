@@ -1,63 +1,91 @@
 <div class="mb-8">
-  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mis Certificados</h2>
-  <p class="text-body-base font-body-base text-on-surface-variant">Descarga tus constancias, certificados y documentos laborales.</p>
+  <h2 class="text-display-lg font-display-lg text-on-background mb-2">Mis Documentos</h2>
+  <p class="text-body-base font-body-base text-on-surface-variant">Bandeja de entrada para visualizar constancias, contratos y otros documentos que Recursos Humanos te ha enviado.</p>
 </div>
 
-<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-hidden border border-outline-variant/30">
   
-  <div class="p-6 md:p-8 border-b border-outline-variant/50 bg-surface-bright flex justify-between items-center">
-    <h3 class="text-headline-md font-headline-md text-on-background">Documentos Disponibles</h3>
-  </div>
-
-  <div class="overflow-x-auto relative min-h-[200px]">
+  <p-table #dt [value]="certificates" [paginator]="true" [rows]="10" [loading]="loading"
+    styleClass="p-datatable-sm" responsiveLayout="scroll"
+    [globalFilterFields]="['fileName', 'documentType', 'uploaderUsername']">
     
-    <div *ngIf="loading" class="absolute inset-0 bg-surface-container-lowest/50 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
-      <p class="text-body-base font-body-base text-on-surface-variant">Cargando certificados...</p>
-    </div>
+    <ng-template pTemplate="caption">
+      <div class="flex justify-between items-center p-2">
+        <h3 class="text-headline-md font-headline-md text-on-background m-0">Documentos Recibidos</h3>
+        <p-iconField iconPosition="left">
+          <p-inputIcon styleClass="pi pi-search" />
+          <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar documento..."
+            class="text-sm p-2 w-64 rounded-md border-gray-300 focus:ring-primary focus:border-primary" />
+        </p-iconField>
+      </div>
+    </ng-template>
 
-    <div *ngIf="error" class="m-6 bg-error-container text-on-error-container p-4 rounded-lg font-body-base flex items-center gap-3">
-      <span class="material-symbols-outlined">error</span>
-      {{ error }}
-    </div>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="fileName" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Nombre del Archivo <p-sortIcon field="fileName"></p-sortIcon></th>
+        <th pSortableColumn="documentType" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Tipo <p-sortIcon field="documentType"></p-sortIcon></th>
+        <th pSortableColumn="uploaderUsername" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Enviado Por <p-sortIcon field="uploaderUsername"></p-sortIcon></th>
+        <th pSortableColumn="uploadDate" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Fecha <p-sortIcon field="uploadDate"></p-sortIcon></th>
+        <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Acciones</th>
+      </tr>
+    </ng-template>
 
-    <table *ngIf="!error" class="w-full text-left border-collapse min-w-[600px]">
-      <thead>
-        <tr class="border-b border-outline-variant/50 bg-surface-container-lowest">
-          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Nombre del Archivo</th>
-          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Tipo de Documento</th>
-          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Fecha de Carga</th>
-          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-outline-variant/30">
-        <tr *ngFor="let cert of certificates" class="hover:bg-surface-container-lowest transition-colors group">
-          <td class="py-5 px-6 font-label-bold text-label-bold text-on-surface flex items-center gap-3">
+    <ng-template pTemplate="body" let-cert>
+      <tr class="hover:bg-surface-container-lowest transition-colors group">
+        <td class="py-4 px-6 font-label-bold text-label-bold text-on-surface">
+          <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-outline-variant">description</span>
-            {{ cert.fileName }}
-          </td>
-          <td class="py-5 px-6">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-bold text-label-bold bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
-              {{ cert.documentType }}
-            </span>
-          </td>
-          <td class="py-5 px-6 font-body-base text-body-base text-on-surface-variant">
-            {{ cert.uploadDate | date:'dd/MM/yyyy' }}
-          </td>
-          <td class="py-5 px-6 text-center">
-            <button (click)="downloadCertificate(cert)" class="p-2 text-primary bg-primary-fixed/30 hover:bg-primary-container rounded-full transition-colors inline-flex items-center justify-center tooltip-target" title="Descargar Documento">
+            <span>{{ cert.fileName }}</span>
+            <p-tag *ngIf="isRecent(cert.uploadDate)" value="Nuevo" severity="success" styleClass="text-[10px] px-2 py-0 h-5"></p-tag>
+          </div>
+        </td>
+        <td class="py-4 px-6">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-bold text-label-bold bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
+            {{ cert.documentType }}
+          </span>
+        </td>
+        <td class="py-4 px-6 font-body-base text-body-base text-on-surface-variant">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">
+              {{ (cert.uploaderUsername || 'R').charAt(0).toUpperCase() }}
+            </div>
+            <span>{{ cert.uploaderUsername || 'RRHH' }}</span>
+          </div>
+        </td>
+        <td class="py-4 px-6 font-body-base text-body-base text-on-surface-variant">
+          {{ cert.uploadDate | date:'dd/MM/yyyy HH:mm' }}
+        </td>
+        <td class="py-4 px-6 text-center">
+          <div class="flex justify-center gap-2">
+            <button (click)="viewCertificate(cert)" class="p-2 text-info bg-info/10 hover:bg-info hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-info" title="Ver en Línea">
+              <span class="material-symbols-outlined text-[20px]">visibility</span>
+            </button>
+            <button (click)="downloadCertificate(cert)" class="p-2 text-success bg-success/10 hover:bg-success hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-success" title="Descargar Documento">
               <span class="material-symbols-outlined text-[20px]">download</span>
             </button>
-          </td>
-        </tr>
-        
-        <tr *ngIf="!loading && (!certificates || certificates.length === 0)">
-          <td colspan="4" class="py-12 px-6 text-center text-on-surface-variant">
-            <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant block">history_edu</span>
-            <span class="font-body-base">No tienes certificados disponibles en este momento.</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="py-12 px-6 text-center text-on-surface-variant">
+          <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant block">inbox</span>
+          <span class="font-body-base">Tu bandeja está vacía. Aquí aparecerán los documentos que RRHH te envíe.</span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
+
+<!-- Diálogo para Visualización de Certificado -->
+<p-dialog header="Visualización del Documento" [(visible)]="showViewer" [modal]="true" 
+  [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
+  <ng-container *ngIf="documentViewerUrl">
+    <iframe [src]="documentViewerUrl" class="w-full h-full border-0 rounded-lg"></iframe>
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text p-button-secondary"></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { environment } from '../../../../Environment/environment';
 import { DocumentDTO } from '../../../../core/models/document.model';
 import { DocumentService } from '../../../../core/services/document.service';
@@ -6,6 +6,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
+import { Subscription, interval } from 'rxjs';
 
 // Módulos de PrimeNG
 import { TableModule } from "primeng/table";
@@ -30,7 +31,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   templateUrl: './document-list.component.html',
   styleUrls: ['./document-list.component.scss']
 })
-export class DocumentListComponent implements OnInit {
+export class DocumentListComponent implements OnInit, OnDestroy {
 
   private documentService = inject(DocumentService);
   private messageService = inject(MessageService);
@@ -39,6 +40,7 @@ export class DocumentListComponent implements OnInit {
 
   documents: DocumentDTO[] = [];
   isLoading = false;
+  private refreshSubscription?: Subscription;
 
   showViewer = false;
   documentViewerUrl: SafeResourceUrl | undefined;
@@ -47,18 +49,30 @@ export class DocumentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDocuments();
+    // Auto-refresh every 15 seconds
+    this.refreshSubscription = interval(15000).subscribe(() => {
+        this.loadDocuments(true);
+    });
   }
 
-  loadDocuments(): void {
-    this.isLoading = true;
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+        this.refreshSubscription.unsubscribe();
+    }
+  }
+
+  loadDocuments(silent: boolean = false): void {
+    if (!silent) this.isLoading = true;
     this.documentService.getAllDocuments().subscribe({
       next: (data) => {
         this.documents = data;
-        this.isLoading = false;
+        if (!silent) this.isLoading = false;
       },
       error: (err) => {
-        this.isLoading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los documentos.' });
+        if (!silent) {
+            this.isLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los documentos.' });
+        }
         console.error('Error al cargar documentos:', err);
       }
     });

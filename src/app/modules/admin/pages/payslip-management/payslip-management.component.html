@@ -1,28 +1,40 @@
 <p-toast position="top-center"></p-toast>
 
-<div class="page-container">
-  <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-title">Gestión de Boletas</h1>
-    <p class="page-subtitle">Generación y control de boletas de pago para el personal.</p>
+<div class="page-container mb-8">
+  <div class="page-header mb-6">
+    <h1 class="text-display-lg font-display-lg text-on-background mb-2">Gestión de Boletas</h1>
+    <p class="text-body-base font-body-base text-on-surface-variant">Generación y control de boletas de pago para el personal.</p>
   </div>
 
   <!-- Generation Card -->
-  <div class="content-card generation-card">
-    <h2 class="section-title">Generación de Boletas de Pago</h2>
-    <form (ngSubmit)="generatePayslip()" class="generation-form">
+  <div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 p-6 mb-8">
+    <h2 class="text-headline-sm font-headline-sm text-on-background mb-6">Generación de Boletas de Pago</h2>
+    
+    <div class="flex gap-4 mb-6">
+      <div class="flex items-center">
+        <p-radioButton name="genMode" value="batch" [(ngModel)]="generationMode" inputId="modeBatch"></p-radioButton>
+        <label for="modeBatch" class="ml-2 font-body-base text-on-surface cursor-pointer">Generación Masiva (Todos los empleados)</label>
+      </div>
+      <div class="flex items-center">
+        <p-radioButton name="genMode" value="individual" [(ngModel)]="generationMode" inputId="modeIndiv"></p-radioButton>
+        <label for="modeIndiv" class="ml-2 font-body-base text-on-surface cursor-pointer">Generación Individual</label>
+      </div>
+    </div>
 
-      <div class="form-grid">
-        <div class="form-field">
-          <label class="field-label">Seleccionar Empleado:</label>
+    <form (ngSubmit)="generatePayslips()" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+        
+        <div class="flex flex-col" *ngIf="generationMode === 'individual'">
+          <label class="text-label-bold font-label-bold text-on-surface-variant mb-2">Seleccionar Empleado:</label>
           <p-dropdown
-              [options]="(employees$ | async) ?? []"
+              [options]="employees"
               [(ngModel)]="generationForm.employeeId"
               optionLabel="fullName"
               optionValue="id"
-              placeholder="-- Trabajador --"
+              placeholder="-- Buscar Trabajador --"
               name="employeeId"
-              required
+              [filter]="true"
+              filterBy="fullName,employeeCode"
               styleClass="w-full">
                <ng-template let-emp pTemplate="item">
                   <div>{{ emp.fullName }} ({{ emp.employeeCode }})</div>
@@ -30,77 +42,126 @@
           </p-dropdown>
         </div>
 
-        <div class="form-field">
-          <label class="field-label">Inicio Período:</label>
+        <div class="flex flex-col">
+          <label class="text-label-bold font-label-bold text-on-surface-variant mb-2">Inicio del Período:</label>
           <p-calendar [(ngModel)]="generationForm.startDate" name="startDate" required
-                      dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="startDate" appendTo="body"></p-calendar>
+                      dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="startDate" appendTo="body"
+                      [showIcon]="true"></p-calendar>
         </div>
 
-        <div class="form-field">
-          <label class="field-label">Fin del Período:</label>
+        <div class="flex flex-col">
+          <label class="text-label-bold font-label-bold text-on-surface-variant mb-2">Fin del Período:</label>
           <p-calendar [(ngModel)]="generationForm.endDate" name="endDate" required
-                      dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="endDate" appendTo="body"></p-calendar>
+                      dateFormat="yy-mm-dd" dataType="string" styleClass="w-full" inputId="endDate" appendTo="body"
+                      [showIcon]="true"></p-calendar>
         </div>
       </div>
 
-      <div class="form-submit">
+      <div class="pt-4 border-t border-outline-variant/30 flex justify-end">
           <p-button
-              label="{{ isLoading ? 'Calculando y Generando...' : 'Generar Boleta y PDF' }}"
-              icon="pi pi-calculator"
+              *ngIf="generationMode === 'individual'"
+              label="{{ isLoading ? 'Generando...' : 'Generar Boleta Individual' }}"
+              icon="pi pi-file"
               [loading]="isLoading"
               type="submit"
-              [disabled]="!generationForm.employeeId || !generationForm.startDate || !generationForm.endDate || isLoading"
-              styleClass="btn-primary w-full">
+              [disabled]="!generationForm.employeeId || !generationForm.startDate || !generationForm.endDate || isLoading || isGeneratingBatch"
+              styleClass="bg-primary hover:bg-primary/90 text-on-primary border-none px-6">
           </p-button>
+
+          <p-button
+              *ngIf="generationMode === 'batch'"
+              label="{{ isGeneratingBatch ? 'Procesando Empleados...' : 'Generar Boletas para Todos' }}"
+              icon="pi pi-users"
+              type="submit"
+              [loading]="isGeneratingBatch"
+              [disabled]="!generationForm.startDate || !generationForm.endDate || isGeneratingBatch || isLoading"
+              styleClass="bg-tertiary hover:bg-tertiary/90 text-on-tertiary border-none px-6 font-bold shadow-md">
+          </p-button>
+      </div>
+      
+      <div *ngIf="isGeneratingBatch" class="mt-4">
+        <div class="flex justify-between text-sm mb-1 text-on-surface-variant">
+          <span>Progreso de Generación Masiva</span>
+          <span>{{ batchProgress }}%</span>
+        </div>
+        <p-progressBar [value]="batchProgress" [showValue]="false" styleClass="h-2"></p-progressBar>
       </div>
     </form>
   </div>
 
   <!-- History Card -->
-  <div class="content-card history-card">
-    <div class="history-header">
-      <h2 class="section-title">Historial de Boletas Generadas</h2>
-      <p-button icon="pi pi-refresh" label="Actualizar" (onClick)="loadGeneratedPayslips()" styleClass="p-button-sm p-button-outlined"></p-button>
-    </div>
+  <div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden">
+    
+    <p-table #dt [value]="generatedPayslips" [paginator]="true" [rows]="10" [loading]="isLoadingList"
+             styleClass="p-datatable-sm" responsiveLayout="scroll"
+             [globalFilterFields]="['employeeCode', 'employeeName']">
 
-    <p-table [value]="generatedPayslips"
-             [paginator]="true"
-             [rows]="5"
-             [loading]="isLoadingList"
-             styleClass="p-datatable-sm">
+      <ng-template pTemplate="caption">
+        <div class="flex justify-between items-center p-2">
+          <h3 class="text-headline-md font-headline-md text-on-background m-0">Historial de Boletas</h3>
+          <div class="flex items-center gap-3">
+            <p-button icon="pi pi-refresh" (onClick)="loadGeneratedPayslips()" pTooltip="Actualizar" styleClass="p-button-secondary p-button-outlined"></p-button>
+            <p-iconField iconPosition="left">
+              <p-inputIcon styleClass="pi pi-search" />
+              <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar boleta..."
+                class="text-sm p-2 w-64 rounded-md border-gray-300 focus:ring-primary focus:border-primary" />
+            </p-iconField>
+          </div>
+        </div>
+      </ng-template>
 
       <ng-template pTemplate="header">
         <tr>
-          <th>ID Boleta</th>
-          <th>Cód. Empleado</th>
-          <th>Período de Pago</th>
-          <th>Salario Neto Calculado</th>
-          <th class="text-center w-20">Acción</th>
+          <th pSortableColumn="id" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="employeeCode" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Código <p-sortIcon field="employeeCode"></p-sortIcon></th>
+          <th pSortableColumn="employeeName" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Empleado <p-sortIcon field="employeeName"></p-sortIcon></th>
+          <th pSortableColumn="payPeriodStart" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Período <p-sortIcon field="payPeriodStart"></p-sortIcon></th>
+          <th pSortableColumn="netSalary" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-right">Monto <p-sortIcon field="netSalary"></p-sortIcon></th>
+          <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Acciones</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-payslip>
-        <tr>
-          <td>{{ payslip.id }}</td>
-          <td>{{ payslip.employee?.employeeCode || 'N/A' }}</td>
-          <td>{{ payslip.payPeriodStart | date:'mediumDate' }} - {{ payslip.payPeriodEnd | date:'mediumDate' }}</td>
-          <td class="net-salary">{{ payslip.netSalary | currency:'PEN':'symbol':'1.2-2' }}</td>
-          <td class="text-center">
-            <p-button icon="pi pi-download" styleClass="p-button-sm p-button-success"
-                      (onClick)="downloadPayslip(payslip.id, getFileNameForPayslip(payslip))" pTooltip="Descargar PDF">
-            </p-button>
+        <tr class="hover:bg-surface-container-lowest transition-colors group">
+          <td class="py-4 px-6 text-on-surface font-mono">#{{ payslip.id }}</td>
+          <td class="py-4 px-6 font-label-bold text-label-bold text-on-surface">{{ payslip.employeeCode || 'N/A' }}</td>
+          <td class="py-4 px-6 text-on-surface">{{ payslip.employeeName || 'Desconocido' }}</td>
+          <td class="py-4 px-6 text-on-surface-variant font-body-base">
+            {{ payslip.payPeriodStart | date:'MMM dd' }} - {{ payslip.payPeriodEnd | date:'MMM dd, yyyy' }}
+          </td>
+          <td class="py-4 px-6 text-right font-medium text-primary-container">
+            {{ payslip.netSalary | currency:'PEN':'symbol':'1.2-2' }}
+          </td>
+          <td class="py-4 px-6 text-center">
+            <div class="flex justify-center gap-2">
+              <button (click)="viewPayslip(payslip.id, payslip)" class="p-2 text-info bg-info/10 hover:bg-info hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-info" title="Ver en Línea">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </button>
+              <button (click)="downloadPayslip(payslip.id, payslip, getFileNameForPayslip(payslip))" class="p-2 text-success bg-success/10 hover:bg-success hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-success" title="Descargar PDF">
+                <span class="material-symbols-outlined text-[20px]">download</span>
+              </button>
+            </div>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="empty-state">
-            <i class="pi pi-file-pdf"></i>
-            <p>No se han generado boletas.</p>
+          <td colspan="6" class="py-12 px-6 text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant block">receipt_long</span>
+            <span class="font-body-base">No se han generado boletas de pago aún.</span>
           </td>
         </tr>
       </ng-template>
     </p-table>
   </div>
 </div>
+
+<!-- Diálogo para Visualización de Documento -->
+<p-dialog header="Visualización del Documento" [(visible)]="showViewer" [modal]="true"
+  [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
+  <iframe [src]="documentViewerUrl" class="w-full h-full border-none"></iframe>
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

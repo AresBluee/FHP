@@ -1,0 +1,102 @@
+<div class="p-6 max-w-7xl mx-auto">
+    
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+            <i class="pi pi-chart-line text-green-600 text-3xl"></i> Evaluaciones
+        </h1>
+        <p class="text-gray-500 mt-2">Gestiona tus evaluaciones de desempeño y encuestas corporativas.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Columna Izquierda: Desempeño General -->
+        <div class="lg:col-span-1 space-y-6">
+            
+            <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white opacity-10 rounded-full"></div>
+                <div class="absolute -left-10 -top-10 w-32 h-32 bg-white opacity-10 rounded-full"></div>
+                
+                <h3 class="text-xl font-semibold mb-2 relative z-10">Tu Desempeño Actual</h3>
+                <p class="text-green-100 text-sm mb-6 relative z-10">Basado en tus últimas evaluaciones</p>
+                
+                <div class="flex items-end gap-2 mb-4 relative z-10">
+                    <span class="text-6xl font-bold">{{performanceScore}}</span>
+                    <span class="text-xl text-green-200 pb-1">/100</span>
+                </div>
+                
+                <p-progressBar [value]="performanceScore" [showValue]="false" styleClass="!h-2 !bg-green-900/50 [&>div]:!bg-white relative z-10"></p-progressBar>
+                
+                <div class="mt-6 flex items-center gap-2 text-green-100 relative z-10">
+                    <i class="pi pi-arrow-up text-green-300"></i>
+                    <span class="text-sm">+5% desde el último trimestre</span>
+                </div>
+            </div>
+
+            <!-- Tareas Pendientes -->
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="pi pi-clock text-orange-500"></i> Tareas Pendientes
+                </h3>
+                
+                <div *ngIf="pendingEvaluations.length === 0" class="text-center py-6 text-gray-500 text-sm">
+                    No tienes evaluaciones pendientes. ¡Buen trabajo!
+                </div>
+
+                <div class="space-y-4">
+                    <div *ngFor="let ev of pendingEvaluations" class="p-4 rounded-2xl bg-orange-50 border border-orange-100">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">{{ev.type}}</span>
+                            <span class="text-xs text-orange-500 bg-orange-100 px-2 py-1 rounded-full"><i class="pi pi-calendar mr-1"></i>{{ev.deadline}}</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-base mb-4">{{ev.title}}</h4>
+                        <p-button label="Iniciar Evaluación" icon="pi pi-play" styleClass="w-full !rounded-xl p-button-warning" (onClick)="startEvaluation(ev)"></p-button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Columna Derecha: Historial -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 h-full">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <i class="pi pi-history text-green-600"></i> Historial de Evaluaciones
+                </h3>
+
+                <div class="space-y-6">
+                    <div *ngFor="let ev of pastEvaluations" class="group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-md transition-all gap-4">
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-green-50 group-hover:text-green-600 transition-colors shrink-0">
+                                <i class="pi pi-check-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">{{ev.title}}</h4>
+                                <p class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+                                    <i class="pi pi-calendar text-xs"></i> Completado: {{ev.date}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-6 sm:justify-end">
+                            <div class="text-right">
+                                <p class="text-2xl font-bold" [ngClass]="{
+                                    'text-green-600': ev.score >= 90,
+                                    'text-blue-600': ev.score >= 80 && ev.score < 90,
+                                    'text-orange-500': ev.score >= 70 && ev.score < 80,
+                                    'text-red-500': ev.score < 70
+                                }">{{ev.score}}</p>
+                                <p class="text-xs font-medium text-gray-500 uppercase">{{ev.label}}</p>
+                            </div>
+                            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-green-600 transition-colors">
+                                <i class="pi pi-download"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

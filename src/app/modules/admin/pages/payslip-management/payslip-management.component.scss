@@ -1,140 +1,25 @@
 /* ══════════════════════════════════════════
    Payslip Management – Gestión de Boletas
-   Design System: Agro-Modern Management
+   Design System: Tailwind + PrimeNG
    ══════════════════════════════════════════ */
 
 :host {
   display: block;
-  font-family: var(--admin-font);
-}
-
-.page-container {
-  max-width: 1440px;
-}
-
-.page-header {
-  @apply mb-6;
-}
-
-.page-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: var(--admin-on-surface);
-  letter-spacing: -0.02em;
-}
-
-.page-subtitle {
-  font-size: 0.875rem;
-  color: var(--admin-on-surface-variant);
-  margin-top: 0.25rem;
-}
-
-// ── Content Card ──
-.content-card {
-  background: #ffffff;
-  border: 1px solid var(--admin-outline-variant);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: var(--admin-card-shadow);
-}
-
-.generation-card {
-  @apply mb-6;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--admin-on-surface);
-  margin-bottom: 1.25rem;
-}
-
-// ── Form ──
-.generation-form {
-  @apply space-y-6;
-}
-
-.form-grid {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-4;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-}
-
-.field-label {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--admin-on-surface-variant);
-  margin-bottom: 0.375rem;
-}
-
-.form-submit {
-  padding-top: 0.5rem;
-}
-
-// ── History ──
-.history-card {
-  margin-top: 1.5rem;
-}
-
-.history-header {
-  @apply flex justify-between items-center mb-4;
-}
-
-.net-salary {
-  font-weight: 700;
-  color: var(--admin-primary-container);
-}
-
-// ── Empty State ──
-.empty-state {
-  @apply text-center py-8;
-
-  i {
-    font-size: 2.5rem;
-    color: #9ca3af;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: #6b7280;
-  }
 }
 
 // ── PrimeNG Overrides ──
-::ng-deep .btn-primary {
-  background: var(--admin-primary-container) !important;
-  border-color: var(--admin-primary-container) !important;
-
-  &:hover {
-    background: var(--admin-primary) !important;
-    border-color: var(--admin-primary) !important;
-  }
-}
-
 ::ng-deep .p-datatable {
   .p-datatable-thead > tr > th {
-    font-family: var(--admin-font) !important;
     font-size: 0.75rem !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.03em;
-    color: var(--admin-on-surface-variant) !important;
-    background: var(--admin-surface) !important;
+    background: transparent !important;
     border-bottom: 1px solid var(--admin-outline-variant) !important;
   }
 
   .p-datatable-tbody > tr > td {
-    font-family: var(--admin-font) !important;
     font-size: 0.8125rem !important;
-    color: var(--admin-on-surface) !important;
     border-bottom: 1px solid #f3f4f6 !important;
-  }
-
-  .p-datatable-tbody > tr:hover {
-    background: #f8faf8 !important;
   }
 }

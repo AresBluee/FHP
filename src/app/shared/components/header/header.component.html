@@ -23,7 +23,7 @@
                     <!-- Enlace dinámico del logo [routerLink]="profileLink" -->
                     <a [routerLink]="profileLink"
                         class="flex items-center space-x-2 text-white text-2xl font-extrabold tracking-wider">
-                        <img src="Logo.svg" alt="Logo" style="width: 10%; ">
+                        <img src="faviAgrokasa.png" alt="Logo" class="w-10 h-10 object-contain mr-2">
 
                         <div class="font-[tipo1] font-extralight w-72">
                             <span class="text-3xl text-left">AGRO</span>
@@ -71,12 +71,57 @@
                         <li class="nav-item flex items-center space-x-4">
                             <!-- Icono de Notificaciones -->
                             <div *ngIf="isLoggedIn" class="relative group">
-                                <button class="p-2 text-white hover:text-yellow-400 transition-all duration-300 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95">
+                                <button (click)="isSidebarNotificationsOpen = true" class="p-2 text-white hover:text-yellow-400 transition-all duration-300 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95">
                                     <span class="material-symbols-outlined text-2xl">notifications</span>
                                     <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-color-verde-oscuro"></span>
                                 </button>
+
+                                <p-sidebar [(visible)]="isSidebarNotificationsOpen" position="right" [modal]="false" styleClass="w-full md:w-96 p-sidebar-notifications shadow-2xl border-l border-gray-200">
+                                    <ng-template pTemplate="header">
+                                        <h3 class="font-bold text-xl text-gray-800 flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-color-verde-postular">notifications</span> Todas las Notificaciones
+                                        </h3>
+                                    </ng-template>
+                                    <ng-template pTemplate="content">
+                                        <div class="flex flex-col gap-4 mt-2">
+                                            <!-- Mocks de notificaciones largas -->
+                                            <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-md">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="font-semibold text-blue-900">Actualización del Sistema</span>
+                                                    <span class="text-xs text-gray-500">Hace 2 horas</span>
+                                                </div>
+                                                <p class="text-sm text-gray-700">Se han añadido nuevas funcionalidades al módulo de reportes. Revísalas cuando tengas tiempo.</p>
+                                            </div>
+                                            
+                                            <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-r-md">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="font-semibold text-green-900">Documento Aprobado</span>
+                                                    <span class="text-xs text-gray-500">Ayer</span>
+                                                </div>
+                                                <p class="text-sm text-gray-700">El archivo "Reporte_Mensual_Julio.pdf" fue revisado y aprobado exitosamente.</p>
+                                            </div>
+
+                                            <div class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-md">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="font-semibold text-yellow-900">Recordatorio</span>
+                                                    <span class="text-xs text-gray-500">Hace 3 días</span>
+                                                </div>
+                                                <p class="text-sm text-gray-700">No olvides actualizar tus datos personales en la sección "Mi Perfil" antes de fin de mes.</p>
+                                            </div>
+                                            
+                                            <div class="p-4 bg-gray-50 border-l-4 border-gray-400 rounded-r-md">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="font-semibold text-gray-900">Bienvenida</span>
+                                                    <span class="text-xs text-gray-500">Hace 1 semana</span>
+                                                </div>
+                                                <p class="text-sm text-gray-700">Bienvenido al nuevo sistema AgroCYT v2.0.</p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-sidebar>
+
                                 <!-- Tooltip Minimalista -->
-                                <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                                     Notificaciones
                                 </span>
                             </div>
@@ -92,7 +137,7 @@
                                 </span>
 
                                 <div class="relative group">
-                                    <p-avatar [label]="userInitial" class="cursor-pointer block transition-transform duration-300 group-hover:scale-105 active:scale-95"
+                                    <p-avatar [label]="userInitial" shape="circle" class="cursor-pointer block transition-transform duration-300 group-hover:scale-105 active:scale-95"
                                         styleClass="bg-yellow-500 text-gray-900 font-bold border-2 border-transparent group-hover:border-yellow-400" 
                                         (click)="menu.toggle($event)"
                                         aria-haspopup="true" aria-controls="overlay_menu">

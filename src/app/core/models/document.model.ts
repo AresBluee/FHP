@@ -4,4 +4,7 @@ export interface DocumentDTO {
   documentType: string;
   uploadDate: string;
   uploaderUsername: string;
+  employeeName?: string;
+  employeeCode?: string;
+  uploadedBy?: string;
 }

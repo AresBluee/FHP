@@ -138,9 +138,20 @@
                 </span>
               </td>
               <td class="py-5 px-6 text-center">
-                <button class="p-2 text-secondary hover:text-primary hover:bg-surface-container rounded-full transition-colors inline-flex items-center justify-center">
-                  <span class="material-symbols-outlined text-[20px]">visibility</span>
-                </button>
+                <div class="flex justify-center gap-2">
+                  <!-- Solo mostrar si hay documento adjunto o firmado -->
+                  <ng-container *ngIf="req.documentPath">
+                    <button (click)="viewDocument(req.documentPath)" pTooltip="Ver Documento" class="p-2 text-info hover:text-white hover:bg-info rounded-full transition-colors inline-flex items-center justify-center border border-info">
+                      <span class="material-symbols-outlined text-[20px]">visibility</span>
+                    </button>
+                    <button (click)="downloadDocument(req.documentPath, req.id)" pTooltip="Descargar Documento" class="p-2 text-success hover:text-white hover:bg-success rounded-full transition-colors inline-flex items-center justify-center border border-success">
+                      <span class="material-symbols-outlined text-[20px]">download</span>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="!req.documentPath">
+                    <span class="text-on-surface-variant text-sm italic">Sin documento</span>
+                  </ng-container>
+                </div>
               </td>
             </tr>
             
@@ -157,3 +168,12 @@
   </div>
 
 </div>
+
+<!-- Diálogo para Visualización de Documento -->
+<p-dialog header="Visualización del Documento" [(visible)]="showViewer" [modal]="true"
+  [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
+  <iframe [src]="documentViewerUrl" class="w-full h-full border-none"></iframe>
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

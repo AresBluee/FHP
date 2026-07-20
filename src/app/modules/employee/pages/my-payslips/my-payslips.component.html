@@ -1,55 +1,90 @@
+<p-toast></p-toast>
 <!-- Page Header -->
-<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
   <div>
-    <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Mis Boletas de Pago</h2>
-    <p class="text-body-base font-body-base text-on-surface-variant mt-1">Consulta y descarga tus recibos de nómina recientes.</p>
+    <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Mis Boletas de Pago</h2>
+    <p class="text-body-base font-body-base text-on-surface-variant">Consulta y descarga tus recibos de nómina recientes.</p>
   </div>
 </header>
 
-<div *ngIf="loading" class="animate-pulse flex flex-col gap-4">
+<div *ngIf="loading && payslips.length === 0" class="animate-pulse flex flex-col gap-4">
   <div class="h-8 bg-surface-variant rounded w-1/4"></div>
   <div class="h-64 bg-surface-variant rounded w-full"></div>
 </div>
 
-<div *ngIf="error" class="text-error bg-error-container/30 border border-error/50 rounded-xl p-4">
+<div *ngIf="error" class="text-error bg-error-container/30 border border-error/50 rounded-xl p-4 mb-4">
   {{ error }}
 </div>
 
 <!-- Content Card -->
-<div *ngIf="!loading && !error" class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden flex-1">
-  <div *ngIf="payslips.length > 0" class="overflow-x-auto">
-    <table class="w-full text-left min-w-[800px]">
-      <thead>
-        <tr class="bg-surface-container-low border-b border-outline-variant/50">
-          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Periodo Inicio</th>
-          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Periodo Fin</th>
-          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Salario Neto</th>
-          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Fecha Generación</th>
-          <th class="px-6 py-4 font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-outline-variant/30">
-        <tr *ngFor="let payslip of payslips" class="hover:bg-[#F8FAFC] transition-colors duration-150 group">
-          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface">{{ payslip.periodStartDate | date:'dd/MM/yyyy' }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface">{{ payslip.periodEndDate | date:'dd/MM/yyyy' }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base font-medium text-on-surface">{{ payslip.netSalary | currency:'S/.' }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-body-base font-body-base text-on-surface-variant">{{ payslip.generationDate | date:'dd/MM/yyyy' }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right">
-            <button (click)="downloadPayslip(payslip.id)" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary-container/10 text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all duration-200" title="Descargar PDF">
+<div *ngIf="!loading || payslips.length > 0" class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden flex-1 mb-8">
+  
+  <p-table #dt [value]="payslips" [paginator]="true" [rows]="10" [loading]="loading && payslips.length === 0"
+           styleClass="p-datatable-sm" responsiveLayout="scroll"
+           [globalFilterFields]="['periodStartDate']">
+           
+    <ng-template pTemplate="caption">
+      <div class="flex justify-end p-2">
+        <p-iconField iconPosition="left">
+          <p-inputIcon styleClass="pi pi-search" />
+          <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar boleta..."
+            class="text-sm p-2 w-64 rounded-md border-gray-300 focus:ring-primary focus:border-primary" />
+        </p-iconField>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="periodStartDate" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Período <p-sortIcon field="periodStartDate"></p-sortIcon></th>
+        <th pSortableColumn="employeeCode" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider">Mi Código <p-sortIcon field="employeeCode"></p-sortIcon></th>
+        <th pSortableColumn="netSalary" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-right">Salario Neto <p-sortIcon field="netSalary"></p-sortIcon></th>
+        <th pSortableColumn="generationDate" class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Generada <p-sortIcon field="generationDate"></p-sortIcon></th>
+        <th class="py-4 px-6 font-label-bold text-label-bold text-secondary uppercase tracking-wider text-center">Acciones</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-payslip>
+      <tr class="hover:bg-surface-container-lowest transition-colors group">
+        <td class="py-4 px-6 font-label-bold text-label-bold text-on-surface">
+          {{ payslip.periodStartDate | date:'MMM dd' }} - {{ payslip.periodEndDate | date:'MMM dd, yyyy' }}
+        </td>
+        <td class="py-4 px-6 font-mono text-on-surface-variant">{{ payslip.employeeCode || 'N/A' }}</td>
+        <td class="py-4 px-6 text-right font-medium text-primary-container">{{ payslip.netSalary | currency:'PEN':'symbol':'1.2-2' }}</td>
+        <td class="py-4 px-6 text-center text-on-surface-variant text-sm">{{ payslip.generationDate | date:'dd/MM/yyyy' }}</td>
+        <td class="py-4 px-6 text-center">
+          <div class="flex justify-center gap-2">
+            <button (click)="viewPayslip(payslip.id, payslip)" class="p-2 text-info bg-info/10 hover:bg-info hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-info" title="Ver en Línea">
+              <span class="material-symbols-outlined text-[20px]">visibility</span>
+            </button>
+            <button (click)="downloadPayslip(payslip.id, payslip)" class="p-2 text-success bg-success/10 hover:bg-success hover:text-white rounded-full transition-colors inline-flex items-center justify-center tooltip-target border border-success" title="Descargar PDF">
               <span class="material-symbols-outlined text-[20px]">download</span>
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
-  <div *ngIf="payslips.length === 0" class="p-8 text-center">
-    <p class="text-body-base font-body-base text-on-surface-variant">No tienes boletas de pago disponibles.</p>
-  </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="py-12 px-6 text-center text-on-surface-variant">
+          <span class="material-symbols-outlined text-4xl mb-3 text-outline-variant block">receipt_long</span>
+          <p class="text-body-base font-body-base text-on-surface-variant">No tienes boletas de pago disponibles.</p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
   <!-- Footer Hint -->
-  <div *ngIf="payslips.length > 0" class="px-6 py-4 border-t border-outline-variant/30 bg-surface text-center">
+  <div *ngIf="payslips.length > 0" class="px-6 py-4 border-t border-outline-variant/30 bg-surface-bright text-center">
     <p class="text-body-sm font-body-sm text-on-surface-variant">Mostrando las boletas más recientes. Las boletas antiguas están archivadas.</p>
   </div>
 </div>
+
+<!-- Diálogo para Visualización de Documento -->
+<p-dialog header="Visualización de la Boleta" [(visible)]="showViewer" [modal]="true"
+  [style]="{width: '90vw', height: '90vh'}" [draggable]="false" [resizable]="false">
+  <iframe [src]="documentViewerUrl" class="w-full h-full border-none"></iframe>
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" icon="pi pi-times" (click)="showViewer = false" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

@@ -12,8 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
   const apiUrl = environment.apiUrl;
 
-  // --> PASO DE DEPURACIÓN: Verifica si el token se está recuperando.
-  console.log('Auth Interceptor: Token recuperado ->', token);
+  // El token no debe imprimirse en consola por seguridad.
 
   if (token && req.url.startsWith(apiUrl)) {
     req = req.clone({

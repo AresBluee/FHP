@@ -9,20 +9,22 @@ import { MenuItem } from 'primeng/api';
 import { Button } from "primeng/button";
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, TieredMenuModule, AvatarModule, AvatarGroupModule],
+  imports: [CommonModule, RouterModule, TieredMenuModule, AvatarModule, AvatarGroupModule, SidebarModule],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
   public authService = inject(AuthService);
   private router = inject(Router);
-  public layoutService = inject(LayoutService); // <-- AÑADIDO
+  public layoutService = inject(LayoutService);
 
   isNavbarCollapsed = true;
+  isSidebarNotificationsOpen: boolean = false;
 
   isLoggedIn: boolean = false;
   isEmployeePanel: boolean = false;
@@ -95,10 +97,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     if (role === 'ADMIN' || role === 'RRHH' || role === 'SUPERVISOR') {
       accessOptions.push({
+        label: 'Ir a Panel de Administración',
+        icon: 'pi pi-desktop',
+        routerLink: ['/admin'],
+        command: () => this.router.navigate(['/admin'])
+      });
+      accessOptions.push({
         label: 'Configuración',
         icon: 'pi pi-cog',
         routerLink: ['/admin'],
         command: () => this.router.navigate(['/admin'])
+      });
+    } else if (role === 'EMPLOYEE' || role === 'USER') {
+      accessOptions.push({
+        label: 'Ir a página principal',
+        icon: 'pi pi-home',
+        routerLink: ['/home'],
+        command: () => this.router.navigate(['/home'])
+      });
+      accessOptions.push({
+        label: 'Ir a Portal del Empleado',
+        icon: 'pi pi-desktop',
+        routerLink: ['/employee'],
+        command: () => this.router.navigate(['/employee'])
       });
     }
 

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from "primeng/menu";
 import { TieredMenuModule } from "primeng/tieredmenu";
+import { SidebarModule } from 'primeng/sidebar';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { Subscription, filter } from 'rxjs';
@@ -14,7 +15,8 @@ import { AuthService } from '../../../../core/services/auth.service';
     MenuModule,
     TieredMenuModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    SidebarModule
   ],
   templateUrl: './menu-employee.component.html',
   styleUrl: './menu-employee.component.scss'
@@ -27,6 +29,7 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription;
   private layoutSubscription!: Subscription;
   isSidebarOpen: boolean = false;
+  isSidebarNotificationsOpen: boolean = false;
 
   constructor(private router: Router, private layoutService: LayoutService, public authService: AuthService) {
     this.routerSubscription = this.router.events.pipe(
@@ -72,10 +75,12 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
     this.menuItems = [
       { label: 'Mi Perfil', icon: 'person', routerLink: ['profile'], id: 'profile' },
       { label: 'Mis Horarios', icon: 'schedule', routerLink: ['my-schedule'], id: 'my-schedule' },
-      { label: 'Mis Certificados', icon: 'workspace_premium', routerLink: ['my-certificates'], id: 'my-certificates' },
+      { label: 'Mis Documentos', icon: 'folder_shared', routerLink: ['my-certificates'], id: 'my-certificates' },
       { label: 'Mi Asistencia', icon: 'how_to_reg', routerLink: ['my-attendance-history'], id: 'my-attendance-history' },
       { label: 'Mis Solicitudes', icon: 'description', routerLink: ['my-requests'], id: 'my-requests' },
       { label: 'Boletas de Pago', icon: 'receipt_long', routerLink: ['my-payslips'], id: 'my-payslips' },
+      // Recomendaciones de nuevas opciones
+      { label: 'Políticas y Reglamentos', icon: 'policy', routerLink: ['policies'], id: 'policies' }
     ];
   }
 
@@ -88,7 +93,7 @@ export class MenuEmployeeComponent implements OnInit, OnDestroy {
         command: () => this.router.navigate(['/employee/profile'])
       },
       {
-        label: 'Ir a Inicio (/home)',
+        label: 'Ir a Inicio',
         icon: 'pi pi-home',
         routerLink: ['/home'],
         command: () => this.router.navigate(['/home'])

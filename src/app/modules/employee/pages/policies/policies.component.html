@@ -1,0 +1,46 @@
+<div class="p-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="pi pi-book text-green-600 text-3xl"></i> Políticas y Reglamentos
+            </h1>
+            <p class="text-gray-500 mt-2">Documentos normativos y lineamientos corporativos de AgroCYT.</p>
+        </div>
+    </div>
+
+    <!-- Filtros por Categoría -->
+    <div class="flex flex-wrap gap-3 mb-8">
+        <button *ngFor="let cat of categories" 
+                (click)="selectCategory(cat)"
+                class="px-5 py-2 rounded-full font-medium transition-all duration-200 border"
+                [ngClass]="selectedCategory === cat ? 'bg-green-600 text-white border-green-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'">
+            {{cat}}
+        </button>
+    </div>
+
+    <!-- Grilla de Políticas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div *ngFor="let policy of filteredPolicies" class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group relative overflow-hidden">
+            
+            <div class="flex gap-4 items-start mb-4">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0 {{policy.color}}">
+                    <i class="pi {{policy.icon}} text-xl"></i>
+                </div>
+                <div>
+                    <p-tag [value]="policy.category" severity="secondary" styleClass="!bg-gray-100 !text-gray-600 !text-xs !mb-2"></p-tag>
+                    <h3 class="text-lg font-bold text-gray-800 leading-tight">{{policy.title}}</h3>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-sm text-gray-500 mb-6 mt-2">
+                <span class="flex items-center gap-1"><i class="pi pi-calendar text-xs"></i> {{policy.date}}</span>
+                <span class="flex items-center gap-1"><i class="pi pi-file text-xs"></i> PDF ({{policy.size}})</span>
+            </div>
+
+            <div class="mt-auto pt-4 border-t border-gray-100 flex justify-end gap-2">
+                <p-button icon="pi pi-eye" label="Ver" [outlined]="true" severity="secondary" size="small"></p-button>
+                <p-button icon="pi pi-download" label="Descargar" severity="success" size="small" (onClick)="downloadPolicy(policy)"></p-button>
+            </div>
+        </div>
+    </div>
+</div>

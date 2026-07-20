@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from "primeng/menu";
 import { TieredMenuModule } from "primeng/tieredmenu";
+import { SidebarModule } from 'primeng/sidebar';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { Subscription, filter } from 'rxjs';
@@ -16,7 +17,8 @@ import { AuthService } from '../../../../core/services/auth.service';
     CommonModule,
     MenuModule,
     TieredMenuModule,
-    RouterModule
+    RouterModule,
+    SidebarModule
 ], 
   templateUrl: './menu-admin.component.html',
   styleUrl: './menu-admin.component.scss'
@@ -32,6 +34,7 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
   private layoutSubscription!: Subscription;
   private authSubscription!: Subscription;
   isSidebarOpen: boolean = false;
+  isSidebarNotificationsOpen: boolean = false;
   public authService = inject(AuthService);
 
   constructor(private router: Router, private layoutService: LayoutService) {
@@ -117,7 +120,7 @@ export class MenuAdminComponent implements OnInit, OnDestroy {
         command: () => this.router.navigate([this.profileLink])
       },
       {
-        label: 'Ir a Inicio (/home)',
+        label: 'Ir a Inicio',
         icon: 'pi pi-home',
         routerLink: ['/home'],
         command: () => this.router.navigate(['/home'])

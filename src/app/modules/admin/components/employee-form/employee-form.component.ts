@@ -106,19 +106,32 @@ export class EmployeeFormComponent implements OnInit {
   setupAutoFill(): void {
     // 1. Auto-generar contraseña con el DNI
     this.employeeForm.get('dni')?.valueChanges.subscribe(dni => {
-      if (!this.isEditMode && !this.employeeForm.get('password')?.dirty) {
+      if (!this.isEditMode) {
         this.employeeForm.get('password')?.setValue(dni, { emitEvent: false });
       }
     });
 
-    // 2. Auto-generar nombre de usuario con el Nombre
-    this.employeeForm.get('firstName')?.valueChanges.subscribe(name => {
-      if (!this.isEditMode && !this.employeeForm.get('username')?.dirty) {
-        // Convierte "Juan Carlos" en "juancarlos"
-        const usernameBase = name ? name.toLowerCase().replace(/\s+/g, '') : '';
-        this.employeeForm.get('username')?.setValue(usernameBase, { emitEvent: false });
+    // 2. Auto-generar nombre de usuario con el ROL
+    this.employeeForm.get('roleName')?.valueChanges.subscribe(role => {
+      if (!this.isEditMode) {
+        this.generateAndSetUsername(role);
       }
     });
+
+    // Generar uno inicial
+    if (!this.isEditMode) {
+       this.generateAndSetUsername(this.employeeForm.get('roleName')?.value);
+    }
+  }
+
+  generateAndSetUsername(role: string): void {
+      let prefix = 'E';
+      if (role === 'ROLE_ADMIN') prefix = 'A';
+      else if (role === 'ROLE_RRHH') prefix = 'R';
+      else if (role === 'ROLE_SUPERVISOR') prefix = 'S';
+      
+      const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
+      this.employeeForm.get('username')?.setValue(prefix + randomCode, { emitEvent: false });
   }
 
   checkEditMode(): void {

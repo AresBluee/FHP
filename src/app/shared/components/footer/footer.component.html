@@ -1,77 +1,105 @@
-<footer class="bg-color-verde-header py-10 shadow-inner mt-10 text-white font-[tipo1]">
-    <div class="max-w-7xl  px-6"> 
+<footer class="bg-color-verde-header py-12 shadow-inner mt-10 text-white font-[tipo1]">
+    <div class="max-w-7xl mx-auto px-6"> 
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 justify-items-center">
-
-            <div class="lg:col-span-1">
-                <h5 class="text-lg font-bold mb-4 relative pb-1.5 ">AgroCYT.</h5>
-                <div class="text-sm space-y-3">
-                    <p class="flex items-center">
-                        <i class="pi pi-map-marker text-color-verde-postular"></i>
+        <!-- Secciones del Footer -->
+        <div class="flex flex-col lg:flex-row justify-between gap-12 lg:gap-8">
+            
+            <!-- Información de Contacto / Marca -->
+            <div class="lg:w-1/4 space-y-6">
+                <div class="flex items-center">
+                    <h5 class="text-2xl font-bold tracking-wider">AgroCYT.</h5>
+                </div>
+                <div class="text-sm space-y-4 text-gray-200">
+                    <p class="flex items-start space-x-3">
+                        <i class="pi pi-map-marker text-color-verde-postular mt-1"></i>
                         <span>Ocucaje 1195, Ica, Perú</span>
                     </p>
-                    <p class="flex items-center space-x-2">
+                    <p class="flex items-center space-x-3">
                         <i class="pi pi-phone text-color-verde-postular"></i>
-                        <a href="tel:+51960130261" class="hover:text-yellow-400 transition duration-200">+51 960 130 261</a>
+                        <a href="tel:+51960130261" class="hover:text-yellow-400 transition-colors duration-300">+51 960 130 261</a>
                     </p>
-                    <p class="flex items-center space-x-2">
+                    <p class="flex items-center space-x-3">
                         <i class="pi pi-envelope text-color-verde-postular"></i>
-                        <a href="mailto:soporte@agrovision.es" class="hover:text-yellow-400 transition duration-200">soporteagrovision.es</a>
+                        <a href="mailto:soporte@agrovision.es" class="hover:text-yellow-400 transition-colors duration-300">soporte&#64;agrovision.es</a>
                     </p>
                 </div>
             </div>
 
-            <div class="">
-                <h5 class="text-lg font-bold mb-4 relative pb-1.5 ">Portales</h5>
-                <ul class="text-sm space-y-2 list-none p-0">
-                    <li><a routerLink="/info-empresarial" class=" hover:text-yellow-400 transition duration-200">Informacion Empresarial</a></li>
-                    <li><a routerLink="/ruta" class=" hover:text-yellow-400 transition duration-200">Ruta</a></li>
-                    <li><a routerLink="/formularios" class=" hover:text-yellow-400 transition duration-200">Formularios</a></li>
-                </ul>
-            </div>
+            <!-- Menús -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:w-3/4">
+                
+                <!-- Portales -->
+                <div>
+                    <h5 class="text-lg font-bold mb-6 relative inline-block">
+                        Portales
+                        <span class="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-color-verde-postular rounded-full"></span>
+                    </h5>
+                    <ul class="text-sm space-y-3 list-none p-0 text-gray-200">
+                        <li><a routerLink="/info-empresarial" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Información Empresarial</a></li>
+                        <li><a routerLink="/ruta" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Ruta</a></li>
+                        <li><a routerLink="/formularios" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Formularios</a></li>
+                    </ul>
+                </div>
 
-            <div class="">
-                <h5 class="text-lg font-bold mb-4 relative pb-1.5 ">Noticias</h5>
-                <ul class="text-sm space-y-2 list-none p-0">
-                    <li><a routerLink="/noticias" class=" hover:text-yellow-400 transition duration-200">Noticias</a></li>
-                    <li><a routerLink="/eventos" class=" hover:text-yellow-400 transition duration-200">Eventos</a></li>
-                </ul>
-            </div>
+                <!-- Noticias -->
+                <div>
+                    <h5 class="text-lg font-bold mb-6 relative inline-block">
+                        Noticias
+                        <span class="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-color-verde-postular rounded-full"></span>
+                    </h5>
+                    <ul class="text-sm space-y-3 list-none p-0 text-gray-200">
+                        <li><a routerLink="/noticias" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Noticias</a></li>
+                        <li><a routerLink="/eventos" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Eventos</a></li>
+                    </ul>
+                </div>
 
-            <div class="">
-                <h5 class="text-lg font-bold mb-4 relative pb-1.5 ">Enlaces</h5>
-                <ul class="text-sm space-y-2 list-none p-0">
-                    <li><a routerLink="/contacto" class=" hover:text-yellow-400 transition duration-200">Contacto</a></li>
-                    <li><a routerLink="/servicio-empleado" class=" hover:text-yellow-400 transition duration-200">Servicio al Empleado</a></li>
-                    <li><a href="#" class=" hover:text-yellow-400 transition duration-200">TeamViewer</a></li>
-                    <li><a href="#" class=" hover:text-yellow-400 transition duration-200">Cancelar</a></li>
-                </ul>
-            </div>
+                <!-- Enlaces -->
+                <div>
+                    <h5 class="text-lg font-bold mb-6 relative inline-block">
+                        Enlaces
+                        <span class="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-color-verde-postular rounded-full"></span>
+                    </h5>
+                    <ul class="text-sm space-y-3 list-none p-0 text-gray-200">
+                        <li><a routerLink="/contacto" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Contacto</a></li>
+                        <li><a routerLink="/servicio-empleado" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Servicio al Empleado</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">TeamViewer</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Cancelar</a></li>
+                    </ul>
+                </div>
 
-            <div  >
-                <h5 class="text-lg font-bold mb-4 relative pb-1.5 ">Quiénes somos</h5>
-                <ul class="text-sm space-y-2 list-none p-0">
-                    <li><a routerLink="/nosotros" class=" hover:text-yellow-400transition duration-200">Acerca de nosotros</a></li>
-                    <li><a routerLink="/nuestros-companeros" class=" hover:text-yellow-400 transition duration-200">Nuestros compañeros</a></li>
-                    <li><a routerLink="/clientes" class=" hover:text-yellow-400 transition duration-200">Nuestros clientes</a></li>
-                    <li><a routerLink="/postular" class=" hover:text-yellow-400 transition duration-200">Empleo</a></li>
-                </ul>
+                <!-- Quiénes somos -->
+                <div>
+                    <h5 class="text-lg font-bold mb-6 relative inline-block">
+                        Quiénes somos
+                        <span class="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-color-verde-postular rounded-full"></span>
+                    </h5>
+                    <ul class="text-sm space-y-3 list-none p-0 text-gray-200">
+                        <li><a routerLink="/nosotros" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Acerca de nosotros</a></li>
+                        <li><a routerLink="/nuestros-companeros" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Nuestros compañeros</a></li>
+                        <li><a routerLink="/clientes" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Nuestros clientes</a></li>
+                        <li><a routerLink="/postular" class="hover:text-yellow-400 hover:translate-x-1 inline-block transition-all duration-300">Empleo</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-200">
+        <!-- Decoración del Logo (Sutil en el fondo/centro) -->
+        <div class="mt-16 flex justify-center opacity-30 hover:opacity-50 transition-opacity duration-500 pointer-events-none select-none">
+            <img src="LogoNombre.svg" alt="logoNombre" class="w-full max-w-md">
+        </div>
+
+        <!-- Línea Inferior (Copyright) -->
+        <div class="mt-8 pt-6 border-t border-white/20">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <div class="mb-3 md:mb-0">
-                    <p class="text-xs text-gray-500">
+                    <p class="text-sm text-gray-300">
                         Copyright © AgroCYT 2024 |
-                        <a routerLink="/legal" class="hover:text-blue-500 transition duration-200">Documentación legal</a> |
+                        <a routerLink="/legal" class="hover:text-yellow-400 transition-colors duration-300 font-medium">Documentación legal</a> |
                         Sitio web creado por Arls.
                     </p>
                 </div>
             </div>
         </div>
+
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
-  <img src="LogoNombre.svg" alt="logoNombre" style="width: 650px;">
-</div>
 </footer>

@@ -23,6 +23,7 @@ export const EMPLOYEE_ROUTES: Routes = [
             { path: 'my-requests', component: MyRequestsComponent },
             { path: 'my-payslips', component: MyPayslipsComponent },
             { path: 'my-certificates', component: MyCertificatesComponent },
+            { path: 'policies', loadComponent: () => import('./pages/policies/policies.component').then(m => m.PoliciesComponent) },
         ]
     }
 ];

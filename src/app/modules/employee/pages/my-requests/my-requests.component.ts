@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -16,6 +16,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { Subscription, interval } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 // Interfaces necesarias
 interface RequestCreationDTO {
@@ -24,7 +27,7 @@ interface RequestCreationDTO {
 interface RequestResponseDTO {
     id: number; requestType: string; employeeName: string; details: string;
     startDate: string; endDate: string; status: 'PENDING' | 'APPROVED' | 'REJECTED';
-    requestedDate: string;
+    requestedDate: string; documentPath?: string;
 }
 interface ManagerContactDTO {
     id: number; fullName: string; position: string; roleName: string;
@@ -33,7 +36,7 @@ interface ManagerContactDTO {
 @Component({
   selector: 'app-my-requests',
   standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, TableModule, ButtonModule, TagModule, DropdownModule, CalendarModule, ToastModule, TooltipModule],
+  imports: [CommonModule, DatePipe, FormsModule, TableModule, ButtonModule, TagModule, DropdownModule, CalendarModule, ToastModule, TooltipModule, DialogModule],
   providers: [MessageService],
   templateUrl: './my-requests.component.html',
   styleUrl: './my-requests.component.scss'
@@ -44,12 +47,17 @@ export class MyRequestsComponent implements OnInit{
   private employeeService = inject(EmployeeService);
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
+  private sanitizer = inject(DomSanitizer);
   private apiUrl = environment.apiUrl + '/api/requests';
 
   requests: RequestResponseDTO[] = [];
   managersList: ManagerContactDTO[] = [];
 
   isLoadingHistory = false;
+  private refreshSubscription?: Subscription;
+  
+  showViewer = false;
+  documentViewerUrl: SafeResourceUrl | undefined;
   isSendingRequest = false;
   selectedFile: File | null = null;
 
@@ -78,6 +86,16 @@ export class MyRequestsComponent implements OnInit{
     this.loadRequestTypes();
     this.loadRequestsHistory();
     this.loadManagers();
+    
+    this.refreshSubscription = interval(15000).subscribe(() => {
+        this.loadRequestsHistory(true);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+        this.refreshSubscription.unsubscribe();
+    }
   }
 
   loadRequestTypes(): void {
@@ -106,18 +124,18 @@ export class MyRequestsComponent implements OnInit{
     });
   }
 
-  loadRequestsHistory(): void {
-    this.isLoadingHistory = true;
+  loadRequestsHistory(silent: boolean = false): void {
+    if (!silent) this.isLoadingHistory = true;
     
     // GET /api/requests/me (Endpoint para el empleado logueado)
     this.http.get<RequestResponseDTO[]>(`${this.apiUrl}/me`).subscribe({
       next: (data) => {
         this.requests = data;
-        this.isLoadingHistory = false;
+        if (!silent) this.isLoadingHistory = false;
       },
       error: (err) => {
         console.error('Error cargando historial de solicitudes:', err);
-        this.isLoadingHistory = false;
+        if (!silent) this.isLoadingHistory = false;
       }
     });
   }
@@ -225,5 +243,40 @@ export class MyRequestsComponent implements OnInit{
     // Resetea el input de archivo si es posible a través del DOM o binding
     const fileInput = document.getElementById('attachment') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
+  }
+
+  viewDocument(docPath: string): void {
+    const url = docPath.startsWith('http') ? docPath : `${environment.apiUrl}${docPath}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const objectUrl = window.URL.createObjectURL(blob);
+        this.documentViewerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
+        this.showViewer = true;
+      },
+      error: (err) => {
+        console.error('Error al visualizar el documento', err);
+        this.messageService.add({severity:'error', summary:'Error', detail:'No se pudo visualizar el documento.'});
+      }
+    });
+  }
+
+  downloadDocument(docPath: string, reqId: number): void {
+    const url = docPath.startsWith('http') ? docPath : `${environment.apiUrl}${docPath}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const objectUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = `Documento_Solicitud_${reqId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(objectUrl);
+        document.body.removeChild(a);
+      },
+      error: (err) => {
+        console.error('Error al descargar el documento', err);
+        this.messageService.add({severity:'error', summary:'Error', detail:'No se pudo descargar el documento.'});
+      }
+    });
   }
 }

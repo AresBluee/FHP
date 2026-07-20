@@ -24,24 +24,20 @@ export class AppComponent implements OnInit, OnDestroy{
   showPublicFooter: boolean = true; 
 
   constructor() {
-    // Forzar la visibilidad del navbar al inicio si hay sesión
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.showPublicFooter = false;
-    }
+    const path = window.location.pathname;
+    this.showPublicFooter = !(path.startsWith('/admin') || path.startsWith('/employee'));
   }
 
   ngOnInit(): void {
-    // 💡 Suscribirse al estado reactivo del login
-    this.authSubscription = this.authService.isLoggedIn$.subscribe(isLoggedIn => {
-      // El Footer Público solo se muestra si el usuario NO está logueado.
-      this.showPublicFooter = !isLoggedIn; 
-    });
-
-    // 📈 Registrar navegación SPA de Angular en Google Analytics (GA4)
+    // 📈 Registrar navegación SPA de Angular en Google Analytics (GA4) y controlar Footer
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
+      const url = event.urlAfterRedirects || event.url;
+      
+      // El footer solo se oculta en los paneles de admin y empleado
+      this.showPublicFooter = !(url.startsWith('/admin') || url.startsWith('/employee'));
+
       if (typeof gtag !== 'undefined') {
         gtag('config', 'G-0R3GTLEK01', {
           page_path: event.urlAfterRedirects

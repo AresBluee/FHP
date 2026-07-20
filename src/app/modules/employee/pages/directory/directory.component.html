@@ -1,0 +1,68 @@
+<div class="p-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="pi pi-users text-green-600 text-3xl"></i> Directorio Interno
+            </h1>
+            <p class="text-gray-500 mt-2">Encuentra y contacta a los miembros del equipo de AgroCYT.</p>
+        </div>
+        <div class="w-full md:w-96">
+            <p-iconField iconPosition="left" class="w-full">
+                <p-inputIcon styleClass="pi pi-search" />
+                <input type="text" pInputText placeholder="Buscar por nombre, cargo o área..." class="w-full !rounded-full !px-10" [(ngModel)]="searchTerm" (input)="filterDirectory()" />
+            </p-iconField>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-pulse">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gray-200 rounded-full"></div>
+                <div class="flex-1 space-y-3">
+                    <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && filteredEmployees.length === 0" class="flex flex-col items-center justify-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
+        <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-4">
+            <i class="pi pi-search text-green-600 text-4xl"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800">No se encontraron empleados</h3>
+        <p class="text-gray-500 mt-2">Intenta buscar con otros términos.</p>
+    </div>
+
+    <!-- Directory Grid -->
+    <div *ngIf="!loading && filteredEmployees.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div *ngFor="let emp of filteredEmployees" class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group">
+            
+            <div class="flex flex-col items-center text-center">
+                <!-- Avatar -->
+                <div class="relative w-24 h-24 mb-4">
+                    <div class="w-full h-full rounded-full bg-gradient-to-tr from-green-500 to-green-400 flex items-center justify-center shadow-inner text-white text-3xl font-bold uppercase overflow-hidden">
+                        {{emp.firstName.charAt(0)}}{{emp.lastName.charAt(0)}}
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+                
+                <!-- Info -->
+                <h3 class="text-lg font-bold text-gray-800">{{emp.firstName}} {{emp.lastName}}</h3>
+                <p class="text-green-600 font-medium text-sm mt-1">{{emp.position?.name || 'Empleado'}}</p>
+                <p-tag [value]="emp.area?.name || 'General'" severity="secondary" styleClass="!mt-2 !bg-gray-100 !text-gray-600 !rounded-full"></p-tag>
+            </div>
+
+            <!-- Divider -->
+            <div class="w-full h-px bg-gray-100 my-5"></div>
+
+            <!-- Contact Actions -->
+            <div class="flex flex-col gap-3 mt-auto">
+                <p-button label="Enviar Mensaje Directo" icon="pi pi-comments" styleClass="w-full !rounded-xl" severity="success" [outlined]="true"></p-button>
+            </div>
+            
+        </div>
+    </div>
+</div>

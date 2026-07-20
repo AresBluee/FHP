@@ -116,22 +116,19 @@
               </p-dropdown>
             </div>
 
-            <div class="col-span-1">
-              <label class="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest">Nombre de Usuario</label>
-              <div class="relative">
-                <input pInputText id="username" formControlName="username" class="w-full custom-input" placeholder="Ej: jperez2024" />
-                <i class="pi pi-at absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <div class="col-span-1 md:col-span-2 mt-4" *ngIf="!isEditMode">
+              <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                <div class="flex items-start">
+                  <i class="pi pi-info-circle text-blue-500 text-xl mr-3 mt-1"></i>
+                  <div>
+                    <h4 class="font-bold text-blue-800">Generación Automática de Credenciales</h4>
+                    <p class="text-sm text-blue-600 mt-1">
+                      El sistema asignará automáticamente el nombre de usuario (ej: <strong>E8273</strong> o <strong>A1923</strong> según el rol) y la contraseña temporal será igual a su <strong>DNI</strong>. 
+                      Estas credenciales se enviarán por correo electrónico al trabajador de inmediato.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div class="col-span-1">
-              <label class="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest">Contraseña Segura</label>
-              <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="true"
-                placeholder="Mínimo 6 caracteres"
-                styleClass="w-full" inputStyleClass="w-full custom-input" inputId="password"></p-password>
-              <small *ngIf="isEditMode" class="text-amber-600 font-medium mt-2 block italic">
-                <i class="pi pi-info-circle mr-1"></i>Dejar vacío para mantener la contraseña actual.
-              </small>
             </div>
           </div>
         </div>
