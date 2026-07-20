@@ -1,6 +1,4 @@
 export const environment = {
-  production: false,
-  
   // URL para el entorno local (Comentado para despliegue)
   // apiUrl: 'http://localhost:8080',
 

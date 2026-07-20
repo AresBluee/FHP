@@ -1,5 +1,4 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api'; // <-- 💡 NUEVO IMPORT
