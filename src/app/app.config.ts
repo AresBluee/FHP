@@ -7,7 +7,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // Importar esto
-import { RouteReuseStrategy } from '@angular/router';
+import { provideRouter, withHashLocation, RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './core/strategies/custom-route-reuse-strategy';
 
 export const appConfig: ApplicationConfig = {
@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
     provideAnimationsAsync(),
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(
     withInterceptors([authInterceptor])),
     MessageService,
